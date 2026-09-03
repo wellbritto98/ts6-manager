@@ -68,3 +68,4 @@ Optional automatic refresh of the existing yt-dlp Netscape cookie file from a pe
 - yt-dlp android / web player client as a separate anti-bot measure.
 - Optional Chromium sidecar on Coolify compose.
 - Multi-account cookie rotation.
+- Return stored `intervalHours` on GET status so the Settings input does not reset to 6 after reload. The spec field list omits it on purpose.

@@ -13,10 +13,10 @@
 ## Handoff
 
 - **Feature**: youtube-cookie-refresh / `.specs/features/youtube-cookie-refresh`
-- **Phase / Task**: Specify + Design + Tasks (writing artifacts)
-- **Completed**: none
-- **In-progress** (file:line): spec artifacts
-- **Next step**: validate spec and tasks, then execute T1
-- **Blockers**: none
-- **Uncommitted files**: `.specs/`
-- **Branch**: current
+- **Phase / Task**: Execute T7 complete, awaiting Verifier
+- **Completed**: T1–T7
+- **In-progress** (file:line): none
+- **Next step**: Verifier writes validation.md; then validate_state.py
+- **Blockers**: no in-IDE browser tools; live Settings UI not exercised
+- **Uncommitted files**: T7 UI (commit pending)
+- **Branch**: main

@@ -289,6 +289,24 @@
         "saving": "Enregistrement...",
         "toastSaved": "Limite d'import enregistrée",
         "toastSaveFailed": "Échec de l'enregistrement de la limite d'import"
+      },
+      "refresh": {
+        "title": "Rafraîchissement automatique des cookies",
+        "enable": "Garder les cookies YouTube à jour depuis un navigateur serveur",
+        "warning": "Utilisez un compte Google jetable. Une connexion ici peut faire bannir un compte important.",
+        "interval": "Intervalle de rafraîchissement (heures)",
+        "refreshNow": "Rafraîchir maintenant",
+        "refreshing": "Rafraîchissement...",
+        "sidecarMissing": "Le sidecar navigateur YouTube est injoignable. Démarrez yt-browser ou définissez YT_BROWSER_URL.",
+        "needsLogin": "Connectez-vous à YouTube dans la fenêtre ci-dessous, puis cliquez sur Rafraîchir maintenant.",
+        "lastSuccess": "Dernier rafraîchissement réussi : {{time}}",
+        "lastError": "Dernière erreur : {{error}}",
+        "never": "jamais",
+        "toastEnabled": "Rafraîchissement automatique activé",
+        "toastDisabled": "Rafraîchissement automatique désactivé",
+        "toastFailed": "Impossible de modifier le rafraîchissement automatique",
+        "toastRefreshed": "Cookies rafraîchis",
+        "toastRefreshFailed": "Échec du rafraîchissement des cookies"
       }
     },
     "discord": {

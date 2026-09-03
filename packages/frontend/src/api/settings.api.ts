@@ -15,6 +15,24 @@ export const settingsApi = {
     api.post('/settings/yt-cookies', { text }).then((r) => r.data),
 
   deleteYtCookies: () => api.delete('/settings/yt-cookies').then((r) => r.data),
+
+  getCookieRefresh: (): Promise<CookieRefreshStatus> =>
+    api.get('/settings/yt-cookie-refresh').then((r) => r.data),
+
+  putCookieRefresh: (enabled: boolean, intervalHours?: number) =>
+    api.put('/settings/yt-cookie-refresh', { enabled, intervalHours }).then((r) => r.data),
+
+  forceCookieRefresh: () =>
+    api.post('/settings/yt-cookie-refresh/refresh').then((r) => r.data),
+};
+
+export type CookieRefreshStatus = {
+  enabled: boolean;
+  sidecarReachable: boolean;
+  lastSuccessAt: string | null;
+  lastError: string | null;
+  cookieFileActive: boolean;
+  needsLogin: boolean;
 };
 
 export const proxyApi = {

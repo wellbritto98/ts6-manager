@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { usersApi } from '@/api/bots.api';
 import { authApi } from '@/api/auth.api';
 import { serversApi } from '@/api/servers.api';
-import { settingsApi, proxyApi, limitsApi } from '@/api/settings.api';
+import { proxyApi } from '@/api/settings.api';
+import { YouTubeTab } from './settings/YouTubeTab';
 import { discordApi, type DiscordSettings } from '@/api/discord.api';
 import { spotifyApi } from '@/api/spotify.api';
 import { musicCommandSettingsApi } from '@/api/music-command-settings.api';
@@ -24,7 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog';
-import { Users, Server, Plus, Trash2, Pencil, TestTube, Check, Lock, KeyRound, Youtube, Upload, FileText, MessagesSquare, Music, Bot, ShieldCheck, Copy } from 'lucide-react';
+import { Users, Server, Plus, Trash2, Pencil, TestTube, Check, Lock, KeyRound, Youtube, MessagesSquare, Music, Bot, ShieldCheck, Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES, setLanguage } from '@/i18n';
@@ -705,193 +706,6 @@ function UsersTab() {
   );
 }
 
-function YouTubeTab() {
-  const { t } = useTranslation();
-  const qc = useQueryClient();
-  const [pasteMode, setPasteMode] = useState(false);
-  const [cookieText, setCookieText] = useState('');
-
-  const { data: status, isLoading } = useQuery({
-    queryKey: ['yt-cookie-status'],
-    queryFn: settingsApi.getYtCookieStatus,
-  });
-
-  const uploadFile = useMutation({
-    mutationFn: (file: File) => settingsApi.uploadYtCookieFile(file),
-    onSuccess: () => {
-      toast.success(t('settings.youtube.toastFileUploaded'));
-      qc.invalidateQueries({ queryKey: ['yt-cookie-status'] });
-    },
-    onError: () => toast.error(t('settings.youtube.toastUploadFailed')),
-  });
-
-  const uploadText = useMutation({
-    mutationFn: (text: string) => settingsApi.uploadYtCookieText(text),
-    onSuccess: () => {
-      toast.success(t('settings.youtube.toastCookiesSaved'));
-      setCookieText('');
-      setPasteMode(false);
-      qc.invalidateQueries({ queryKey: ['yt-cookie-status'] });
-    },
-    onError: () => toast.error(t('settings.youtube.toastSaveFailed')),
-  });
-
-  const deleteCookies = useMutation({
-    mutationFn: () => settingsApi.deleteYtCookies(),
-    onSuccess: () => {
-      toast.success(t('settings.youtube.toastCookiesRemoved'));
-      qc.invalidateQueries({ queryKey: ['yt-cookie-status'] });
-    },
-    onError: () => toast.error(t('settings.youtube.toastRemoveFailed')),
-  });
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) uploadFile.mutate(file);
-    e.target.value = '';
-  };
-
-  const formatSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    return `${(bytes / 1024).toFixed(1)} KB`;
-  };
-
-  return (
-    <div className="max-w-lg space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm font-medium">{t('settings.youtube.title')}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-xs text-muted-foreground">
-            {t('settings.youtube.description')}
-            {' '}<span className="font-medium">Get cookies.txt LOCALLY</span> {t('settings.youtube.descriptionBrowsers')}
-          </p>
-
-          {/* Status */}
-          <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${status?.active ? 'bg-green-500' : 'bg-zinc-500'}`} />
-            <span className="text-sm">
-              {isLoading ? t('settings.youtube.loading') : status?.active
-                ? t('settings.youtube.cookiesActive', { size: formatSize(status.size) })
-                : t('settings.youtube.noCookies')}
-            </span>
-          </div>
-
-          {/* Actions */}
-          <div className="flex flex-wrap gap-2">
-            <input
-              type="file"
-              accept=".txt,.cookies"
-              className="hidden"
-              id="cookie-file-input"
-              onChange={handleFileSelect}
-            />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => document.getElementById('cookie-file-input')?.click()}
-              disabled={uploadFile.isPending}
-            >
-              <Upload className="h-3.5 w-3.5 mr-1" />
-              {uploadFile.isPending ? t('settings.youtube.uploading') : t('settings.youtube.uploadFile')}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPasteMode(!pasteMode)}
-            >
-              <FileText className="h-3.5 w-3.5 mr-1" />
-              {t('settings.youtube.pasteCookies')}
-            </Button>
-            {status?.active && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-destructive hover:text-destructive"
-                onClick={() => deleteCookies.mutate()}
-                disabled={deleteCookies.isPending}
-              >
-                <Trash2 className="h-3.5 w-3.5 mr-1" />
-                {t('settings.youtube.remove')}
-              </Button>
-            )}
-          </div>
-
-          {/* Paste mode */}
-          {pasteMode && (
-            <div className="space-y-2">
-              <textarea
-                className="w-full h-32 rounded-md border border-border bg-background px-3 py-2 text-xs font-mono resize-none focus:outline-none focus:ring-1 focus:ring-ring"
-                placeholder="# Netscape HTTP Cookie File&#10;.youtube.com&#9;TRUE&#9;/&#9;TRUE&#9;0&#9;COOKIE_NAME&#9;COOKIE_VALUE"
-                value={cookieText}
-                onChange={(e) => setCookieText(e.target.value)}
-              />
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => uploadText.mutate(cookieText)}
-                  disabled={!cookieText.trim() || uploadText.isPending}
-                >
-                  {uploadText.isPending ? t('settings.youtube.saving') : t('settings.youtube.save')}
-                </Button>
-                <Button variant="outline" size="sm" onClick={() => { setPasteMode(false); setCookieText(''); }}>
-                  {t('settings.youtube.cancel')}
-                </Button>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      <PlaylistImportLimitCard />
-    </div>
-  );
-}
-
-// ─── Playlist Import Limit Card ──────────────────────────────
-
-function PlaylistImportLimitCard() {
-  const { t } = useTranslation();
-  const qc = useQueryClient();
-  const { data } = useQuery({ queryKey: ['settings-limits'], queryFn: limitsApi.get });
-  const [max, setMax] = useState(50);
-
-  const [seededData, setSeededData] = useState<typeof data>(undefined);
-  if (data && data !== seededData) {
-    setSeededData(data);
-    setMax(data.maxPlaylistImport);
-  }
-
-  const save = useMutation({
-    mutationFn: () => limitsApi.update(max),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['settings-limits'] });
-      toast.success(t('settings.youtube.playlistLimit.toastSaved'));
-    },
-    onError: (err: any) => toast.error(err.response?.data?.error || t('settings.youtube.playlistLimit.toastSaveFailed')),
-  });
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">{t('settings.youtube.playlistLimit.title')}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <p className="text-xs text-muted-foreground">{t('settings.youtube.playlistLimit.description')}</p>
-        <div className="flex items-center gap-3">
-          <Label className="text-xs w-40">{t('settings.youtube.playlistLimit.maxTracks')}</Label>
-          <Input className="h-8 text-xs w-24" type="number" min={0} max={1000} value={max}
-            onChange={(e) => setMax(parseInt(e.target.value) || 0)} />
-        </div>
-        <p className="text-[10px] text-muted-foreground">{t('settings.youtube.playlistLimit.hint')}</p>
-        <Button size="sm" onClick={() => save.mutate()} disabled={save.isPending}>
-          {save.isPending ? t('settings.youtube.playlistLimit.saving') : t('settings.youtube.playlistLimit.save')}
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
 
 // ─── Discord Tab ─────────────────────────────────────────────
 

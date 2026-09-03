@@ -1,0 +1,115 @@
+{
+  "namespace": "settings",
+  "keys": {
+    "en": {
+      "youtube": {
+        "refresh": {
+          "title": "Automatic cookie refresh",
+          "enable": "Keep YouTube cookies fresh from a server browser",
+          "warning": "Use a throwaway Google account. Logging in here can get an important account banned.",
+          "interval": "Refresh interval (hours)",
+          "refreshNow": "Refresh now",
+          "refreshing": "Refreshing...",
+          "sidecarMissing": "The YouTube browser sidecar is not reachable. Start yt-browser or set YT_BROWSER_URL.",
+          "needsLogin": "Sign in to YouTube in the window below, then click Refresh now.",
+          "lastSuccess": "Last successful refresh: {{time}}",
+          "lastError": "Last error: {{error}}",
+          "never": "never",
+          "toastEnabled": "Automatic refresh enabled",
+          "toastDisabled": "Automatic refresh disabled",
+          "toastFailed": "Could not change automatic refresh",
+          "toastRefreshed": "Cookies refreshed",
+          "toastRefreshFailed": "Cookie refresh failed"
+        }
+      }
+    },
+    "fr": {
+      "youtube": {
+        "refresh": {
+          "title": "Rafraîchissement automatique des cookies",
+          "enable": "Garder les cookies YouTube à jour depuis un navigateur serveur",
+          "warning": "Utilisez un compte Google jetable. Une connexion ici peut faire bannir un compte important.",
+          "interval": "Intervalle de rafraîchissement (heures)",
+          "refreshNow": "Rafraîchir maintenant",
+          "refreshing": "Rafraîchissement...",
+          "sidecarMissing": "Le sidecar navigateur YouTube est injoignable. Démarrez yt-browser ou définissez YT_BROWSER_URL.",
+          "needsLogin": "Connectez-vous à YouTube dans la fenêtre ci-dessous, puis cliquez sur Rafraîchir maintenant.",
+          "lastSuccess": "Dernier rafraîchissement réussi : {{time}}",
+          "lastError": "Dernière erreur : {{error}}",
+          "never": "jamais",
+          "toastEnabled": "Rafraîchissement automatique activé",
+          "toastDisabled": "Rafraîchissement automatique désactivé",
+          "toastFailed": "Impossible de modifier le rafraîchissement automatique",
+          "toastRefreshed": "Cookies rafraîchis",
+          "toastRefreshFailed": "Échec du rafraîchissement des cookies"
+        }
+      }
+    },
+    "de": {
+      "youtube": {
+        "refresh": {
+          "title": "Automatische Cookie-Aktualisierung",
+          "enable": "YouTube-Cookies vom Server-Browser aktuell halten",
+          "warning": "Nutzen Sie ein Wegwerf-Google-Konto. Eine Anmeldung hier kann ein wichtiges Konto sperren.",
+          "interval": "Aktualisierungsintervall (Stunden)",
+          "refreshNow": "Jetzt aktualisieren",
+          "refreshing": "Aktualisiere...",
+          "sidecarMissing": "Der YouTube-Browser-Sidecar ist nicht erreichbar. Starten Sie yt-browser oder setzen Sie YT_BROWSER_URL.",
+          "needsLogin": "Melden Sie sich unten bei YouTube an und klicken Sie dann auf Jetzt aktualisieren.",
+          "lastSuccess": "Letzte erfolgreiche Aktualisierung: {{time}}",
+          "lastError": "Letzter Fehler: {{error}}",
+          "never": "nie",
+          "toastEnabled": "Automatische Aktualisierung aktiviert",
+          "toastDisabled": "Automatische Aktualisierung deaktiviert",
+          "toastFailed": "Automatische Aktualisierung konnte nicht geändert werden",
+          "toastRefreshed": "Cookies aktualisiert",
+          "toastRefreshFailed": "Cookie-Aktualisierung fehlgeschlagen"
+        }
+      }
+    },
+    "es": {
+      "youtube": {
+        "refresh": {
+          "title": "Actualización automática de cookies",
+          "enable": "Mantener las cookies de YouTube al día desde un navegador en el servidor",
+          "warning": "Use una cuenta de Google desechable. Iniciar sesión aquí puede banear una cuenta importante.",
+          "interval": "Intervalo de actualización (horas)",
+          "refreshNow": "Actualizar ahora",
+          "refreshing": "Actualizando...",
+          "sidecarMissing": "El sidecar del navegador de YouTube no es accesible. Arranque yt-browser o defina YT_BROWSER_URL.",
+          "needsLogin": "Inicie sesión en YouTube en la ventana de abajo y pulse Actualizar ahora.",
+          "lastSuccess": "Última actualización correcta: {{time}}",
+          "lastError": "Último error: {{error}}",
+          "never": "nunca",
+          "toastEnabled": "Actualización automática activada",
+          "toastDisabled": "Actualización automática desactivada",
+          "toastFailed": "No se pudo cambiar la actualización automática",
+          "toastRefreshed": "Cookies actualizadas",
+          "toastRefreshFailed": "Falló la actualización de cookies"
+        }
+      }
+    },
+    "it": {
+      "youtube": {
+        "refresh": {
+          "title": "Aggiornamento automatico dei cookie",
+          "enable": "Mantenere i cookie YouTube aggiornati da un browser sul server",
+          "warning": "Usa un account Google usa-e-getta. L'accesso qui può far bannare un account importante.",
+          "interval": "Intervallo di aggiornamento (ore)",
+          "refreshNow": "Aggiorna ora",
+          "refreshing": "Aggiornamento...",
+          "sidecarMissing": "Il sidecar del browser YouTube non è raggiungibile. Avvia yt-browser o imposta YT_BROWSER_URL.",
+          "needsLogin": "Accedi a YouTube nella finestra sotto, poi fai clic su Aggiorna ora.",
+          "lastSuccess": "Ultimo aggiornamento riuscito: {{time}}",
+          "lastError": "Ultimo errore: {{error}}",
+          "never": "mai",
+          "toastEnabled": "Aggiornamento automatico attivato",
+          "toastDisabled": "Aggiornamento automatico disattivato",
+          "toastFailed": "Impossibile modificare l'aggiornamento automatico",
+          "toastRefreshed": "Cookie aggiornati",
+          "toastRefreshFailed": "Aggiornamento cookie non riuscito"
+        }
+      }
+    }
+  }
+}

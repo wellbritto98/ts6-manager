@@ -289,6 +289,24 @@
         "saving": "Saving...",
         "toastSaved": "Import limit saved",
         "toastSaveFailed": "Failed to save the import limit"
+      },
+      "refresh": {
+        "title": "Automatic cookie refresh",
+        "enable": "Keep YouTube cookies fresh from a server browser",
+        "warning": "Use a throwaway Google account. Logging in here can get an important account banned.",
+        "interval": "Refresh interval (hours)",
+        "refreshNow": "Refresh now",
+        "refreshing": "Refreshing...",
+        "sidecarMissing": "The YouTube browser sidecar is not reachable. Start yt-browser or set YT_BROWSER_URL.",
+        "needsLogin": "Sign in to YouTube in the window below, then click Refresh now.",
+        "lastSuccess": "Last successful refresh: {{time}}",
+        "lastError": "Last error: {{error}}",
+        "never": "never",
+        "toastEnabled": "Automatic refresh enabled",
+        "toastDisabled": "Automatic refresh disabled",
+        "toastFailed": "Could not change automatic refresh",
+        "toastRefreshed": "Cookies refreshed",
+        "toastRefreshFailed": "Cookie refresh failed"
       }
     },
     "discord": {

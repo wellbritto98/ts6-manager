@@ -132,16 +132,16 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
-| YTCR-01 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
-| YTCR-02 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
+| YTCR-01 | P1: Optional toggle and in-app YouTube login | Tasks | Verified |
+| YTCR-02 | P1: Optional toggle and in-app YouTube login | Tasks | Verified |
 | YTCR-03 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
 | YTCR-04 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
-| YTCR-05 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
+| YTCR-05 | P1: Optional toggle and in-app YouTube login | Tasks | Verified |
 | YTCR-06 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-07 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-08 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-09 | P1: Fail-closed cookie refresh | Tasks | Implementing |
-| YTCR-10 | P1: Fail-closed cookie refresh | Tasks | Implementing |
+| YTCR-10 | P1: Fail-closed cookie refresh | Tasks | Verified |
 | YTCR-11 | P1: Bot-check triggers a refresh without hiding the error | Tasks | Implementing |
 | YTCR-12 | P1: Bot-check triggers a refresh without hiding the error | Tasks | Implementing |
 | YTCR-13 | P2: Status and interval | Tasks | Implementing |

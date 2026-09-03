@@ -289,6 +289,24 @@
         "saving": "Guardando...",
         "toastSaved": "Límite de importación guardado",
         "toastSaveFailed": "No se pudo guardar el límite de importación"
+      },
+      "refresh": {
+        "title": "Actualización automática de cookies",
+        "enable": "Mantener las cookies de YouTube al día desde un navegador en el servidor",
+        "warning": "Use una cuenta de Google desechable. Iniciar sesión aquí puede banear una cuenta importante.",
+        "interval": "Intervalo de actualización (horas)",
+        "refreshNow": "Actualizar ahora",
+        "refreshing": "Actualizando...",
+        "sidecarMissing": "El sidecar del navegador de YouTube no es accesible. Arranque yt-browser o defina YT_BROWSER_URL.",
+        "needsLogin": "Inicie sesión en YouTube en la ventana de abajo y pulse Actualizar ahora.",
+        "lastSuccess": "Última actualización correcta: {{time}}",
+        "lastError": "Último error: {{error}}",
+        "never": "nunca",
+        "toastEnabled": "Actualización automática activada",
+        "toastDisabled": "Actualización automática desactivada",
+        "toastFailed": "No se pudo cambiar la actualización automática",
+        "toastRefreshed": "Cookies actualizadas",
+        "toastRefreshFailed": "Falló la actualización de cookies"
       }
     },
     "discord": {

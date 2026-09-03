@@ -250,11 +250,11 @@ T7
 
 **Done when**:
 
-- [ ] Manual cookies.txt card still renders when refresh is off
-- [ ] Toggle on shows interval, status fields, warning, iframe, Refresh now
-- [ ] i18n fragment keys exist in all five languages and merge-i18n exits 0
-- [ ] Gate check passes: `node packages/frontend/scripts/merge-i18n.mjs` and frontend typecheck
-- [ ] Browser: toggle-off upload path still works if a dev server is up
+- [x] Manual cookies.txt card still renders when refresh is off
+- [x] Toggle on shows interval, status fields, warning, iframe, Refresh now
+- [x] i18n fragment keys exist in all five languages and merge-i18n exits 0
+- [x] Gate check passes: `node packages/frontend/scripts/merge-i18n.mjs` and frontend typecheck
+- [x] Browser: toggle-off upload path still works if a dev server is up
 
 **Tests**: none
 **Gate**: build
