@@ -35,6 +35,7 @@ services:
       - yt-browser
     networks:
       - ts6-network
+      - teamspeak_default
 
   sidecar:
     build:
@@ -92,3 +93,5 @@ volumes:
 networks:
   ts6-network:
     driver: bridge
+  teamspeak_default:
+    external: true
