@@ -15,7 +15,7 @@ import { loadSamlRuntime } from './auth/saml/saml-config.js';
 import { config } from './config.js';
 import { setYtCookieFile, setBotCheckNotifier } from './voice/audio/youtube.js';
 import { createCookieKeeper } from './voice/audio/cookie-keeper-factory.js';
-import { proxyNovncUpgrade, tokenFromNovncUpgrade } from './routes/novnc-proxy.js';
+import { proxyNovncUpgrade, tokenFromNovncUpgrade, normalizeNovncReqUrl } from './routes/novnc-proxy.js';
 import { PlaylistImporter } from './voice/playlist-import.js';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
@@ -124,7 +124,8 @@ async function main() {
   });
 
   server.on('upgrade', (req, socket, head) => {
-    if (!req.url?.startsWith('/api/settings/yt-browser/vnc')) return;
+    if (req.url) req.url = normalizeNovncReqUrl(req.url);
+    if (!req.url.startsWith('/api/settings/yt-browser/vnc')) return;
     const base = process.env.YT_BROWSER_NOVNC_URL;
     if (!base) {
       socket.destroy();

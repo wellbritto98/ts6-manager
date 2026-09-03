@@ -38,12 +38,21 @@ describe('novncTargetUrl', () => {
     expect(url.toString()).toBe('http://ts6-yt-browser:6080/vnc.html?autoconnect=true');
     expect(url.searchParams.get('token')).toBeNull();
   });
+
+  it('maps a double-slash websockify URL onto the sidecar /websockify', () => {
+    const url = novncTargetUrl(
+      '//api/settings/yt-browser/vnc/websockify',
+      'http://ts6-yt-browser:6080',
+    );
+    expect(url.pathname).toBe('/websockify');
+  });
 });
 
 describe('noVNC session helpers', () => {
   it('recognizes API and stripped settings paths as noVNC', () => {
     expect(isNovncPath('/api/settings/yt-browser/vnc/app/styles/base.css')).toBe(true);
     expect(isNovncPath('/settings/yt-browser/vnc/app/ui.js')).toBe(true);
+    expect(isNovncPath('//api/settings/yt-browser/vnc/websockify')).toBe(true);
     expect(isNovncPath('/settings/yt-cookies')).toBe(false);
   });
 

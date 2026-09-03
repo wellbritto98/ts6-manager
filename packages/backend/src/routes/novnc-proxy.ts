@@ -7,7 +7,8 @@ import { AppError } from '../middleware/error-handler.js';
 export const NOVNC_PREFIX = '/api/settings/yt-browser/vnc';
 export const NOVNC_COOKIE_NAME = 'yt_novnc';
 export const NOVNC_COOKIE_PATH = NOVNC_PREFIX;
-export const NOVNC_WEBSOCKET_PATH = `${NOVNC_PREFIX}/websockify`;
+/** noVNC concatenates `ws://host:port/` + path, so this must not start with `/`. */
+export const NOVNC_WEBSOCKET_PATH = 'api/settings/yt-browser/vnc/websockify';
 
 const HELMET_DROP = [
   'content-security-policy',
@@ -32,8 +33,15 @@ export function assertNovncAdmin(role: string | undefined): void {
   if (role !== 'admin') throw new AppError(403, 'Admin access required');
 }
 
+export function normalizeNovncReqUrl(reqUrl: string): string {
+  const q = reqUrl.indexOf('?');
+  const path = q === -1 ? reqUrl : reqUrl.slice(0, q);
+  const search = q === -1 ? '' : reqUrl.slice(q);
+  return path.replace(/^\/+/, '/') + search;
+}
+
 export function isNovncPath(pathname: string): boolean {
-  const path = pathname.split('?')[0];
+  const path = normalizeNovncReqUrl(pathname).split('?')[0];
   return path.startsWith(NOVNC_PREFIX) || path.startsWith('/settings/yt-browser/vnc');
 }
 
@@ -65,14 +73,14 @@ export function setNovncAuthCookie(res: Response, token: string, req: Request): 
 }
 
 export function tokenFromNovncUpgrade(req: IncomingMessage): string | undefined {
-  const url = new URL(req.url || '/', 'http://localhost');
+  const url = new URL(normalizeNovncReqUrl(req.url || '/'), 'http://localhost');
   const fromQuery = url.searchParams.get('token');
   if (fromQuery) return fromQuery;
   return parseCookieHeader(req.headers.cookie, NOVNC_COOKIE_NAME);
 }
 
 export function novncTargetUrl(reqUrl: string, base: string): URL {
-  const incoming = new URL(reqUrl, 'http://localhost');
+  const incoming = new URL(normalizeNovncReqUrl(reqUrl), 'http://localhost');
   incoming.searchParams.delete('token');
   let pathname = incoming.pathname;
   if (pathname.startsWith(NOVNC_PREFIX)) pathname = pathname.slice(NOVNC_PREFIX.length) || '/';
