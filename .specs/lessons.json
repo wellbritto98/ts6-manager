@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "promote_threshold": 2,
+  "window_days": 45,
+  "quarantine_threshold": 2,
+  "next_id": 5,
+  "lessons": [
+    {
+      "id": "L-001",
+      "key": "surviving_mutant::assert live file bytes stay unchanged when candidate validation throws not only when export fails or youtube com cookies are missing",
+      "text": "Assert live file bytes stay unchanged when candidate validation throws, not only when export fails or youtube.com cookies are missing.",
+      "signal": "surviving_mutant",
+      "scope": "cookie-keeper",
+      "status": "candidate",
+      "features": [
+        "youtube-cookie-refresh"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "mutant-3 cookie-keeper.ts:133 (cookie-keeper)"
+      ],
+      "created": "2026-09-03T18:56:20Z",
+      "last_seen": "2026-09-03T18:56:20Z"
+    },
+    {
+      "id": "L-002",
+      "key": "ac_gap::assert the exact yt dlp argv the spec names including dump json and the validation video url not only that a validatecandidate mock exists",
+      "text": "Assert the exact yt-dlp argv the spec names, including --dump-json and the validation video URL, not only that a validateCandidate mock exists.",
+      "signal": "ac_gap",
+      "scope": "yt-dlp-validation",
+      "status": "candidate",
+      "features": [
+        "youtube-cookie-refresh"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "YTCR-06 (yt-dlp-validation)"
+      ],
+      "created": "2026-09-03T18:56:20Z",
+      "last_seen": "2026-09-03T18:56:20Z"
+    },
+    {
+      "id": "L-003",
+      "key": "ac_gap::assert the exact persisted setting key and value not only that enable resolved",
+      "text": "Assert the exact persisted setting key and value, not only that enable() resolved.",
+      "signal": "ac_gap",
+      "scope": "app-settings",
+      "status": "candidate",
+      "features": [
+        "youtube-cookie-refresh"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "YTCR-02 (app-settings)"
+      ],
+      "created": "2026-09-03T18:56:20Z",
+      "last_seen": "2026-09-03T18:56:20Z"
+    },
+    {
+      "id": "L-004",
+      "key": "ac_gap::a user visible ui requirement is not covered until a test asserts the rendered copy or element jsx is not test evidence",
+      "text": "A user-visible UI requirement is not covered until a test asserts the rendered copy or element; JSX is not test evidence.",
+      "signal": "ac_gap",
+      "scope": "frontend",
+      "status": "candidate",
+      "features": [
+        "youtube-cookie-refresh"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "YTCR-01 (frontend)"
+      ],
+      "created": "2026-09-03T18:56:20Z",
+      "last_seen": "2026-09-03T18:56:20Z"
+    }
+  ]
+}

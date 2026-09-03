@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config.js';
 import type { JwtPayload } from '@ts6/common';
+import { isNovncPath, NOVNC_COOKIE_NAME, setNovncAuthCookie } from '../routes/novnc-proxy.js';
 
 declare global {
   namespace Express {
@@ -14,10 +15,11 @@ declare global {
 function extractToken(req: Request): string | undefined {
   const header = req.headers.authorization;
   if (header?.startsWith('Bearer ')) return header.substring(7);
+  if (!isNovncPath(req.path) && !isNovncPath(req.originalUrl || '')) return undefined;
   const q = req.query?.token;
-  if (typeof q === 'string' && q && req.path.startsWith('/settings/yt-browser/vnc')) {
-    return q;
-  }
+  if (typeof q === 'string' && q) return q;
+  const cookie = req.cookies?.[NOVNC_COOKIE_NAME];
+  if (typeof cookie === 'string' && cookie) return cookie;
   return undefined;
 }
 
@@ -56,6 +58,9 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
         username: payload.username,
         role: user.role as JwtPayload['role'], // fresh from the DB, not the stale JWT
       };
+      if (isNovncPath(req.path) || isNovncPath(req.originalUrl || '')) {
+        setNovncAuthCookie(res, token, req);
+      }
       next();
     }).catch(() => {
       res.status(500).json({ error: 'Internal server error' });

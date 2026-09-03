@@ -15,7 +15,7 @@ import { loadSamlRuntime } from './auth/saml/saml-config.js';
 import { config } from './config.js';
 import { setYtCookieFile, setBotCheckNotifier } from './voice/audio/youtube.js';
 import { createCookieKeeper } from './voice/audio/cookie-keeper-factory.js';
-import { proxyNovncUpgrade } from './routes/novnc-proxy.js';
+import { proxyNovncUpgrade, tokenFromNovncUpgrade } from './routes/novnc-proxy.js';
 import { PlaylistImporter } from './voice/playlist-import.js';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
@@ -132,7 +132,7 @@ async function main() {
     }
     void (async () => {
       try {
-        const token = new URL(req.url!, 'http://localhost').searchParams.get('token');
+        const token = tokenFromNovncUpgrade(req);
         if (!token) {
           socket.destroy();
           return;

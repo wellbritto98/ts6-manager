@@ -188,7 +188,7 @@ function CookieRefreshCard() {
 
   const enabled = !!refresh?.enabled;
   const vncSrc = token
-    ? `/api/settings/yt-browser/vnc/vnc.html?autoconnect=1&resize=remote&token=${encodeURIComponent(token)}`
+    ? `/api/settings/yt-browser/vnc/vnc.html?autoconnect=1&resize=remote&path=${encodeURIComponent('/api/settings/yt-browser/vnc/websockify')}&token=${encodeURIComponent(token)}`
     : '';
 
   return (

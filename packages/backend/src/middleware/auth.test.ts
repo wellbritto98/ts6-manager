@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import type { Request, Response } from 'express';
 import { authMiddleware } from './auth.js';
 import { config } from '../config.js';
+import { NOVNC_COOKIE_NAME } from '../routes/novnc-proxy.js';
 
 /**
  * Regression cover for the token-class confusion: access, MFA-challenge and
@@ -13,22 +14,31 @@ import { config } from '../config.js';
 
 const ADMIN = { enabled: true, role: 'admin' };
 
-function run(token: string, dbUser: unknown = ADMIN) {
+function run(
+  token: string,
+  dbUser: unknown = ADMIN,
+  extras: { path?: string; cookies?: Record<string, string>; query?: Record<string, string>; headers?: Record<string, string> } = {},
+) {
   const status = vi.fn().mockReturnThis();
   const json = vi.fn();
   const next = vi.fn();
+  const cookie = vi.fn();
   const findUnique = vi.fn().mockResolvedValue(dbUser);
 
   const req = {
-    headers: { authorization: `Bearer ${token}` },
+    headers: extras.headers ?? (token ? { authorization: `Bearer ${token}` } : {}),
+    path: extras.path ?? '/settings/users',
+    originalUrl: extras.path ?? '/api/settings/users',
+    query: extras.query ?? {},
+    cookies: extras.cookies ?? {},
+    secure: false,
     app: { locals: { prisma: { user: { findUnique } } } },
   } as unknown as Request;
-  const res = { status, json } as unknown as Response;
+  const res = { status, json, cookie } as unknown as Response;
 
   authMiddleware(req, res, next);
-  // Let the findUnique promise chain settle before asserting.
-  return new Promise<{ status: typeof status; json: typeof json; next: typeof next; req: Request }>(
-    (resolve) => setImmediate(() => resolve({ status, json, next, req })),
+  return new Promise<{ status: typeof status; json: typeof json; next: typeof next; req: Request; cookie: typeof cookie }>(
+    (resolve) => setImmediate(() => resolve({ status, json, next, req, cookie })),
   );
 }
 
@@ -73,6 +83,43 @@ describe('authMiddleware token class', () => {
       sign({ typ: 'access', id: 7, username: 'gone', role: 'admin' }),
       { enabled: false, role: 'admin' },
     );
+    expect(next).not.toHaveBeenCalled();
+    expect(status).toHaveBeenCalledWith(401);
+  });
+
+  it('accepts a noVNC query token and sets the path-scoped cookie', async () => {
+    const token = sign({ typ: 'access', id: 42, username: 'root', role: 'admin' });
+    const { next, cookie, status } = await run(token, ADMIN, {
+      headers: {},
+      path: '/settings/yt-browser/vnc/vnc.html',
+      query: { token },
+    });
+    expect(status).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledOnce();
+    expect(cookie).toHaveBeenCalledWith(NOVNC_COOKIE_NAME, token, expect.objectContaining({
+      httpOnly: true,
+      path: '/api/settings/yt-browser/vnc',
+    }));
+  });
+
+  it('accepts the noVNC cookie on a static asset without a query token', async () => {
+    const token = sign({ typ: 'access', id: 42, username: 'root', role: 'admin' });
+    const { next, status } = await run(token, ADMIN, {
+      headers: {},
+      path: '/settings/yt-browser/vnc/app/styles/base.css',
+      cookies: { [NOVNC_COOKIE_NAME]: token },
+    });
+    expect(status).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledOnce();
+  });
+
+  it('does not treat the noVNC cookie as a session on other API paths', async () => {
+    const token = sign({ typ: 'access', id: 42, username: 'root', role: 'admin' });
+    const { next, status } = await run(token, ADMIN, {
+      headers: {},
+      path: '/settings/yt-cookies',
+      cookies: { [NOVNC_COOKIE_NAME]: token },
+    });
     expect(next).not.toHaveBeenCalled();
     expect(status).toHaveBeenCalledWith(401);
   });
