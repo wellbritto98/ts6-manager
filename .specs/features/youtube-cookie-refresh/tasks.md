@@ -112,15 +112,15 @@ T7
 
 **Done when**:
 
-- [ ] `enable` throws SidecarUnreachableError when sidecar ping fails
-- [ ] failed export/validation leaves the live cookie file bytes unchanged
-- [ ] overlapping `refreshNow` shares one in-flight run
-- [ ] second refresh within 5 minutes without force returns `skipped`
-- [ ] `refreshNow({ force: true })` runs despite cooldown
-- [ ] `getStatus` returns exactly enabled, sidecarReachable, lastSuccessAt, lastError, cookieFileActive, needsLogin
-- [ ] lastError contains no cookie values
-- [ ] Gate check passes: quick vitest on `cookie-keeper.test.ts`
-- [ ] Test count: 10 tests pass
+- [x] `enable` throws SidecarUnreachableError when sidecar ping fails
+- [x] failed export/validation leaves the live cookie file bytes unchanged
+- [x] overlapping `refreshNow` shares one in-flight run
+- [x] second refresh within 5 minutes without force returns `skipped`
+- [x] `refreshNow({ force: true })` runs despite cooldown
+- [x] `getStatus` returns exactly enabled, sidecarReachable, lastSuccessAt, lastError, cookieFileActive, needsLogin
+- [x] lastError contains no cookie values
+- [x] Gate check passes: quick vitest on `cookie-keeper.test.ts`
+- [x] Test count: 10 tests pass
 
 **Tests**: unit
 **Gate**: quick
