@@ -124,8 +124,9 @@ async function main() {
   });
 
   server.on('upgrade', (req, socket, head) => {
-    if (req.url) req.url = normalizeNovncReqUrl(req.url);
-    if (!req.url.startsWith('/api/settings/yt-browser/vnc')) return;
+    const url = req.url ? normalizeNovncReqUrl(req.url) : undefined;
+    req.url = url;
+    if (!url?.startsWith('/api/settings/yt-browser/vnc')) return;
     const base = process.env.YT_BROWSER_NOVNC_URL;
     if (!base) {
       socket.destroy();
