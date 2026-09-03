@@ -1,6 +1,7 @@
 import { spawn } from "child_process";
 import path from "path";
 import fs from "fs";
+import { isBotCheckError } from "./cookie-refresh.js";
 
 export interface YouTubeInfo {
   id: string;
@@ -36,6 +37,18 @@ export function getCookieArgs(): string[] {
     args.push("--cookies", ytCookieFile);
   }
   return args;
+}
+
+let botCheckNotifier: (() => void) | null = null;
+
+export function setBotCheckNotifier(fn: (() => void) | null): void {
+  botCheckNotifier = fn;
+}
+
+/** Notify the cookie keeper on bot-check, then return the error to reject with. */
+export function rejectYtDlpFailure(message: string): Error {
+  if (isBotCheckError(message)) botCheckNotifier?.();
+  return new Error(message);
 }
 
 /**
@@ -95,7 +108,7 @@ export function runYtDlp(args: string[], timeoutMs: number, opts: { lowPriority?
       }
       if (code !== 0) {
         console.error(`[yt-dlp] Failed (code ${code}): yt-dlp ${args.join(" ")}\n${stderr.slice(-2000)}`);
-        return reject(new Error(`yt-dlp failed (code ${code}): ${lastErrorLine(stderr)}`));
+        return reject(rejectYtDlpFailure(`yt-dlp failed (code ${code}): ${lastErrorLine(stderr)}`));
       }
       resolve(stdout);
     });

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { pickDownloadedFile, parseUrlInfo } from './youtube.js';
+import { describe, it, expect, vi } from 'vitest';
+import { pickDownloadedFile, parseUrlInfo, rejectYtDlpFailure, setBotCheckNotifier } from './youtube.js';
 
 const ID = 'dQw4w9WgXcQ';
 
@@ -86,5 +86,25 @@ describe('parseUrlInfo', () => {
 
   it('throws a clear error on unparseable output', () => {
     expect(() => parseUrlInfo('not json')).toThrow(/Failed to parse/);
+  });
+});
+
+describe('rejectYtDlpFailure', () => {
+  it('notifies on bot-check and still returns the original error', () => {
+    const notify = vi.fn();
+    setBotCheckNotifier(notify);
+    const err = rejectYtDlpFailure("yt-dlp failed (code 1): ERROR: Sign in to confirm you're not a bot");
+    expect(notify).toHaveBeenCalledOnce();
+    expect(err.message).toContain("Sign in to confirm you're not a bot");
+    setBotCheckNotifier(null);
+  });
+
+  it('does not notify for other yt-dlp errors', () => {
+    const notify = vi.fn();
+    setBotCheckNotifier(notify);
+    const err = rejectYtDlpFailure('yt-dlp failed (code 1): ERROR: Video unavailable');
+    expect(notify).not.toHaveBeenCalled();
+    expect(err.message).toContain('Video unavailable');
+    setBotCheckNotifier(null);
   });
 });

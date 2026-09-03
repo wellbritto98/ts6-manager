@@ -223,12 +223,12 @@ T7
 
 **Done when**:
 
-- [ ] `isBotCheckError` on a failed `runYtDlp` calls `notifyBotCheck` when a keeper is registered
-- [ ] the same failure still rejects with a message containing `Sign in to confirm you're not a bot`
-- [ ] notify is not called when refresh is disabled (keeper.notifyBotCheck no-ops)
-- [ ] noVNC proxy handler refuses when `req.user.role` is not `admin` (unit-tested helper)
-- [ ] Gate check passes: quick vitest on `youtube.test.ts` plus proxy helper tests
-- [ ] Test count: at least 3 new tests plus existing youtube tests
+- [x] `isBotCheckError` on a failed `runYtDlp` calls `notifyBotCheck` when a keeper is registered
+- [x] the same failure still rejects with a message containing `Sign in to confirm you're not a bot`
+- [x] notify is not called when refresh is disabled (keeper.notifyBotCheck no-ops)
+- [x] noVNC proxy handler refuses when `req.user.role` is not `admin` (unit-tested helper)
+- [x] Gate check passes: quick vitest on `youtube.test.ts` plus proxy helper tests
+- [x] Test count: at least 3 new tests plus existing youtube tests
 
 **Tests**: unit
 **Gate**: quick

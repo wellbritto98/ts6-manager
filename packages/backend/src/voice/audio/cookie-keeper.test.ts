@@ -160,4 +160,12 @@ describe('CookieKeeper', () => {
     expect(status.needsLogin).toBe(false);
     expect(status.lastSuccessAt).toMatch(/^\d{4}-/);
   });
+
+  it('notifyBotCheck is a no-op when refresh is disabled', async () => {
+    const fetchCookies = vi.fn(async () => [ytCookie()]);
+    const { keeper } = makeKeeper({ fetchCookies });
+    keeper.notifyBotCheck();
+    await new Promise((r) => setImmediate(r));
+    expect(fetchCookies).not.toHaveBeenCalled();
+  });
 });

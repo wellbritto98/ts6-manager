@@ -6,6 +6,7 @@ import {
   type CookieRefreshStatus,
 } from '../voice/audio/cookie-keeper.js';
 import { DEFAULT_INTERVAL_HOURS, parseIntervalHours } from '../voice/audio/cookie-refresh.js';
+import { assertNovncAdmin, proxyNovncHttp } from './novnc-proxy.js';
 
 const ytCookieRefreshRoutes: Router = Router();
 
@@ -96,6 +97,17 @@ ytCookieRefreshRoutes.put('/yt-cookie-refresh', requireAdmin, async (req, res, n
 ytCookieRefreshRoutes.post('/yt-cookie-refresh/refresh', requireAdmin, async (req, res, next) => {
   try {
     res.json(await applyForceRefresh(keeperOf(req)));
+  } catch (err) { next(err); }
+});
+
+ytCookieRefreshRoutes.use('/yt-browser/vnc', requireAdmin, (req, res, next) => {
+  try {
+    const base = process.env.YT_BROWSER_NOVNC_URL;
+    if (!base) throw new AppError(400, 'YouTube browser sidecar is not reachable');
+    assertNovncAdmin(req.user?.role);
+    const fakeReq = req as typeof req & { url: string };
+    fakeReq.url = req.originalUrl;
+    proxyNovncHttp(fakeReq, res, base);
   } catch (err) { next(err); }
 });
 

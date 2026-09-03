@@ -13,8 +13,9 @@ import { ConnectionJournal } from './connection-journal.js';
 import { applyTrustProxy, loadTrustProxy } from './routes/settings.routes.js';
 import { loadSamlRuntime } from './auth/saml/saml-config.js';
 import { config } from './config.js';
-import { setYtCookieFile } from './voice/audio/youtube.js';
+import { setYtCookieFile, setBotCheckNotifier } from './voice/audio/youtube.js';
 import { createCookieKeeper } from './voice/audio/cookie-keeper-factory.js';
+import { proxyNovncUpgrade } from './routes/novnc-proxy.js';
 import { PlaylistImporter } from './voice/playlist-import.js';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
@@ -122,6 +123,40 @@ async function main() {
     bindIdentity(socket, identity);
   });
 
+  server.on('upgrade', (req, socket, head) => {
+    if (!req.url?.startsWith('/api/settings/yt-browser/vnc')) return;
+    const base = process.env.YT_BROWSER_NOVNC_URL;
+    if (!base) {
+      socket.destroy();
+      return;
+    }
+    void (async () => {
+      try {
+        const token = new URL(req.url!, 'http://localhost').searchParams.get('token');
+        if (!token) {
+          socket.destroy();
+          return;
+        }
+        const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as JwtPayload;
+        if (payload.typ !== 'access') {
+          socket.destroy();
+          return;
+        }
+        const user = await prisma.user.findUnique({
+          where: { id: payload.id },
+          select: { enabled: true, role: true },
+        });
+        if (!user?.enabled || user.role !== 'admin') {
+          socket.destroy();
+          return;
+        }
+        proxyNovncUpgrade(req, socket, head, base);
+      } catch {
+        socket.destroy();
+      }
+    })();
+  });
+
   // Initialize TS connection pool
   const connectionPool = new ConnectionPool(prisma);
   await connectionPool.initialize();
@@ -134,6 +169,7 @@ async function main() {
   const cookieKeeper = createCookieKeeper(prisma, savedCookiePath);
   app.locals.cookieKeeper = cookieKeeper;
   await cookieKeeper.loadFromDb();
+  setBotCheckNotifier(() => cookieKeeper.notifyBotCheck());
 
   // Load the SAML SP config/instance from the DB (no-op if SAML is unconfigured/disabled)
   await loadSamlRuntime(prisma);

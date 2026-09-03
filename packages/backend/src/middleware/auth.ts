@@ -11,14 +11,22 @@ declare global {
   }
 }
 
+function extractToken(req: Request): string | undefined {
+  const header = req.headers.authorization;
+  if (header?.startsWith('Bearer ')) return header.substring(7);
+  const q = req.query?.token;
+  if (typeof q === 'string' && q && req.path.startsWith('/settings/yt-browser/vnc')) {
+    return q;
+  }
+  return undefined;
+}
+
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
+  const token = extractToken(req);
+  if (!token) {
     res.status(401).json({ error: 'No token provided' });
     return;
   }
-
-  const token = authHeader.substring(7);
   try {
     const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as JwtPayload;
 

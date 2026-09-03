@@ -143,7 +143,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | YTCR-09 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-10 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-11 | P1: Bot-check triggers a refresh without hiding the error | Tasks | Implementing |
-| YTCR-12 | P1: Bot-check triggers a refresh without hiding the error | Tasks | In Tasks |
+| YTCR-12 | P1: Bot-check triggers a refresh without hiding the error | Tasks | Implementing |
 | YTCR-13 | P2: Status and interval | Tasks | Implementing |
 | YTCR-14 | P2: Status and interval | Tasks | Implementing |
 | YTCR-15 | P2: Status and interval | Tasks | Implementing |
