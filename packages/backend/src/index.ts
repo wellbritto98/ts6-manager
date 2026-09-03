@@ -70,9 +70,16 @@ async function main() {
   server.requestTimeout = 0;
 
   // H3: WebSocket with JWT authentication
+  //
+  // noServer: true — constructing this with `{ server, path: '/ws' }` makes the
+  // `ws` library attach its own 'upgrade' listener to `server` internally. That
+  // listener runs first (registered here, before the noVNC one below) and, on
+  // any path other than '/ws', calls abortHandshake(socket, 400) itself — which
+  // writes an HTTP response and destroys the socket, never falling through to
+  // later 'upgrade' listeners. That silently 400'd every noVNC websocket
+  // upgrade. Routing both paths from one handler avoids the race entirely.
   const wss = new WebSocketServer({
-    server,
-    path: '/ws',
+    noServer: true,
     verifyClient: ({ req }, done) => {
       // Mirrors middleware/auth.ts: assert the token class, then confirm the
       // account is still live. Verifying the signature alone would accept a
@@ -126,7 +133,17 @@ async function main() {
   server.on('upgrade', (req, socket, head) => {
     const url = req.url ? normalizeNovncReqUrl(req.url) : undefined;
     req.url = url;
-    if (!url?.startsWith('/api/settings/yt-browser/vnc')) return;
+
+    const pathname = url?.split('?')[0];
+    if (pathname === '/ws') {
+      wss.handleUpgrade(req, socket, head, (ws) => wss.emit('connection', ws, req));
+      return;
+    }
+
+    if (!url?.startsWith('/api/settings/yt-browser/vnc')) {
+      socket.destroy();
+      return;
+    }
     const base = process.env.YT_BROWSER_NOVNC_URL;
     if (!base) {
       socket.destroy();
