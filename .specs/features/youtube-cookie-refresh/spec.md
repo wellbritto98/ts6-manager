@@ -135,7 +135,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | YTCR-01 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
 | YTCR-02 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
 | YTCR-03 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
-| YTCR-04 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
+| YTCR-04 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
 | YTCR-05 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
 | YTCR-06 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-07 | P1: Fail-closed cookie refresh | Tasks | Implementing |

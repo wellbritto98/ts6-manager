@@ -142,11 +142,11 @@ T7
 
 **Done when**:
 
-- [ ] Missing or wrong bearer on `/cookies` returns 401
-- [ ] `/health` returns 200 when the debug port flag is mocked healthy
-- [ ] `/cookies` JSON uses the `cookies` array field
-- [ ] Gate check passes: node test file `packages/yt-browser/server.test.mjs`
-- [ ] Test count: 3 tests pass
+- [x] Missing or wrong bearer on `/cookies` returns 401
+- [x] `/health` returns 200 when the debug port flag is mocked healthy
+- [x] `/cookies` JSON uses the `cookies` array field
+- [x] Gate check passes: node test file `packages/yt-browser/server.test.mjs`
+- [x] Test count: 3 tests pass
 
 **Tests**: unit
 **Gate**: quick
