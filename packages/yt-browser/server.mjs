@@ -58,12 +58,15 @@ export async function cdpHealthy(cdpBase = CDP_URL) {
 }
 
 export async function cdpCookies(cdpBase = CDP_URL) {
-  const versionRes = await fetch(`${cdpBase.replace(/\/+$/, '')}/json/version`, { signal: AbortSignal.timeout(3000) });
-  if (!versionRes.ok) throw new Error('cdp unavailable');
-  const version = await versionRes.json();
-  const wsUrl = version.webSocketDebuggerUrl;
-  if (!wsUrl) throw new Error('cdp websocket missing');
-  const cookies = await cdpCall(wsUrl, 'Network.getAllCookies');
+  // Network.getAllCookies only exists on a page-level CDP session — the
+  // browser-level session (/json/version's webSocketDebuggerUrl) rejects it
+  // with "wasn't found". Attach to the actual tab instead.
+  const listRes = await fetch(`${cdpBase.replace(/\/+$/, '')}/json/list`, { signal: AbortSignal.timeout(3000) });
+  if (!listRes.ok) throw new Error('cdp unavailable');
+  const targets = await listRes.json();
+  const page = Array.isArray(targets) ? targets.find((t) => t.type === 'page' && t.webSocketDebuggerUrl) : undefined;
+  if (!page) throw new Error('no page target');
+  const cookies = await cdpCall(page.webSocketDebuggerUrl, 'Network.getAllCookies');
   return cookies.cookies ?? [];
 }
 
