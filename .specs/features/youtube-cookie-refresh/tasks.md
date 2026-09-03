@@ -168,12 +168,12 @@ T7
 
 **Done when**:
 
-- [ ] `Dockerfile.yt-browser` exists and CMD starts the sidecar
-- [ ] `docker-compose.yml`, `docker-compose.dev.yml`, and `docker-compose.hub.yml` define `yt-browser` without publishing 6080/9090
-- [ ] `.env.example` documents `YT_BROWSER_URL`, `YT_BROWSER_NOVNC_URL`, `YT_BROWSER_TOKEN`
-- [ ] `docker-compose.coolify.yml` is unchanged
-- [ ] Gate check passes: build (`tsc --noEmit`)
-- [ ] Test count: unchanged backend suite
+- [x] `Dockerfile.yt-browser` exists and CMD starts the sidecar
+- [x] `docker-compose.yml`, `docker-compose.dev.yml`, and `docker-compose.hub.yml` define `yt-browser` without publishing 6080/9090
+- [x] `.env.example` documents `YT_BROWSER_URL`, `YT_BROWSER_NOVNC_URL`, `YT_BROWSER_TOKEN`
+- [x] `docker-compose.coolify.yml` is unchanged
+- [x] Gate check passes: build (`tsc --noEmit`)
+- [x] Test count: unchanged backend suite
 
 **Tests**: none
 **Gate**: build

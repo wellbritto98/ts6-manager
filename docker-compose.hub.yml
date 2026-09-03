@@ -22,6 +22,9 @@ services:
       - SIDECAR_URL=http://ts6-sidecar:9800
       - "SIDECAR_TOKEN=${SIDECAR_TOKEN:?set SIDECAR_TOKEN in .env - generate with openssl rand -hex 32}"
       - SIDECAR_BINARY_PATH=${SIDECAR_BINARY_PATH:-}
+      - YT_BROWSER_URL=http://ts6-yt-browser:9090
+      - YT_BROWSER_NOVNC_URL=http://ts6-yt-browser:6080
+      - "YT_BROWSER_TOKEN=${YT_BROWSER_TOKEN:?set YT_BROWSER_TOKEN in .env - generate with openssl rand -hex 32}"
     volumes:
       - backend-data:/app/packages/backend/data
       - music-data:/data/music
@@ -31,6 +34,7 @@ services:
       - "3001:3001"
     depends_on:
       - sidecar
+      - yt-browser
     networks:
       - ts6-network
 
@@ -44,6 +48,19 @@ services:
       # do not publish this port: the API has no per-user authentication.
       - SIDECAR_LISTEN_ADDR=0.0.0.0
       - "SIDECAR_TOKEN=${SIDECAR_TOKEN:?set SIDECAR_TOKEN in .env - generate with openssl rand -hex 32}"
+    networks:
+      - ts6-network
+
+  yt-browser:
+    image: clusterzx/ts6-manager:yt-browser
+    container_name: ts6-yt-browser
+    restart: unless-stopped
+    shm_size: '2gb'
+    environment:
+      - YT_BROWSER_API_PORT=9090
+      - "YT_BROWSER_TOKEN=${YT_BROWSER_TOKEN:?set YT_BROWSER_TOKEN in .env - generate with openssl rand -hex 32}"
+    volumes:
+      - yt-browser-profile:/data/yt-profile
     networks:
       - ts6-network
 
@@ -64,6 +81,8 @@ volumes:
   backend-data:
     driver: local
   music-data:
+    driver: local
+  yt-browser-profile:
     driver: local
 
 networks:

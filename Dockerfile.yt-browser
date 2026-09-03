@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1.4
+FROM node:20-bookworm-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      chromium \
+      xvfb \
+      x11vnc \
+      novnc \
+      websockify \
+      python3 \
+      ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY packages/yt-browser/server.mjs /app/server.mjs
+COPY packages/yt-browser/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh && mkdir -p /data/yt-profile
+
+ENV YT_BROWSER_API_PORT=9090
+ENV YT_BROWSER_PROFILE=/data/yt-profile
+# API and noVNC listen on the bridge only. Do not publish 9090 or 6080.
+EXPOSE 9090 6080
+CMD ["/app/entrypoint.sh"]
