@@ -83,14 +83,14 @@ T7
 
 **Done when**:
 
-- [ ] `parseIntervalHours` returns null outside 1–24 and the integer inside
-- [ ] omitted/invalid raw values used by callers can default to 6 at the keeper layer (helper returns null)
-- [ ] `hasYoutubeCookies` is false when no domain contains `youtube.com`
-- [ ] `atomicSwapCookieFile` writes mode `0600` and leaves the previous file when the caller skips the swap
-- [ ] `isBotCheckError` is true only for messages containing `Sign in to confirm you're not a bot`
-- [ ] `cookiesToNetscape` never logs cookie values
-- [ ] Gate check passes: quick vitest on `cookie-refresh.test.ts`
-- [ ] Test count: 12 tests pass
+- [x] `parseIntervalHours` returns null outside 1–24 and the integer inside
+- [x] omitted/invalid raw values used by callers can default to 6 at the keeper layer (helper returns null)
+- [x] `hasYoutubeCookies` is false when no domain contains `youtube.com`
+- [x] `atomicSwapCookieFile` writes mode `0600` and leaves the previous file when the caller skips the swap
+- [x] `isBotCheckError` is true only for messages containing `Sign in to confirm you're not a bot`
+- [x] `cookiesToNetscape` never logs cookie values
+- [x] Gate check passes: quick vitest on `cookie-refresh.test.ts`
+- [x] Test count: 12 tests pass
 
 **Tests**: unit
 **Gate**: quick

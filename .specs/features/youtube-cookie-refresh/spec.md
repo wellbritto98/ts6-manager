@@ -137,15 +137,15 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | YTCR-03 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
 | YTCR-04 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
 | YTCR-05 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
-| YTCR-06 | P1: Fail-closed cookie refresh | Tasks | In Tasks |
-| YTCR-07 | P1: Fail-closed cookie refresh | Tasks | In Tasks |
+| YTCR-06 | P1: Fail-closed cookie refresh | Tasks | Implementing |
+| YTCR-07 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-08 | P1: Fail-closed cookie refresh | Tasks | In Tasks |
-| YTCR-09 | P1: Fail-closed cookie refresh | Tasks | In Tasks |
+| YTCR-09 | P1: Fail-closed cookie refresh | Tasks | Implementing |
 | YTCR-10 | P1: Fail-closed cookie refresh | Tasks | In Tasks |
-| YTCR-11 | P1: Bot-check triggers a refresh without hiding the error | Tasks | In Tasks |
+| YTCR-11 | P1: Bot-check triggers a refresh without hiding the error | Tasks | Implementing |
 | YTCR-12 | P1: Bot-check triggers a refresh without hiding the error | Tasks | In Tasks |
-| YTCR-13 | P2: Status and interval | Tasks | In Tasks |
-| YTCR-14 | P2: Status and interval | Tasks | In Tasks |
+| YTCR-13 | P2: Status and interval | Tasks | Implementing |
+| YTCR-14 | P2: Status and interval | Tasks | Implementing |
 | YTCR-15 | P2: Status and interval | Tasks | In Tasks |
 | YTCR-16 | P2: Status and interval | Tasks | In Tasks |
 
