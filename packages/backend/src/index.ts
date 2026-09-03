@@ -14,6 +14,7 @@ import { applyTrustProxy, loadTrustProxy } from './routes/settings.routes.js';
 import { loadSamlRuntime } from './auth/saml/saml-config.js';
 import { config } from './config.js';
 import { setYtCookieFile } from './voice/audio/youtube.js';
+import { createCookieKeeper } from './voice/audio/cookie-keeper-factory.js';
 import { PlaylistImporter } from './voice/playlist-import.js';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
@@ -130,6 +131,10 @@ async function main() {
   app.locals.connectionPool = connectionPool;
   app.locals.wss = wss;
 
+  const cookieKeeper = createCookieKeeper(prisma, savedCookiePath);
+  app.locals.cookieKeeper = cookieKeeper;
+  await cookieKeeper.loadFromDb();
+
   // Load the SAML SP config/instance from the DB (no-op if SAML is unconfigured/disabled)
   await loadSamlRuntime(prisma);
 
@@ -184,6 +189,7 @@ async function main() {
     console.log('\n[TS6 WebUI] Shutting down...');
     await discordBridge.stop();
     await connectionJournal.stop();
+    cookieKeeper.stop();
     await voiceBotManager.stopAll();
     botEngine.destroy();
     connectionPool.destroy();

@@ -34,6 +34,7 @@ import { widgetRoutes } from './routes/widget.routes.js';
 import { setupRoutes } from './routes/setup.routes.js';
 import { samlAuthRoutes } from './routes/saml-auth.routes.js';
 import { settingsRoutes } from './routes/settings.routes.js';
+import { ytCookieRefreshRoutes } from './routes/yt-cookie-refresh.routes.js';
 import { discordRoutes } from './routes/discord.routes.js';
 import { spotifyRoutes } from './routes/spotify.routes.js';
 import { musicCommandSettingsRoutes } from './routes/music-command-settings.routes.js';
@@ -140,6 +141,7 @@ export function createApp(): Express {
   app.use('/api/servers/:configId/music-requests', serverAccess, musicRequestRoutes);
   app.use('/api/widgets', widgetRoutes);
   app.use('/api/settings', settingsRoutes);
+  app.use('/api/settings', ytCookieRefreshRoutes);
   app.use('/api/discord', discordRoutes);
   app.use('/api/spotify', spotifyRoutes);
   app.use('/api/music-command-settings', musicCommandSettingsRoutes);

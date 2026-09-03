@@ -195,13 +195,13 @@ T7
 
 **Done when**:
 
-- [ ] PUT with `enabled: true` and unreachable sidecar maps to status 400
-- [ ] PUT interval 0 or 25 maps to status 400 without calling persist
-- [ ] PUT with enabled true and omitted interval uses 6
-- [ ] GET status DTO lists the six spec fields and no cookie payload
-- [ ] POST refresh calls `refreshNow({ force: true })`
-- [ ] Gate check passes: quick vitest on `yt-cookie-refresh.routes.test.ts`
-- [ ] Test count: 6 tests pass
+- [x] PUT with `enabled: true` and unreachable sidecar maps to status 400
+- [x] PUT interval 0 or 25 maps to status 400 without calling persist
+- [x] PUT with enabled true and omitted interval uses 6
+- [x] GET status DTO lists the six spec fields and no cookie payload
+- [x] POST refresh calls `refreshNow({ force: true })`
+- [x] Gate check passes: quick vitest on `yt-cookie-refresh.routes.test.ts`
+- [x] Test count: 6 tests pass
 
 **Tests**: unit
 **Gate**: quick

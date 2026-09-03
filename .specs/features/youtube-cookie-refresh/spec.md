@@ -132,7 +132,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
-| YTCR-01 | P1: Optional toggle and in-app YouTube login | Tasks | In Tasks |
+| YTCR-01 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
 | YTCR-02 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
 | YTCR-03 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
 | YTCR-04 | P1: Optional toggle and in-app YouTube login | Tasks | Implementing |
@@ -146,7 +146,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | YTCR-12 | P1: Bot-check triggers a refresh without hiding the error | Tasks | In Tasks |
 | YTCR-13 | P2: Status and interval | Tasks | Implementing |
 | YTCR-14 | P2: Status and interval | Tasks | Implementing |
-| YTCR-15 | P2: Status and interval | Tasks | In Tasks |
+| YTCR-15 | P2: Status and interval | Tasks | Implementing |
 | YTCR-16 | P2: Status and interval | Tasks | Implementing |
 
 **ID format:** `YTCR-NN`
