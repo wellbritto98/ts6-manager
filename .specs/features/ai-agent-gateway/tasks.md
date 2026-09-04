@@ -408,11 +408,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] create sends only allowlisted fields
-- [ ] delete calls `channeldelete`
-- [ ] unknown extra fields are not forwarded
-- [ ] Gate check passes: quick vitest on `channel-management.service.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] create sends only allowlisted fields
+- [x] delete calls `channeldelete`
+- [x] unknown extra fields are not forwarded
+- [x] Gate check passes: quick vitest on `channel-management.service.test.ts`
+- [x] Test count: at least 4 tests pass (10 pass)
 
 **Tests**: unit
 **Gate**: quick
