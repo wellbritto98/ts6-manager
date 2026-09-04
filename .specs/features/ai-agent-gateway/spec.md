@@ -313,7 +313,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-19 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-20 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-21 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-22 | P1: Catalog operations | Tasks | Pending |
+| AIGW-22 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-23 | P1: Catalog operations | Tasks | Pending |
 | AIGW-24 | P1: Catalog operations | Tasks | Pending |
 | AIGW-25 | P1: Catalog operations | Tasks | Pending |

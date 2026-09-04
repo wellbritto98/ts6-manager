@@ -460,11 +460,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] find uses `permfind`
-- [ ] add member uses `servergroupaddclient`
-- [ ] already member can be detected for idempotent `already_in_desired_state`
-- [ ] Gate check passes: quick vitest on `permission-management.service.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] find uses `permfind`
+- [x] add member uses `servergroupaddclient`
+- [x] already member can be detected for idempotent `already_in_desired_state`
+- [x] Gate check passes: quick vitest on `permission-management.service.test.ts`
+- [x] Test count: at least 4 tests pass (11 pass)
 
 **Tests**: unit
 **Gate**: quick
