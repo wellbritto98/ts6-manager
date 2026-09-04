@@ -55,7 +55,25 @@ export function createApp(): Express {
   app.set('trust proxy', 1);
 
   app.use(helmet());
-  app.use(cors({ origin: config.frontendUrl, credentials: true }));
+  // Open WebUI's own admin UI verifies a tool server URL directly from the
+  // browser (not server-side) before it lets an admin save the connection, so
+  // its origin needs the same CORS allowance as the SPA — otherwise the
+  // preflight has no matching Access-Control-Allow-Origin and the browser
+  // blocks it, even though the backend itself is reachable and correctly
+  // authenticated. This never widens what the gateway routes accept: it only
+  // decides which origins the browser is allowed to read the response from.
+  const corsAllowedOrigins = [config.frontendUrl, config.ai.assistantPublicUrl]
+    .filter((origin): origin is string => Boolean(origin));
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin || corsAllowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(null, false);
+    },
+    credentials: true,
+  }));
   app.use(express.json({ limit: '10mb' }));
   // The IdP posts the SAMLResponse as application/x-www-form-urlencoded (ACS endpoint).
   app.use(express.urlencoded({ extended: false, limit: '1mb' }));

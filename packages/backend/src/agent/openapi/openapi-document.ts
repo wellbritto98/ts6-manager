@@ -2,8 +2,18 @@ import { AGENT_ERROR_CODES } from '../agent-error.js';
 import type { AgentToolDefinition } from '../tool-definition.js';
 import { toOpenApiInputSchema, type JsonSchema } from '../tool-input-schema.js';
 
-/** One path per tool, so `operationId` stays stable for Open WebUI imports. */
-export const AGENT_TOOL_PATH_PREFIX = '/api/agent/tools';
+/**
+ * One path per tool, so `operationId` stays stable for Open WebUI imports.
+ * Relative to the gateway mount (`/api/agent`), not an absolute path: Open
+ * WebUI's tool-server executor does not resolve the OpenAPI `servers` field
+ * per spec — it just concatenates the tool server's configured base URL with
+ * this path key verbatim. An absolute `/api/agent/tools/...` prefix here,
+ * combined with a base URL that (correctly, per the setup docs) already ends
+ * in `/api/agent`, doubled the segment and sent every tool call to a path our
+ * router doesn't own, which then fell through to the SPA's session auth and
+ * failed with an unrelated "Invalid or expired token".
+ */
+export const AGENT_TOOL_PATH_PREFIX = '/tools';
 
 /** The only security scheme in the document: the `AI_GATEWAY_TOKEN` bearer. */
 export const GATEWAY_SECURITY_SCHEME = 'gatewayBearer';
@@ -118,7 +128,7 @@ function toOperation(tool: AgentToolDefinition): OpenApiOperation {
  */
 export function buildOpenApiDocument({
   tools,
-  serverUrl = '/',
+  serverUrl = '/api/agent',
   version = '1.0.0',
 }: BuildOpenApiDocumentOptions): OpenApiDocument {
   const paths: Record<string, { post: OpenApiOperation }> = {};

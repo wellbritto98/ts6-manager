@@ -80,7 +80,7 @@ describe('GET /api/agent/openapi.json', () => {
 
     expect(response.status).toBe(200);
     expect(Object.keys(response.body.paths).every((path: string) =>
-      path.startsWith('/api/agent/tools/'))).toBe(true);
+      path.startsWith('/tools/'))).toBe(true);
   });
 });
 
