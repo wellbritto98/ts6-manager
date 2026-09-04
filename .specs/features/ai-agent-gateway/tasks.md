@@ -95,11 +95,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Flag false/unset does not require AI secrets
-- [ ] Flag true with short or reused secret exits the process in a testable helper (do not call `process.exit` without a seam)
-- [ ] Allowlist strings split on comma, trim, emails lowercased
-- [ ] Gate check passes: quick vitest on `config-ai.test.ts`
-- [ ] Test count: at least 5 tests pass
+- [x] Flag false/unset does not require AI secrets
+- [x] Flag true with short or reused secret exits the process in a testable helper (do not call `process.exit` without a seam)
+- [x] Allowlist strings split on comma, trim, emails lowercased
+- [x] Gate check passes: quick vitest on `config-ai.test.ts`
+- [x] Test count: at least 5 tests pass
 
 **Tests**: unit
 **Gate**: quick

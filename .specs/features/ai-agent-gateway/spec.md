@@ -292,9 +292,9 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
-| AIGW-01 | P1: AI stays off until enabled | Tasks | Pending |
-| AIGW-02 | P1: AI stays off until enabled | Tasks | Pending |
-| AIGW-03 | P1: AI stays off until enabled | Tasks | Pending |
+| AIGW-01 | P1: AI stays off until enabled | Tasks | Implementing |
+| AIGW-02 | P1: AI stays off until enabled | Tasks | Implementing |
+| AIGW-03 | P1: AI stays off until enabled | Tasks | Implementing |
 | AIGW-04 | P1: Dual authentication | Tasks | Pending |
 | AIGW-05 | P1: Dual authentication | Tasks | Pending |
 | AIGW-06 | P1: Dual authentication | Tasks | Pending |

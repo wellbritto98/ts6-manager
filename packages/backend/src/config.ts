@@ -25,6 +25,93 @@ function requireSecret(name: 'JWT_SECRET' | 'ENCRYPTION_KEY'): string {
   return value;
 }
 
+export interface AiConfig {
+  enabled: boolean;
+  gatewayToken: string | undefined;
+  identityJwtSecret: string | undefined;
+  destructiveToolsEnabled: boolean;
+  allowedUserIds: string[];
+  allowedEmails: string[];
+  assistantPublicUrl: string | undefined;
+}
+
+type AiEnvironment = Pick<
+  NodeJS.ProcessEnv,
+  | 'AI_AGENT_ENABLED'
+  | 'AI_GATEWAY_TOKEN'
+  | 'AI_IDENTITY_JWT_SECRET'
+  | 'AI_DESTRUCTIVE_TOOLS_ENABLED'
+  | 'AI_ALLOWED_OPENWEBUI_USER_IDS'
+  | 'AI_ALLOWED_OPENWEBUI_EMAILS'
+  | 'AI_ASSISTANT_PUBLIC_URL'
+  | 'JWT_SECRET'
+  | 'ENCRYPTION_KEY'
+>;
+
+function parseAllowlist(value: string | undefined, lowercase = false): string[] {
+  if (!value) return [];
+
+  return value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => lowercase ? entry.toLowerCase() : entry);
+}
+
+function requireAiSecret(name: 'AI_GATEWAY_TOKEN' | 'AI_IDENTITY_JWT_SECRET', env: AiEnvironment): string {
+  const value = env[name];
+  if (!value || value.trim().length === 0) {
+    throw new Error(`${name} is not set`);
+  }
+  if (value.length < 32) {
+    throw new Error(`${name} must be at least 32 characters`);
+  }
+  if (value === env.JWT_SECRET || value === env.ENCRYPTION_KEY) {
+    throw new Error(`${name} must differ from JWT_SECRET and ENCRYPTION_KEY`);
+  }
+  return value;
+}
+
+export function loadAiConfig(env: AiEnvironment): AiConfig {
+  const enabled = env.AI_AGENT_ENABLED === 'true';
+  if (!enabled) {
+    return {
+      enabled,
+      gatewayToken: undefined,
+      identityJwtSecret: undefined,
+      destructiveToolsEnabled: env.AI_DESTRUCTIVE_TOOLS_ENABLED === 'true',
+      allowedUserIds: parseAllowlist(env.AI_ALLOWED_OPENWEBUI_USER_IDS),
+      allowedEmails: parseAllowlist(env.AI_ALLOWED_OPENWEBUI_EMAILS, true),
+      assistantPublicUrl: env.AI_ASSISTANT_PUBLIC_URL,
+    };
+  }
+
+  const gatewayToken = requireAiSecret('AI_GATEWAY_TOKEN', env);
+  const identityJwtSecret = requireAiSecret('AI_IDENTITY_JWT_SECRET', env);
+  if (gatewayToken === identityJwtSecret) {
+    throw new Error('AI_GATEWAY_TOKEN and AI_IDENTITY_JWT_SECRET must differ');
+  }
+
+  return {
+    enabled,
+    gatewayToken,
+    identityJwtSecret,
+    destructiveToolsEnabled: env.AI_DESTRUCTIVE_TOOLS_ENABLED === 'true',
+    allowedUserIds: parseAllowlist(env.AI_ALLOWED_OPENWEBUI_USER_IDS),
+    allowedEmails: parseAllowlist(env.AI_ALLOWED_OPENWEBUI_EMAILS, true),
+    assistantPublicUrl: env.AI_ASSISTANT_PUBLIC_URL,
+  };
+}
+
+function loadRequiredAiConfig(env: AiEnvironment): AiConfig {
+  try {
+    return loadAiConfig(env);
+  } catch (error) {
+    console.error(`[FATAL] ${(error as Error).message}`);
+    process.exit(1);
+  }
+}
+
 export const config = {
   port: parseInt(process.env.PORT || '3001', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -35,4 +122,5 @@ export const config = {
   jwtRefreshExpiry: process.env.JWT_REFRESH_EXPIRY || '7d',
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
   tsAllowSelfSigned: process.env.TS_ALLOW_SELF_SIGNED === 'true' || process.env.TS_ALLOW_SELF_SIGNED === '1',
+  ai: loadRequiredAiConfig(process.env),
 };
