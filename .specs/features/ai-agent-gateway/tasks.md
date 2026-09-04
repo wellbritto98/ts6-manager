@@ -823,10 +823,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Present disallowed Origin is HTTP 403
-- [ ] Absent Origin proceeds to auth
-- [ ] Gate check passes: quick vitest on `mcp.routes.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] Present disallowed Origin is HTTP 403
+- [x] Absent Origin proceeds to auth
+- [x] Gate check passes: quick vitest on `mcp.routes.test.ts`
+- [x] Test count: at least 3 tests pass (5 pass)
 
 **Tests**: unit
 **Gate**: quick

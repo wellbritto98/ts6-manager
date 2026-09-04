@@ -8,6 +8,7 @@ import type { VoiceBotManager } from '../voice/voice-bot-manager.js';
 import type { AgentAuthentication } from './agent-auth.js';
 import type { AgentContext } from './agent-context.js';
 import { createAgentRegistry } from './create-registry.js';
+import { createMcpRoutes } from './mcp/mcp.routes.js';
 import { createOpenApiRoutes, type AgentRouteDeps } from './openapi/openapi.routes.js';
 
 /** Single mount point shared by every agent adapter. */
@@ -63,6 +64,7 @@ export function createAgentRouter(deps: AgentRouteDeps): Router {
     message: { error: 'Too many requests, please slow down' },
   }));
   router.use(createOpenApiRoutes(deps));
+  router.use(createMcpRoutes(deps));
 
   return router;
 }
