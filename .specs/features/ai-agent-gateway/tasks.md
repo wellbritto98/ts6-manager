@@ -303,11 +303,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Keys `apiKey`, `password`, `token`, `cookie`, `secret`, `authorization`, `certificate` (any case) become `[REDACTED]`
-- [ ] Nested objects are walked
-- [ ] Strings longer than 8000 are truncated
-- [ ] Gate check passes: quick vitest on `sanitize.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] Keys `apiKey`, `password`, `token`, `cookie`, `secret`, `authorization`, `certificate` (any case) become `[REDACTED]`
+- [x] Nested objects are walked
+- [x] Strings longer than 8000 are truncated
+- [x] Gate check passes: quick vitest on `sanitize.test.ts`
+- [x] Test count: at least 4 tests pass
 
 **Tests**: unit
 **Gate**: quick
