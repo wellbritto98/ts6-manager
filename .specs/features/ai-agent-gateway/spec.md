@@ -335,7 +335,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-41 | P1: MCP adapter | Tasks | Pending |
 | AIGW-42 | P1: Open WebUI overlay | Tasks | Pending |
 | AIGW-43 | P1: Open WebUI overlay | Tasks | Pending |
-| AIGW-44 | P1: Open WebUI overlay | Tasks | Pending |
+| AIGW-44 | P1: Open WebUI overlay | Tasks | Implementing |
 | AIGW-45 | P1: Admin link in the existing SPA | Tasks | Pending |
 | AIGW-46 | P1: Admin link in the existing SPA | Tasks | Pending |
 | AIGW-47 | P1: Admin link in the existing SPA | Tasks | Pending |

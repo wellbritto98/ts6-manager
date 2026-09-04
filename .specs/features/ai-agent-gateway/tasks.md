@@ -197,10 +197,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] `.env.example` lists `AI_AGENT_ENABLED=false`, gateway token, identity secret, allowlists, assistant URL, OpenRouter, Open WebUI keys, `VITE_AI_ASSISTANT_URL`
-- [ ] Comments state `AI_IDENTITY_JWT_SECRET` is the same value Open WebUI calls `FORWARD_USER_INFO_HEADER_JWT_SECRET`
-- [ ] Gate check passes: build
-- [ ] Test count: unchanged
+- [x] `.env.example` lists `AI_AGENT_ENABLED=false`, gateway token, identity secret, allowlists, assistant URL, OpenRouter, Open WebUI keys, `VITE_AI_ASSISTANT_URL`
+- [x] Comments state `AI_IDENTITY_JWT_SECRET` is the same value Open WebUI calls `FORWARD_USER_INFO_HEADER_JWT_SECRET`
+- [x] Gate check passes: build
+- [x] Test count: unchanged
 
 **Tests**: none
 **Gate**: build
