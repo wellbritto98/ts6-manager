@@ -329,11 +329,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Success and failure rows are written with requestId, actor, toolName, risk, sanitizedArguments, status
-- [ ] Chat and message ids stored when provided
-- [ ] `recordAudit` catching Prisma errors does not throw to the executor
-- [ ] Gate check passes: quick vitest on `agent-audit.service.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] Success and failure rows are written with requestId, actor, toolName, risk, sanitizedArguments, status
+- [x] Chat and message ids stored when provided
+- [x] `recordAudit` catching Prisma errors does not throw to the executor
+- [x] Gate check passes: quick vitest on `agent-audit.service.test.ts`
+- [x] Test count: at least 3 tests pass
 
 **Tests**: unit
 **Gate**: quick
