@@ -306,10 +306,10 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-12 | P1: Single tool registry | Tasks | Pending |
 | AIGW-13 | P1: Single tool registry | Tasks | Pending |
 | AIGW-14 | P1: Single tool registry | Tasks | Pending |
-| AIGW-15 | P1: Explicit server targeting | Tasks | Pending |
-| AIGW-16 | P1: Explicit server targeting | Tasks | Pending |
-| AIGW-17 | P1: Explicit server targeting | Tasks | Pending |
-| AIGW-18 | P1: Catalog operations | Tasks | Pending |
+| AIGW-15 | P1: Explicit server targeting | Tasks | Implementing |
+| AIGW-16 | P1: Explicit server targeting | Tasks | Implementing |
+| AIGW-17 | P1: Explicit server targeting | Tasks | Implementing |
+| AIGW-18 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-19 | P1: Catalog operations | Tasks | Pending |
 | AIGW-20 | P1: Catalog operations | Tasks | Pending |
 | AIGW-21 | P1: Catalog operations | Tasks | Pending |

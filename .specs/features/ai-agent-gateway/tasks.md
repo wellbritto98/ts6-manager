@@ -382,11 +382,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] list omits apiKey/sshPassword
-- [ ] missing/disabled config throws `SERVER_NOT_FOUND` without WebQuery
-- [ ] logs redact secret-like values
-- [ ] Gate check passes: quick vitest on `server-management.service.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] list omits apiKey/sshPassword
+- [x] missing/disabled config throws `SERVER_NOT_FOUND` without WebQuery
+- [x] logs redact secret-like values
+- [x] Gate check passes: quick vitest on `server-management.service.test.ts`
+- [x] Test count: at least 4 tests pass (13 pass)
 
 **Tests**: unit
 **Gate**: quick
