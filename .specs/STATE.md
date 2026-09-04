@@ -10,13 +10,21 @@
 - **Date**: 2026-09-03
 - **Status**: active
 
+### AD-002
+- **Decision**: Administrative LLM tools run only through an in-process Agent Tool Gateway (single Zod registry; OpenAPI and MCP are adapters). Open WebUI is an optional Compose overlay and never talks to WebQuery, SSH, Prisma, or in-process managers.
+- **Reason**: The model must not pick TeamSpeak commands or hold TS6 secrets; REST and tools must share one service layer.
+- **Trade-off**: Extra gateway surface and an optional Open WebUI container; Open WebUI 0.11.3 cannot force per-risk tool approval, so destructive tools stay off by default.
+- **Scope**: packages/backend `agent/` + `services/`, packages/frontend nav link, docker-compose.ai.yml, docs/ai
+- **Date**: 2026-09-04
+- **Status**: active
+
 ## Handoff
 
-- **Feature**: youtube-cookie-refresh / `.specs/features/youtube-cookie-refresh`
-- **Phase / Task**: Execute T7 complete, awaiting Verifier
-- **Completed**: T1–T7
+- **Feature**: ai-agent-gateway / `.specs/features/ai-agent-gateway`
+- **Phase / Task**: Specify/Design/Tasks written; Execute not started
+- **Completed**: none
 - **In-progress** (file:line): none
-- **Next step**: Verifier writes validation.md; then validate_state.py
-- **Blockers**: no in-IDE browser tools; live Settings UI not exercised
-- **Uncommitted files**: T7 UI (commit pending)
-- **Branch**: main
+- **Next step**: Create branch feat/ai-agent-gateway, commit specs, dispatch Phase 1 worker
+- **Blockers**: none
+- **Uncommitted files**: `.specs/features/ai-agent-gateway/*`, STATE.md
+- **Branch**: main (will move to feat/ai-agent-gateway)
