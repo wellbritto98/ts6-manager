@@ -184,7 +184,7 @@ Get started quickly with pre-built flow templates. Covers common use cases like 
 ### AI Assistant (optional)
 - Manage servers, channels, clients, groups, permissions and music bots by chatting with an LLM through [Open WebUI](https://github.com/open-webui/open-webui)
 - Disabled by default: with `AI_AGENT_ENABLED=false` the SPA behaves exactly as it does today and no AI image is pulled
-- 39 tools behind a fixed registry — no generic WebQuery, shell or SQL passthrough. The eight destructive tools stay hidden until `AI_DESTRUCTIVE_TOOLS_ENABLED=true`
+- 95 tools behind a fixed registry — no generic WebQuery, shell or SQL passthrough. The 22 destructive tools stay hidden until `AI_DESTRUCTIVE_TOOLS_ENABLED=true`
 - Dual authentication (service bearer plus a signed Open WebUI identity JWT restricted to admins) and a sanitized audit log of every call
 - Admins get an **AI Assistant** sidebar link when `AI_ASSISTANT_PUBLIC_URL` is set
 - Setup walkthrough: [docs/ai/openwebui-setup.md](docs/ai/openwebui-setup.md)

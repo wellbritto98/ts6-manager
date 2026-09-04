@@ -1,5 +1,6 @@
 import type { PrismaClient } from '../../generated/prisma/index.js';
 import { AgentError } from '../agent/agent-error.js';
+import { TSApiError } from '../middleware/error-handler.js';
 
 /** The slice of `WebQueryClient` the shared services depend on. */
 export interface WebQueryExecutor {
@@ -52,6 +53,27 @@ export function getWebQuery(pool: WebQueryPool, serverConfigId: number): WebQuer
 }
 
 /**
+ * Look up an explicitly named server config without requiring a WebQuery
+ * client — for the one tool category (channel files) that reaches TeamSpeak
+ * over SSH instead. `requireEnabledServer` below layers the WebQuery check
+ * on top of this for every other category.
+ */
+export async function requireServerRecord(
+  prisma: PrismaClient,
+  serverConfigId: unknown,
+): Promise<PublicServerConfig> {
+  const id = requirePositiveInt(serverConfigId, 'serverConfigId');
+  const server = await prisma.tsServerConfig.findFirst({
+    where: { id, enabled: true },
+    select: PUBLIC_SERVER_SELECT,
+  });
+  if (!server) {
+    throw new AgentError('SERVER_NOT_FOUND', `Server config ${id} does not exist or is disabled`);
+  }
+  return server;
+}
+
+/**
  * Resolve an explicitly named server config to its WebQuery client. A missing
  * or disabled config fails before any WebQuery call is made, and the first
  * configured server is never used as a fallback.
@@ -61,15 +83,8 @@ export async function requireEnabledServer(
   pool: WebQueryPool,
   serverConfigId: unknown,
 ): Promise<{ server: PublicServerConfig; client: WebQueryExecutor }> {
-  const id = requirePositiveInt(serverConfigId, 'serverConfigId');
-  const server = await prisma.tsServerConfig.findFirst({
-    where: { id, enabled: true },
-    select: PUBLIC_SERVER_SELECT,
-  });
-  if (!server) {
-    throw new AgentError('SERVER_NOT_FOUND', `Server config ${id} does not exist or is disabled`);
-  }
-  return { server, client: getWebQuery(pool, id) };
+  const server = await requireServerRecord(prisma, serverConfigId);
+  return { server, client: getWebQuery(pool, server.id) };
 }
 
 /** Resolve both halves of a virtual-server target in one step. */
@@ -81,6 +96,22 @@ export async function resolveServerTarget(
 ): Promise<{ server: PublicServerConfig; client: WebQueryExecutor; sid: number }> {
   const { server, client } = await requireEnabledServer(prisma, pool, serverConfigId);
   return { server, client, sid: requireVirtualServerId(virtualServerId) };
+}
+
+/**
+ * WebQuery answers an empty list with TS error 1281 (database_empty_result)
+ * instead of an empty body — verified live against `banlist`, `complainlist`
+ * and `messagelist`. Every "list" style call in the agent tool layer wraps
+ * itself in this so "nothing to list" reads as an empty array, not a
+ * TEAMSPEAK_ERROR the model has to explain away.
+ */
+export async function listOrEmpty<T>(fn: () => Promise<T[]>): Promise<T[]> {
+  try {
+    return await fn();
+  } catch (err) {
+    if (err instanceof TSApiError && err.code === 1281) return [];
+    throw err;
+  }
 }
 
 /** WebQuery bodies are untyped JSON; narrow them without spreading `any`. */

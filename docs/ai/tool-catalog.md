@@ -1,6 +1,6 @@
 # AI Agent Gateway — Tool Catalog
 
-39 tools in one registry, shared by the OpenAPI and MCP adapters. 31 are exposed by default; the 8 marked **destructive** stay hidden until `AI_DESTRUCTIVE_TOOLS_ENABLED=true`.
+95 tools in one registry, shared by the OpenAPI and MCP adapters. 73 are exposed by default; the 22 marked **destructive** stay hidden until `AI_DESTRUCTIVE_TOOLS_ENABLED=true`.
 
 Risk levels: **read** never changes state, **write** changes state reversibly, **destructive** removes something or cuts a session.
 
@@ -47,6 +47,108 @@ Risk levels: **read** never changes state, **write** changes state reversibly, *
 | `remove_client_from_server_group` | destructive | Revokes every permission the group granted |
 | `set_channel_permission` | write | One permission on one channel |
 | `remove_channel_permission` | destructive | Restores the inherited value |
+| `list_server_group_permissions` | read | Every permission assigned directly to one server group |
+| `set_server_group_permission` | write | One permission on one server group |
+| `remove_server_group_permission` | destructive | Restores the inherited value |
+| `copy_server_group_permissions` | write | Copies every permission from one group onto another (or a new group) |
+| `create_server_group` | write | `type` defaults to 1 (regular, assignable) |
+| `rename_server_group` | write | |
+| `delete_server_group` | destructive | Clients holding it lose every permission it granted |
+| `list_channel_group_permissions` | read | Every permission assigned directly to one channel group |
+| `set_channel_group_permission` | write | One permission on one channel group |
+| `remove_channel_group_permission` | destructive | Restores the inherited value |
+| `create_channel_group` | write | `type` defaults to 1 (regular, assignable) |
+| `rename_channel_group` | write | |
+| `delete_channel_group` | destructive | |
+| `assign_client_channel_group` | write | Scoped to one channel (`cgid` + `cid` + `cldbid`) |
+| `list_channel_group_members` | read | |
+
+## Virtual server
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `edit_virtual_server` | write | Name, messages, banner/button branding, default groups, limits, logging flags. Never sets the join password |
+
+## Bans
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `list_bans` | read | IP addresses are never included |
+| `add_ban` | destructive | At least one of `ip`, `name` or `uid` is required |
+| `remove_ban` | destructive | |
+| `remove_all_bans` | destructive | Every ban on the virtual server, cannot be undone |
+
+## Channel files
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `list_channel_files` | read | Requires SSH access to be configured for the server |
+| `create_channel_directory` | write | |
+| `delete_channel_file` | destructive | |
+
+## Complaints
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `list_complaints` | read | Optionally filtered by target client database id |
+| `add_complaint` | write | |
+| `delete_complaint` | destructive | Identified by target + filer client database ids |
+
+## Offline messages
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `list_messages` | read | Metadata only |
+| `get_message` | read | Full subject and body |
+| `send_message` | write | Addressed by the recipient's TeamSpeak unique id (`cluid`) |
+| `delete_message` | destructive | |
+
+## Music library, playlists and radio
+
+Distinct from the **Music bots** section below: this is the song library, playlists and radio-station presets, not a live bot's playback state. Playlists are not scoped to a TeamSpeak server (`playlistId`/`songId` only).
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `search_youtube` | read | |
+| `get_youtube_info` | read | Metadata for a video or playlist URL |
+| `list_songs` | read | One server's music library |
+| `delete_song` | destructive | Also removes the file from disk |
+| `download_song` | write | Reuses an existing song for the same URL; large videos can take a while |
+| `list_music_requests` | read | Most recent 100 |
+| `list_playlists` | read | Optionally filtered by `musicBotId` |
+| `get_playlist` | read | With its ordered songs |
+| `create_playlist` | write | |
+| `edit_playlist` | write | Rename or reassign `musicBotId` |
+| `delete_playlist` | destructive | The songs themselves stay in the library |
+| `add_song_to_playlist` | write | |
+| `remove_song_from_playlist` | destructive | |
+| `reorder_playlist` | write | `songIds` must list every song in the playlist |
+| `list_radio_presets` | read | Built-in presets, not server-specific |
+| `list_radio_stations` | read | One server's saved stations |
+| `add_radio_station` | write | The stream URL passes the SSRF validator |
+| `delete_radio_station` | destructive | |
+
+## Instance
+
+`serverConfigId` only — no `virtualServerId`. These are instance-wide (`sid=0`), not per virtual server. `instanceedit` is deliberately not wrapped: it would change settings shared by every virtual server on the instance, a larger blast radius than any other write tool here.
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `get_instance_info` | read | Default groups, flood limits, etc. |
+| `get_host_info` | read | Host machine metrics |
+| `get_version` | read | TeamSpeak server version and platform |
+
+## Discord bridge (read-only)
+
+No `serverConfigId`/`virtualServerId`: the bridge is one process-wide connection. Every tool degrades to an empty/disabled result when the bridge hasn't started, instead of failing. The bot token is never read or set here.
+
+| Tool | Risk | Notes |
+| ---- | ---- | ----- |
+| `get_discord_status` | read | |
+| `list_discord_guilds` | read | |
+| `list_discord_channels` | read | |
+| `list_discord_roles` | read | |
+| `list_discord_ts_channels` | read | TeamSpeak channels the bridge watches |
 
 ## Music bots
 
@@ -81,11 +183,12 @@ Risk levels: **read** never changes state, **write** changes state reversibly, *
 
 ## Destructive set
 
-`delete_channel`, `kick_client`, `ban_client`, `remove_client_from_server_group`, `remove_channel_permission`, `stop_music_bot`, `clear_music_queue`, `disable_bot_flow`.
+`delete_channel`, `kick_client`, `ban_client`, `remove_client_from_server_group`, `remove_channel_permission`, `stop_music_bot`, `clear_music_queue`, `disable_bot_flow`, `remove_server_group_permission`, `delete_server_group`, `remove_channel_group_permission`, `delete_channel_group`, `add_ban`, `remove_ban`, `remove_all_bans`, `delete_channel_file`, `delete_complaint`, `delete_message`, `delete_song`, `delete_playlist`, `remove_song_from_playlist`, `delete_radio_station`.
 
 While the flag is false these are not listed by either adapter, and calling one by name returns `TOOL_NOT_FOUND`, the same answer as an unknown tool, so their existence is not confirmed.
 
 ## Common arguments
 
-- `serverConfigId` and `virtualServerId` scope almost every tool. Resolve them with `list_servers`; never guess.
+- `serverConfigId` and `virtualServerId` scope almost every tool. Resolve them with `list_servers`; never guess. Exceptions: the **Instance** tools take `serverConfigId` only (instance-wide, `sid=0`); the **Discord bridge** tools take neither (one process-wide connection); the **playlist** tools take neither (playlists are not scoped to a TeamSpeak server).
 - Mutating tools accept an optional `idempotencyKey` (max 128 characters). Reusing one replays the stored result instead of repeating the action.
+- Any list-style tool backed by WebQuery reads TeamSpeak error 1281 (`database_empty_result`) as an empty list, not a failure — TeamSpeak returns that error instead of an empty body when there is nothing to list.

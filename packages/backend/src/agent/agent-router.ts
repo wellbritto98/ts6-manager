@@ -3,6 +3,7 @@ import rateLimit from 'express-rate-limit';
 import type { PrismaClient } from '../../generated/prisma/index.js';
 import type { BotEngine } from '../bot-engine/engine.js';
 import { config } from '../config.js';
+import type { DiscordBridge } from '../discord/discord-bridge.js';
 import type { ConnectionPool } from '../ts-client/connection-pool.js';
 import type { VoiceBotManager } from '../voice/voice-bot-manager.js';
 import type { AgentAuthentication } from './agent-auth.js';
@@ -19,6 +20,7 @@ interface AgentLocals {
   connectionPool: ConnectionPool;
   voiceBotManager: VoiceBotManager;
   botEngine: BotEngine;
+  discordBridge?: DiscordBridge;
 }
 
 function contextFromAppLocals(
@@ -37,6 +39,7 @@ function contextFromAppLocals(
     connectionPool: locals.connectionPool,
     voiceBotManager: locals.voiceBotManager,
     botEngine: locals.botEngine,
+    discordBridge: locals.discordBridge,
   };
 }
 

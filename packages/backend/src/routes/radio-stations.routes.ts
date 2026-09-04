@@ -2,31 +2,11 @@ import { Router, Request, Response } from 'express';
 import { requireRole } from '../middleware/rbac.js';
 import { AppError } from '../middleware/error-handler.js';
 import { validateUrl } from '../utils/url-validator.js';
-import type { RadioPreset } from '@ts6/common';
+import { RADIO_PRESETS } from '../services/radio-station-management.service.js';
 
 export const radioStationRoutes: Router = Router({ mergeParams: true });
 
 radioStationRoutes.use(requireRole('admin'));
-
-// Built-in radio station presets
-const RADIO_PRESETS: RadioPreset[] = [
-  { name: '1LIVE', url: 'https://wdr-1live-live.icecast.wdr.de/wdr/1live/live/mp3/128/stream.mp3', genre: 'Pop/Rock' },
-  { name: 'WDR 2', url: 'https://wdr-wdr2-rheinland.icecast.wdr.de/wdr/wdr2/rheinland/mp3/128/stream.mp3', genre: 'Pop' },
-  { name: 'SWR3', url: 'https://liveradio.swr.de/sw282p3/swr3/play.mp3', genre: 'Pop' },
-  { name: 'BigFM', url: 'https://streams.bigfm.de/bigfm-deutschland-128-mp3', genre: 'Pop/Dance' },
-  { name: 'Technobase.FM', url: 'https://listen.technobase.fm/tunein-mp3-pls', genre: 'Techno/Dance' },
-  { name: 'HardBase.FM', url: 'https://listen.hardbase.fm/tunein-mp3-pls', genre: 'Hardstyle' },
-  { name: 'HouseTime.FM', url: 'https://listen.housetime.fm/tunein-mp3-pls', genre: 'House' },
-  { name: 'TranceBase.FM', url: 'https://listen.trancebase.fm/tunein-mp3-pls', genre: 'Trance' },
-  { name: 'Lofi Hip Hop', url: 'https://play.streamafrica.net/lofiradio', genre: 'Lofi/Chill' },
-  { name: 'BBC Radio 1', url: 'http://stream.live.vc.bbcmedia.co.uk/bbc_radio_one', genre: 'Pop/Chart' },
-  { name: 'Classic FM', url: 'https://media-ice.musicradio.com/ClassicFMMP3', genre: 'Classical' },
-  { name: 'Absolute Radio', url: 'https://ais-sa5.cdnstream1.com/b75154_128mp3', genre: 'Rock' },
-  { name: 'Jazz Radio', url: 'http://jazz-wr04.ice.infomaniak.ch/jazz-wr04-128.mp3', genre: 'Jazz' },
-  { name: 'Sunshine Live', url: 'https://stream.sunshine-live.de/live/mp3-192/stream.sunshine-live.de/', genre: 'Electronic' },
-  { name: 'Radio BOB!', url: 'https://streams.radiobob.de/bob-live/mp3-192/mediaplayer', genre: 'Rock' },
-  { name: 'Deutschlandfunk', url: 'https://st01.dlf.de/dlf/01/128/mp3/stream.mp3', genre: 'News/Culture' },
-];
 
 // GET /presets — Built-in radio station presets
 radioStationRoutes.get('/presets', (_req: Request, res: Response) => {

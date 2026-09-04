@@ -39,6 +39,7 @@ export interface ToolContextOptions {
   prisma?: Record<string, unknown>;
   voiceBotManager?: unknown;
   botEngine?: unknown;
+  discordBridge?: unknown;
 }
 
 export function createToolContext(options: ToolContextOptions = {}): AgentContext {
@@ -67,6 +68,7 @@ export function createToolContext(options: ToolContextOptions = {}): AgentContex
     connectionPool,
     voiceBotManager: options.voiceBotManager as VoiceBotManager,
     botEngine: options.botEngine as BotEngine,
+    discordBridge: options.discordBridge as AgentContext['discordBridge'],
   };
 }
 
