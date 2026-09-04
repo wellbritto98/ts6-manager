@@ -486,11 +486,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] play_media_url path calls `validateUrl` (via music-ops) and does not call download when invalid
-- [ ] missing bot throws `BOT_NOT_FOUND`
-- [ ] volume is clamped 0–100
-- [ ] Gate check passes: quick vitest on `music-bot-management.service.test.ts`
-- [ ] Test count: at least 5 tests pass
+- [x] play_media_url path calls `validateUrl` (via music-ops) and does not call download when invalid
+- [x] missing bot throws `BOT_NOT_FOUND` (as `AppError` 404, mapped by the tool layer)
+- [x] volume is clamped 0–100
+- [x] Gate check passes: quick vitest on `music-bot-management.service.test.ts`
+- [x] Test count: at least 5 tests pass (19 pass)
 
 **Tests**: unit
 **Gate**: quick
