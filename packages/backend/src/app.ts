@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { config } from './config.js';
+import { defaultAgentRouteDeps, mountAgentGateway } from './agent/agent-router.js';
 import { errorHandler } from './middleware/error-handler.js';
 import { authMiddleware } from './middleware/auth.js';
 import { authRoutes } from './routes/auth.routes.js';
@@ -110,6 +111,10 @@ export function createApp(): Express {
 
   // Public widget routes (unauthenticated — embeddable on external sites)
   app.use('/api/widget', widgetPublicRoutes);
+
+  // AI gateway (mounted before session auth: Open WebUI presents the service
+  // bearer plus its own identity JWT, never a user session cookie)
+  mountAgentGateway(app, config.ai.enabled ? defaultAgentRouteDeps() : null);
 
   // Protected routes
   app.use('/api', authMiddleware);

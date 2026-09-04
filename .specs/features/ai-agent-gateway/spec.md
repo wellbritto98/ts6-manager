@@ -328,7 +328,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-34 | P1: Idempotent retries | Tasks | Implementing |
 | AIGW-35 | P1: Idempotent retries | Tasks | Implementing |
 | AIGW-36 | P1: OpenAPI adapter | Tasks | Implementing |
-| AIGW-37 | P1: OpenAPI adapter | Tasks | Pending |
+| AIGW-37 | P1: OpenAPI adapter | Tasks | Implementing |
 | AIGW-38 | P1: OpenAPI adapter | Tasks | Implementing |
 | AIGW-39 | P1: MCP adapter | Tasks | Pending |
 | AIGW-40 | P1: MCP adapter | Tasks | Pending |

@@ -772,11 +772,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Disabled flag: GET `/api/agent/openapi.json` is 404
-- [ ] Enabled without bearer: 401
-- [ ] Enabled with bearer+JWT executes a read tool
-- [ ] Gate check passes: quick vitest on `openapi.routes.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] Disabled flag: GET `/api/agent/openapi.json` is 404
+- [x] Enabled without bearer: 401
+- [x] Enabled with bearer+JWT executes a read tool
+- [x] Gate check passes: quick vitest on `openapi.routes.test.ts`
+- [x] Test count: at least 4 tests pass (9 pass)
 
 **Tests**: unit
 **Gate**: quick
