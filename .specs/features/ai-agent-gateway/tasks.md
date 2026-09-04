@@ -1027,10 +1027,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] README mentions optional Open WebUI overlay and that the SPA is unchanged without the flag
-- [ ] Links to `docs/ai/openwebui-setup.md`
-- [ ] Gate check passes: build
-- [ ] Test count: unchanged
+- [x] README mentions optional Open WebUI overlay and that the SPA is unchanged without the flag
+- [x] Links to `docs/ai/openwebui-setup.md`
+- [x] Gate check passes: build (backend + frontend `tsc --noEmit`, lint, merge-i18n, 65 files / 532 tests pass)
+- [x] Test count: unchanged
 
 **Tests**: none
 **Gate**: build

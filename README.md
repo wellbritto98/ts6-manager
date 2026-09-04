@@ -181,6 +181,14 @@ Get started quickly with pre-built flow templates. Covers common use cases like 
 - Connection journal and IP ban management
 - Admin-only settings panel
 
+### AI Assistant (optional)
+- Manage servers, channels, clients, groups, permissions and music bots by chatting with an LLM through [Open WebUI](https://github.com/open-webui/open-webui)
+- Disabled by default: with `AI_AGENT_ENABLED=false` the SPA behaves exactly as it does today and no AI image is pulled
+- 39 tools behind a fixed registry — no generic WebQuery, shell or SQL passthrough. The eight destructive tools stay hidden until `AI_DESTRUCTIVE_TOOLS_ENABLED=true`
+- Dual authentication (service bearer plus a signed Open WebUI identity JWT restricted to admins) and a sanitized audit log of every call
+- Admins get an **AI Assistant** sidebar link when `AI_ASSISTANT_PUBLIC_URL` is set
+- Setup walkthrough: [docs/ai/openwebui-setup.md](docs/ai/openwebui-setup.md)
+
 ## Architecture
 
 ```
@@ -270,6 +278,17 @@ docker compose -f docker-compose.hub.yml up -d
 
 The Hub images listen on different internal ports than the locally built
 ones — never mix containers from both compose files in the same stack.
+
+### Optional AI Assistant overlay
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.ai.yml up -d
+```
+
+The overlay merges with the standard compose file and adds one Open WebUI
+container on port 3002. Skip it and the stack is unchanged: the AI gateway
+stays off, and the SPA works exactly the same with the assistant disabled.
+See [docs/ai/openwebui-setup.md](docs/ai/openwebui-setup.md).
 
 ### Coolify / Reverse Proxy
 
