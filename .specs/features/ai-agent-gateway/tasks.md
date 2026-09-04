@@ -848,10 +848,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] `list_servers` through both adapters matches action `servers_listed`
-- [ ] Invalid extra field through both adapters matches `INVALID_INPUT`
-- [ ] Gate check passes: quick vitest on `adapter-equivalence.test.ts`
-- [ ] Test count: at least 2 tests pass
+- [x] `list_servers` through both adapters matches action `servers_listed`
+- [x] Invalid extra field through both adapters matches `INVALID_INPUT`
+- [x] Gate check passes: quick vitest on `adapter-equivalence.test.ts`
+- [x] Test count: at least 2 tests pass (3 pass)
 
 **Tests**: unit
 **Gate**: quick
