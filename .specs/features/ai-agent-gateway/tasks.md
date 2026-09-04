@@ -1002,10 +1002,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] File exists with examples for channels, clients, groups, permissions, music
-- [ ] Instructs not to invent WebQuery commands
-- [ ] Gate check passes: build
-- [ ] Test count: unchanged
+- [x] File exists with examples for channels, clients, groups, permissions, music
+- [x] Instructs not to invent WebQuery commands
+- [x] Gate check passes: build (`tsc --noEmit`)
+- [x] Test count: unchanged
 
 **Tests**: none
 **Gate**: build
