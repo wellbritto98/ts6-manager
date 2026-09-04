@@ -9,12 +9,23 @@ function exposedNames(destructiveToolsEnabled: boolean): string[] {
 }
 
 describe('createAgentRegistry', () => {
-  it('never exposes run_bot_flow or a generic command tool', () => {
-    const names = exposedNames(true);
+  it('never exposes the spec-forbidden generic command names', () => {
+    expect([...FORBIDDEN_TOOL_NAMES]).toEqual([
+      'execute_webquery',
+      'execute_command',
+      'run_teamspeak_command',
+      'raw_api_request',
+      'execute_sql',
+      'run_bot_flow',
+    ]);
 
-    for (const forbidden of FORBIDDEN_TOOL_NAMES) {
-      expect(names).not.toContain(forbidden);
-    }
+    const names = exposedNames(true);
+    expect(names).not.toContain('execute_webquery');
+    expect(names).not.toContain('execute_command');
+    expect(names).not.toContain('run_teamspeak_command');
+    expect(names).not.toContain('raw_api_request');
+    expect(names).not.toContain('execute_sql');
+    expect(names).not.toContain('run_bot_flow');
   });
 
   it('omits the eight destructive tools while the flag is false', () => {

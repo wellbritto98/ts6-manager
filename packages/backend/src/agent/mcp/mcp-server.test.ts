@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { createAgentRegistry } from '../create-registry.js';
-import { FORBIDDEN_TOOL_NAMES } from '../tool-registry.js';
 import { createToolContext } from '../tools/tool-fakes.js';
 import { buildMcpToolRegistrations, createTs6McpServer, type McpServerDeps } from './mcp-server.js';
 
@@ -24,9 +23,12 @@ describe('createTs6McpServer', () => {
   it('never registers run_bot_flow, execute_sql or another generic command name', () => {
     const names = buildMcpToolRegistrations(createDeps(true)).map((registration) => registration.name);
 
-    for (const forbidden of FORBIDDEN_TOOL_NAMES) {
-      expect(names).not.toContain(forbidden);
-    }
+    expect(names).not.toContain('execute_webquery');
+    expect(names).not.toContain('execute_command');
+    expect(names).not.toContain('run_teamspeak_command');
+    expect(names).not.toContain('raw_api_request');
+    expect(names).not.toContain('execute_sql');
+    expect(names).not.toContain('run_bot_flow');
   });
 
   it('returns the executeTool payload as MCP text content', async () => {

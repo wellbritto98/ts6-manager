@@ -22,7 +22,7 @@ Implement these tasks with the `tlc-spec-driven` skill: **activate it by name an
 | Domain / agent helpers / services | unit | All branches; 1:1 to spec ACs; every listed edge case | `packages/backend/src/**/*.test.ts` | `pnpm --filter @ts6/backend exec vitest run <file>` |
 | Gateway routes / adapters | unit | Happy + listed error paths (401/403/404, codes) | `packages/backend/src/agent/**/*.test.ts` | `pnpm --filter @ts6/backend exec vitest run <file>` |
 | Prisma schema / Docker / compose / nginx / docs | none | build gate only | - | `pnpm --filter @ts6/backend exec tsc --noEmit` |
-| Frontend UI | none | no frontend tests in repo; assert nav conditions in a small unit file if added, else typecheck + i18n merge | - | `node packages/frontend/scripts/merge-i18n.mjs` |
+| Frontend UI | unit (extracted helper) | Viewer hidden; empty URL hidden; new-tab noopener; no iframe | `packages/backend/src/agent/ai-assistant-nav.test.ts` | `pnpm --filter @ts6/backend exec vitest run src/agent/ai-assistant-nav.test.ts` |
 
 ## Gate Check Commands
 
@@ -74,6 +74,12 @@ T26 -> T27 -> T28 -> T29 -> T30 -> T31
 
 ```
 T32 -> T33 -> T34 -> T35 -> T36 -> T37
+```
+
+### Phase 7: Verifier gap fixes
+
+```
+T38 -> T39 -> T40 -> T41
 ```
 
 ---
@@ -1037,10 +1043,109 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 ---
 
+### T38: Freeze spec-forbidden tool names in tests
+
+**What**: Assert the spec's forbidden generic names as a literal expected array so dropping `execute_sql` from production fails tests.
+**Where**: `packages/backend/src/agent/tool-registry.test.ts`
+**Depends on**: T37
+**Reuses**: `FORBIDDEN_TOOL_NAMES`, `createAgentRegistry`
+**Requirement**: AIGW-12
+
+**Tools**:
+
+- MCP: NONE
+- Skill: tlc-spec-driven Execute
+
+**Done when**:
+
+- [x] `FORBIDDEN_TOOL_NAMES` equals the literal spec list including `execute_sql` and `run_bot_flow`
+- [x] Register and listing tests use those literal strings, not a loop over the production constant
+- [x] Gate check passes: quick vitest on `tool-registry.test.ts`, `create-registry.test.ts`, `mcp-server.test.ts`
+- [x] Test count: at least 3 tests pass
+
+**Tests**: unit
+**Gate**: quick
+
+---
+
+### T39: Testable AI Assistant nav helper
+
+**What**: Extract nav visibility/open behaviour and assert viewer hidden, empty URL hidden, new-tab noopener, no iframe.
+**Where**: `packages/frontend/src/components/layout/ai-assistant-nav.ts`
+**Depends on**: T38
+**Reuses**: Sidebar automation section
+**Requirement**: AIGW-45, AIGW-46, AIGW-47
+
+**Tools**:
+
+- MCP: NONE
+- Skill: tlc-spec-driven Execute
+
+**Done when**:
+
+- [ ] Viewer with a URL returns null
+- [ ] Admin with empty URL returns null
+- [ ] Admin with URL returns `target="_blank"` `rel="noopener noreferrer"` and `embed: "none"`
+- [ ] Gate check passes: quick vitest on `ai-assistant-nav.test.ts`
+- [ ] Test count: at least 4 tests pass
+
+**Tests**: unit
+**Gate**: quick
+
+---
+
+### T40: Assert AI secrets are absent from fail-closed logs
+
+**What**: Spy `console.*` on the fail-closed AI config path and assert secret values are not logged.
+**Where**: `packages/backend/src/config-ai.test.ts`
+**Depends on**: T39
+**Reuses**: `loadAiConfig`, `loadRequiredAiConfig`
+**Requirement**: AIGW-03
+
+**Tools**:
+
+- MCP: NONE
+- Skill: tlc-spec-driven Execute
+
+**Done when**:
+
+- [ ] Distinctive `AI_GATEWAY_TOKEN` / `AI_IDENTITY_JWT_SECRET` values do not appear in captured `console.*` output
+- [ ] Gate check passes: quick vitest on `config-ai.test.ts`
+- [ ] Test count: at least 7 tests pass
+
+**Tests**: unit
+**Gate**: quick
+
+---
+
+### T41: Assert constant-time bearer compare
+
+**What**: Prove matching bearer comparison calls `timingSafeEqual` on SHA-256 digests.
+**Where**: `packages/backend/src/agent/agent-auth.test.ts`
+**Depends on**: T40
+**Reuses**: `assertGatewayBearer`
+**Requirement**: AIGW-05
+
+**Tools**:
+
+- MCP: NONE
+- Skill: tlc-spec-driven Execute
+
+**Done when**:
+
+- [ ] Matching bearer test spies `timingSafeEqual` and asserts it was called with 32-byte digests
+- [ ] Gate check passes: quick vitest on `agent-auth.test.ts`
+- [ ] Test count: at least 13 tests pass
+
+**Tests**: unit
+**Gate**: quick
+
+---
+
 ## Phase Execution Map
 
 ```
-T1 -> T2 -> T3 -> T4 -> T5 -> T6 -> T7 -> T8 -> T9 -> T10 -> T11 -> T12 -> T13 -> T14 -> T15 -> T16 -> T17 -> T18 -> T19 -> T20 -> T21 -> T22 -> T23 -> T24 -> T25 -> T26 -> T27 -> T28 -> T29 -> T30 -> T31 -> T32 -> T33 -> T34 -> T35 -> T36 -> T37
+T1 -> T2 -> T3 -> T4 -> T5 -> T6 -> T7 -> T8 -> T9 -> T10 -> T11 -> T12 -> T13 -> T14 -> T15 -> T16 -> T17 -> T18 -> T19 -> T20 -> T21 -> T22 -> T23 -> T24 -> T25 -> T26 -> T27 -> T28 -> T29 -> T30 -> T31 -> T32 -> T33 -> T34 -> T35 -> T36 -> T37 -> T38 -> T39 -> T40 -> T41
 ```
 
 Execution is strictly sequential - there is no intra-phase parallelism.
@@ -1065,6 +1170,10 @@ Execution is strictly sequential - there is no intra-phase parallelism.
 | T19–T25 tools | 1 file each | Granular |
 | T26–T31 adapters | 1 file each | Granular |
 | T32–T37 product | 1 file each | Granular |
+| T38 forbidden-name freeze | registry tests | Granular |
+| T39 assistant nav helper | 1 helper + sidebar | Granular |
+| T40 secret log spy | config tests | Granular |
+| T41 timingSafeEqual spy | auth tests | Granular |
 
 ---
 
@@ -1109,6 +1218,10 @@ Execution is strictly sequential - there is no intra-phase parallelism.
 | T35 | T34 | T34 -> T35 | Match |
 | T36 | T35 | T35 -> T36 | Match |
 | T37 | T36 | T36 -> T37 | Match |
+| T38 | T37 | T37 -> T38 | Match |
+| T39 | T38 | T38 -> T39 | Match |
+| T40 | T39 | T39 -> T40 | Match |
+| T41 | T40 | T40 -> T41 | Match |
 
 ---
 
@@ -1133,3 +1246,7 @@ Execution is strictly sequential - there is no intra-phase parallelism.
 | T33 | Route /me | unit | unit | OK |
 | T34 | Frontend UI | none | none | OK |
 | T35–T37 | Docs | none | none | OK |
+| T38 | Domain tools | unit | unit | OK |
+| T39 | Frontend UI | unit (helper extracted for vitest) | unit | OK |
+| T40 | Domain config | unit | unit | OK |
+| T41 | Domain auth | unit | unit | OK |

@@ -23,8 +23,26 @@ function registry(destructiveToolsEnabled: boolean): ToolRegistry {
 }
 
 describe('ToolRegistry', () => {
+  it('freezes the spec-forbidden generic command names', () => {
+    expect([...FORBIDDEN_TOOL_NAMES]).toEqual([
+      'execute_webquery',
+      'execute_command',
+      'run_teamspeak_command',
+      'raw_api_request',
+      'execute_sql',
+      'run_bot_flow',
+    ]);
+  });
+
   it('refuses to register any generic command tool name', () => {
-    for (const name of FORBIDDEN_TOOL_NAMES) {
+    for (const name of [
+      'execute_webquery',
+      'execute_command',
+      'run_teamspeak_command',
+      'raw_api_request',
+      'execute_sql',
+      'run_bot_flow',
+    ] as const) {
       expect(() => registry(true).register(fakeTool(name))).toThrow(/forbidden tool/);
     }
   });
