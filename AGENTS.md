@@ -1,0 +1,1 @@
+Use @CLAUDE.md as AGENTS.md in this directory
