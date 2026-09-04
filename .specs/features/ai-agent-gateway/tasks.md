@@ -720,11 +720,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Exposed names do not include `run_bot_flow` or the five forbidden generic names
-- [ ] Flag off: eight destructive names not in `listExposed`; calling them yields `TOOL_NOT_FOUND` without service calls
-- [ ] disable_bot_flow is destructive
-- [ ] Gate check passes: quick vitest on `flow-tools.test.ts` plus registry listing test
-- [ ] Test count: at least 4 tests pass
+- [x] Exposed names do not include `run_bot_flow` or the five forbidden generic names
+- [x] Flag off: eight destructive names not in `listExposed`; calling them yields `TOOL_NOT_FOUND` without service calls
+- [x] disable_bot_flow is destructive
+- [x] Gate check passes: quick vitest on `flow-tools.test.ts` plus registry listing test
+- [x] Test count: at least 4 tests pass (5 flow + 5 registry tests pass; full suite 499)
 
 **Tests**: unit
 **Gate**: quick

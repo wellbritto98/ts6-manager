@@ -319,7 +319,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-25 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-26 | P1: Destructive tools stay dark | Tasks | Implementing |
 | AIGW-27 | P1: Destructive tools stay dark | Tasks | Implementing |
-| AIGW-28 | P1: Destructive tools stay dark | Tasks | Pending |
+| AIGW-28 | P1: Destructive tools stay dark | Tasks | Implementing |
 | AIGW-29 | P1: Audit without secrets | Tasks | Implementing |
 | AIGW-30 | P1: Audit without secrets | Tasks | Implementing |
 | AIGW-31 | P1: Audit without secrets | Tasks | Implementing |
