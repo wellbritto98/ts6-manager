@@ -2,12 +2,10 @@ import { Router, Request, Response } from 'express';
 import { requireRole } from '../middleware/rbac.js';
 import { AppError } from '../middleware/error-handler.js';
 import type { VoiceBotManager } from '../voice/voice-bot-manager.js';
-import { downloadYouTube } from '../voice/audio/youtube.js';
 import { playerWidgetToken } from './widget-public.routes.js';
+import * as musicService from '../services/music-bot-management.service.js';
 
 export const musicBotRoutes: Router = Router();
-
-const MUSIC_DIR = process.env.MUSIC_DIR || '/data/music';
 
 // All routes require admin role
 musicBotRoutes.use(requireRole('admin'));
@@ -15,33 +13,8 @@ musicBotRoutes.use(requireRole('admin'));
 // GET / — List all music bots
 musicBotRoutes.get('/', async (req: Request, res: Response, next) => {
   try {
-    const prisma = req.app.locals.prisma;
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const dbBots = await prisma.musicBot.findMany({
-      include: { serverConfig: { select: { id: true, name: true, host: true } } },
-      orderBy: { id: 'asc' },
-    });
-
-    const runtimeInfo = manager.listBots();
-    const runtimeMap = new Map(runtimeInfo.map((b: any) => [b.id, b]));
-
-    res.json(dbBots.map((b: any) => {
-      const runtime = runtimeMap.get(b.id);
-      return {
-        id: b.id,
-        name: b.name,
-        serverConfigId: b.serverConfigId,
-        serverConfig: b.serverConfig,
-        nickname: b.nickname,
-        defaultChannel: b.defaultChannel,
-        voicePort: b.voicePort,
-        volume: b.volume,
-        autoStart: b.autoStart,
-        status: runtime?.status ?? 'stopped',
-        nowPlaying: runtime?.nowPlaying ?? null,
-        createdAt: b.createdAt,
-      };
-    }));
+    res.json(await musicService.listMusicBots(req.app.locals.prisma, manager));
   } catch (err) { next(err); }
 });
 
@@ -145,8 +118,7 @@ musicBotRoutes.delete('/:id', async (req: Request, res: Response, next) => {
 musicBotRoutes.post('/:id/start', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const id = parseInt(req.params.id as string);
-    await manager.startBot(id);
+    await musicService.startMusicBot(manager, parseInt(req.params.id as string));
     res.json({ success: true });
   } catch (err) { next(err); }
 });
@@ -155,8 +127,7 @@ musicBotRoutes.post('/:id/start', async (req: Request, res: Response, next) => {
 musicBotRoutes.post('/:id/stop', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const id = parseInt(req.params.id as string);
-    await manager.stopBot(id);
+    await musicService.stopMusicBot(manager, parseInt(req.params.id as string));
     res.json({ success: true });
   } catch (err) { next(err); }
 });
@@ -216,60 +187,21 @@ musicBotRoutes.post('/:id/play', async (req: Request, res: Response, next) => {
 musicBotRoutes.post('/:id/play-url', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const id = parseInt(req.params.id as string);
     const { url } = req.body;
     if (!url) throw new AppError(400, 'url is required');
 
-    const bot = manager.getBot(id);
-    if (!bot) throw new AppError(404, 'Music bot not found');
-    if (bot.status !== 'connected' && bot.status !== 'playing' && bot.status !== 'paused') {
-      throw new AppError(400, 'Bot is not connected');
+    const result = await musicService.playMediaUrl(
+      req.app.locals.prisma,
+      manager,
+      parseInt(req.params.id as string),
+      String(url),
+    );
+
+    if (result.source === 'spotify') {
+      res.json({ success: true, spotify: result.spotify });
+      return;
     }
-
-    const { filePath, info } = await downloadYouTube(url, MUSIC_DIR);
-
-    const queueItem = {
-      id: `yt_${info.id}`,
-      title: info.title,
-      artist: info.artist,
-      duration: info.duration,
-      filePath,
-      source: 'youtube' as const,
-      sourceUrl: url,
-    };
-
-    bot.queue.add(queueItem);
-    bot.queue.playAt(bot.queue.length - 1);
-    await bot.play(queueItem);
-
-    // Save to MusicRequest History
-    try {
-      const prisma = req.app.locals.prisma;
-      if (queueItem.sourceUrl && bot.currentConfig.serverConfigId) {
-        await prisma.musicRequest.upsert({
-          where: {
-            serverConfigId_url: {
-              serverConfigId: bot.currentConfig.serverConfigId,
-              url: queueItem.sourceUrl,
-            },
-          },
-          update: {
-            requestedAt: new Date(),
-            title: queueItem.title || 'Unknown Title',
-          },
-          create: {
-            serverConfigId: bot.currentConfig.serverConfigId,
-            url: queueItem.sourceUrl,
-            title: queueItem.title || 'Unknown Title',
-            requestedAt: new Date(),
-          },
-        });
-      }
-    } catch (saveErr) {
-      console.error('[music-bots.routes] Failed to save music request history:', saveErr);
-    }
-
-    res.json({ success: true, queueItem });
+    res.json({ success: true, queueItem: result.item });
   } catch (err: any) {
     if (err instanceof AppError) return next(err);
     next(new AppError(500, `Failed to play URL: ${err.message}`));
@@ -312,9 +244,7 @@ musicBotRoutes.post('/:id/play-radio', async (req: Request, res: Response, next)
 musicBotRoutes.post('/:id/pause', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const bot = manager.getBot(parseInt(req.params.id as string));
-    if (!bot) throw new AppError(404, 'Music bot not found');
-    bot.pause();
+    musicService.pauseMusicBot(manager, parseInt(req.params.id as string));
     res.json({ success: true });
   } catch (err) { next(err); }
 });
@@ -323,9 +253,7 @@ musicBotRoutes.post('/:id/pause', async (req: Request, res: Response, next) => {
 musicBotRoutes.post('/:id/resume', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const bot = manager.getBot(parseInt(req.params.id as string));
-    if (!bot) throw new AppError(404, 'Music bot not found');
-    bot.resume();
+    musicService.resumeMusicBot(manager, parseInt(req.params.id as string));
     res.json({ success: true });
   } catch (err) { next(err); }
 });
@@ -345,9 +273,7 @@ musicBotRoutes.post('/:id/stop-playback', async (req: Request, res: Response, ne
 musicBotRoutes.post('/:id/skip', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const bot = manager.getBot(parseInt(req.params.id as string));
-    if (!bot) throw new AppError(404, 'Music bot not found');
-    bot.skip();
+    musicService.skipMusicTrack(manager, parseInt(req.params.id as string));
     res.json({ success: true });
   } catch (err) { next(err); }
 });
@@ -378,18 +304,14 @@ musicBotRoutes.post('/:id/seek', async (req: Request, res: Response, next) => {
 // POST /:id/volume
 musicBotRoutes.post('/:id/volume', async (req: Request, res: Response, next) => {
   try {
-    const prisma = req.app.locals.prisma;
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const id = parseInt(req.params.id as string);
-    const { volume } = req.body;
-    const parsed = parseInt(volume, 10);
-    const vol = Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : 50;
-
-    const bot = manager.getBot(id);
-    if (bot) bot.setVolume(vol);
-    await prisma.musicBot.update({ where: { id }, data: { volume: vol } });
-
-    res.json({ success: true, volume: vol });
+    const volume = await musicService.setMusicBotVolume(
+      req.app.locals.prisma,
+      manager,
+      parseInt(req.params.id as string),
+      req.body.volume,
+    );
+    res.json({ success: true, volume });
   } catch (err) { next(err); }
 });
 
@@ -397,23 +319,7 @@ musicBotRoutes.post('/:id/volume', async (req: Request, res: Response, next) => 
 musicBotRoutes.get('/:id/state', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const bot = manager.getBot(parseInt(req.params.id as string));
-    if (!bot) throw new AppError(404, 'Music bot not found');
-
-    const progress = bot.playbackProgress;
-    res.json({
-      status: bot.status,
-      nowPlaying: bot.nowPlaying,
-      position: progress?.position ?? 0,
-      duration: progress?.duration ?? 0,
-      volume: bot.currentConfig.volume,
-      queue: bot.queue.getAll(),
-      currentIndex: bot.queue.index,
-      shuffle: bot.queue.shuffle,
-      repeat: bot.queue.repeat,
-      isStreaming: bot.isStreaming,
-      videoStream: bot.videoStreamStatus,
-    });
+    res.json(musicService.getMusicBotState(manager, parseInt(req.params.id as string)));
   } catch (err) { next(err); }
 });
 
@@ -423,13 +329,7 @@ musicBotRoutes.get('/:id/state', async (req: Request, res: Response, next) => {
 musicBotRoutes.get('/:id/queue', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const bot = manager.getBot(parseInt(req.params.id as string));
-    if (!bot) throw new AppError(404, 'Music bot not found');
-    res.json({
-      items: bot.queue.getAll(),
-      shuffle: bot.queue.shuffle,
-      repeat: bot.queue.repeat,
-    });
+    res.json(musicService.listMusicQueue(manager, parseInt(req.params.id as string)));
   } catch (err) { next(err); }
 });
 
@@ -526,9 +426,7 @@ musicBotRoutes.delete('/:id/queue/:index', async (req: Request, res: Response, n
 musicBotRoutes.delete('/:id/queue', async (req: Request, res: Response, next) => {
   try {
     const manager: VoiceBotManager = req.app.locals.voiceBotManager;
-    const bot = manager.getBot(parseInt(req.params.id as string));
-    if (!bot) throw new AppError(404, 'Music bot not found');
-    bot.queue.clear();
+    musicService.clearMusicQueue(manager, parseInt(req.params.id as string));
     res.json({ success: true });
   } catch (err) { next(err); }
 });

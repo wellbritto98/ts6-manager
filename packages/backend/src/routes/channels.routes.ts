@@ -1,86 +1,72 @@
 import { Router, Request, Response } from 'express';
 import { requireRole } from '../middleware/rbac.js';
-import type { ConnectionPool } from '../ts-client/connection-pool.js';
+import * as channelService from '../services/channel-management.service.js';
+import { serverScope } from './server-scope.js';
 
 export const channelRoutes: Router = Router({ mergeParams: true });
 
-const getClient = (req: Request) => {
-  const pool: ConnectionPool = req.app.locals.connectionPool;
-  return pool.getClient(parseInt(String(req.params.configId)));
-};
-const getSid = (req: Request) => parseInt(String(req.params.sid));
-
 channelRoutes.get('/', async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channellist', {
-      '-topic': '', '-flags': '', '-voice': '', '-limits': '', '-icon': '', '-secondsempty': '',
-    });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.json(await channelService.listChannels(prisma, pool, configId, sid));
   } catch (err) { next(err); }
 });
 
 channelRoutes.get('/:cid', async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channelinfo', { cid: String(req.params.cid) });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.json(await channelService.getChannel(prisma, pool, configId, sid, req.params.cid));
   } catch (err) { next(err); }
 });
 
 channelRoutes.post('/', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channelcreate', req.body);
-    res.status(201).json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.status(201).json(await channelService.createChannel(prisma, pool, configId, sid, req.body));
   } catch (err) { next(err); }
 });
 
 channelRoutes.put('/:cid', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channeledit', { cid: String(req.params.cid), ...req.body });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.json(await channelService.editChannel(prisma, pool, configId, sid, req.params.cid, req.body));
   } catch (err) { next(err); }
 });
 
 channelRoutes.delete('/:cid', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channeldelete', {
-      cid: String(req.params.cid), force: req.query.force || 1,
-    });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    const force = req.query.force ? String(req.query.force) : 1;
+    res.json(await channelService.deleteChannel(prisma, pool, configId, sid, req.params.cid, force));
   } catch (err) { next(err); }
 });
 
 channelRoutes.post('/:cid/move', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channelmove', {
-      cid: String(req.params.cid), ...req.body,
-    });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.json(await channelService.moveChannel(prisma, pool, configId, sid, req.params.cid, req.body));
   } catch (err) { next(err); }
 });
 
 channelRoutes.get('/:cid/permissions', async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channelpermlist', {
+    const { pool, configId, sid } = serverScope(req);
+    res.json(await pool.getClient(configId).execute(sid, 'channelpermlist', {
       cid: String(req.params.cid), '-permsid': '',
-    });
-    res.json(result);
+    }));
   } catch (err) { next(err); }
 });
 
 channelRoutes.put('/:cid/permissions', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channeladdperm', {
-      cid: String(req.params.cid), ...req.body,
-    });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.json(await channelService.setChannelPermission(prisma, pool, configId, sid, req.params.cid, req.body));
   } catch (err) { next(err); }
 });
 
 channelRoutes.delete('/:cid/permissions', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const result = await getClient(req).execute(getSid(req), 'channeldelperm', {
-      cid: String(req.params.cid), ...req.body,
-    });
-    res.json(result);
+    const { prisma, pool, configId, sid } = serverScope(req);
+    res.json(await channelService.removeChannelPermission(prisma, pool, configId, sid, req.params.cid, req.body));
   } catch (err) { next(err); }
 });

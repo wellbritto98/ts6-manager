@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { requireRole } from '../middleware/rbac.js';
-import type { ConnectionPool } from '../ts-client/connection-pool.js';
+import { getRecentServerLogs } from '../services/server-management.service.js';
+import { serverScope } from './server-scope.js';
 
 export const logRoutes: Router = Router({ mergeParams: true });
 
@@ -8,19 +9,13 @@ export const logRoutes: Router = Router({ mergeParams: true });
 // which already places Server Logs in the admin section.
 logRoutes.use(requireRole('admin'));
 
-const getClient = (req: Request) => {
-  const pool: ConnectionPool = req.app.locals.connectionPool;
-  return pool.getClient(parseInt(String(req.params.configId)));
-};
-const getSid = (req: Request) => parseInt(String(req.params.sid));
-
 logRoutes.get('/', async (req: Request, res: Response, next) => {
   try {
-    res.json(await getClient(req).execute(getSid(req), 'logview', {
-      lines: req.query.lines || 100,
-      reverse: req.query.reverse || 1,
-      instance: req.query.instance || 0,
-      begin_pos: req.query.begin_pos,
+    const { prisma, pool, configId, sid } = serverScope(req);
+    // Admins read the raw log text; only the agent gets redacted values.
+    res.json(await getRecentServerLogs(prisma, pool, configId, sid, {
+      lines: Number(req.query.lines) || undefined,
+      redact: false,
     }));
   } catch (err) { next(err); }
 });

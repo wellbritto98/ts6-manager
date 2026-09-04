@@ -538,13 +538,13 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Channel create/edit/move/delete/list/get handlers call the channel service
-- [ ] Client list/get/move/poke/kick/ban handlers call the client service
-- [ ] Dashboard and logs handlers call the server service
-- [ ] Music play-url uses the music service (validateUrl path)
-- [ ] Bots enable/disable/list/get call the flow service
-- [ ] Gate check passes: build (`tsc --noEmit`)
-- [ ] Test count: existing suite still loads
+- [x] Channel create/edit/move/delete/list/get handlers call the channel service
+- [x] Client list/get/move/poke/kick/ban handlers call the client service
+- [x] Dashboard and logs handlers call the server service
+- [x] Music play-url uses the music service (validateUrl path)
+- [x] Bots enable/disable/list/get call the flow service
+- [x] Gate check passes: build (`tsc --noEmit`)
+- [x] Test count: existing suite still loads (50 files, 422 tests pass)
 
 **Tests**: none
 **Gate**: build

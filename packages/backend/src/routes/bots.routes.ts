@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { requireRole } from '../middleware/rbac.js';
-import { AppError } from '../middleware/error-handler.js';
+import * as flowService from '../services/bot-flow-management.service.js';
 
 export const botRoutes: Router = Router();
 
@@ -12,29 +12,18 @@ botRoutes.use(requireRole('admin'));
 
 botRoutes.get('/', async (req: Request, res: Response, next) => {
   try {
-    const prisma = req.app.locals.prisma;
-    const bots = await prisma.botFlow.findMany({
-      include: { _count: { select: { executions: true } } },
-      orderBy: { id: 'asc' },
-    });
-    res.json(bots.map((b: any) => ({
-      id: b.id, name: b.name, description: b.description,
-      serverConfigId: b.serverConfigId, virtualServerId: b.virtualServerId,
-      enabled: b.enabled, createdAt: b.createdAt, updatedAt: b.updatedAt,
-      executionCount: b._count.executions,
-    })));
+    res.json(await flowService.listBotFlows(req.app.locals.prisma));
   } catch (err) { next(err); }
 });
 
 botRoutes.get('/:botId', async (req: Request, res: Response, next) => {
   try {
-    const prisma = req.app.locals.prisma;
-    const bot = await prisma.botFlow.findUnique({ where: { id: parseInt(String(req.params.botId)) } });
-    if (!bot) throw new AppError(404, 'Bot flow not found');
-    res.json({
-      ...bot,
-      flowData: JSON.parse(bot.flowData),
-    });
+    // The flow editor round-trips webhook secrets, so it reads the raw graph.
+    res.json(await flowService.getBotFlow(
+      req.app.locals.prisma,
+      parseInt(String(req.params.botId)),
+      { redactSecrets: false },
+    ));
   } catch (err) { next(err); }
 });
 
@@ -106,29 +95,21 @@ botRoutes.delete('/:botId', requireRole('admin'), async (req: Request, res: Resp
 
 botRoutes.post('/:botId/enable', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const prisma = req.app.locals.prisma;
-    const botId = parseInt(String(req.params.botId));
-    await prisma.botFlow.update({ where: { id: botId }, data: { enabled: true } });
-
-    // Enable in bot engine
-    const botEngine = req.app.locals.botEngine;
-    if (botEngine) await botEngine.enableFlow(botId);
-
-    res.json({ enabled: true });
+    res.json(await flowService.enableBotFlow(
+      req.app.locals.prisma,
+      req.app.locals.botEngine,
+      parseInt(String(req.params.botId)),
+    ));
   } catch (err) { next(err); }
 });
 
 botRoutes.post('/:botId/disable', requireRole('admin'), async (req: Request, res: Response, next) => {
   try {
-    const prisma = req.app.locals.prisma;
-    const botId = parseInt(String(req.params.botId));
-    await prisma.botFlow.update({ where: { id: botId }, data: { enabled: false } });
-
-    // Disable in bot engine
-    const botEngine = req.app.locals.botEngine;
-    if (botEngine) await botEngine.disableFlow(botId);
-
-    res.json({ enabled: false });
+    res.json(await flowService.disableBotFlow(
+      req.app.locals.prisma,
+      req.app.locals.botEngine,
+      parseInt(String(req.params.botId)),
+    ));
   } catch (err) { next(err); }
 });
 
