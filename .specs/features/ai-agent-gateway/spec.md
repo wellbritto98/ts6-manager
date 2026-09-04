@@ -330,7 +330,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-36 | P1: OpenAPI adapter | Tasks | Implementing |
 | AIGW-37 | P1: OpenAPI adapter | Tasks | Implementing |
 | AIGW-38 | P1: OpenAPI adapter | Tasks | Implementing |
-| AIGW-39 | P1: MCP adapter | Tasks | Pending |
+| AIGW-39 | P1: MCP adapter | Tasks | Implementing |
 | AIGW-40 | P1: MCP adapter | Tasks | Pending |
 | AIGW-41 | P1: MCP adapter | Tasks | Pending |
 | AIGW-42 | P1: Open WebUI overlay | Tasks | Pending |

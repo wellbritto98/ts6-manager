@@ -16,6 +16,9 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.2",
+    "@modelcontextprotocol/express": "2.0.0",
+    "@modelcontextprotocol/node": "2.0.0",
+    "@modelcontextprotocol/server": "2.0.0",
     "@node-saml/node-saml": "^5.1.0",
     "@prisma/client": "^6.19.3",
     "@resvg/resvg-js": "^2.6.2",

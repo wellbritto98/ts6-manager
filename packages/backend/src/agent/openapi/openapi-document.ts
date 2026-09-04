@@ -1,6 +1,6 @@
-import { zodToJsonSchema } from 'zod-to-json-schema';
 import { AGENT_ERROR_CODES } from '../agent-error.js';
 import type { AgentToolDefinition } from '../tool-definition.js';
+import { toOpenApiInputSchema, type JsonSchema } from '../tool-input-schema.js';
 
 /** One path per tool, so `operationId` stays stable for Open WebUI imports. */
 export const AGENT_TOOL_PATH_PREFIX = '/api/agent/tools';
@@ -8,7 +8,7 @@ export const AGENT_TOOL_PATH_PREFIX = '/api/agent/tools';
 /** The only security scheme in the document: the `AI_GATEWAY_TOKEN` bearer. */
 export const GATEWAY_SECURITY_SCHEME = 'gatewayBearer';
 
-export type JsonSchema = Record<string, unknown>;
+export type { JsonSchema };
 
 export interface OpenApiMediaType {
   schema: JsonSchema;
@@ -85,13 +85,6 @@ const FAILURE_RESPONSES: ReadonlyArray<[string, string]> = [
   ['200', 'Tool outcome: a success payload, or a structured failure the model can read'],
 ];
 
-function toRequestSchema(tool: AgentToolDefinition): JsonSchema {
-  return zodToJsonSchema(tool.inputSchema, {
-    target: 'openApi3',
-    $refStrategy: 'none',
-  }) as JsonSchema;
-}
-
 function toResponse(status: string, description: string): OpenApiResponse {
   const schema: JsonSchema = status === '200'
     ? { oneOf: [TOOL_SUCCESS_SCHEMA, { $ref: '#/components/schemas/ToolFailure' }] }
@@ -112,7 +105,7 @@ function toOperation(tool: AgentToolDefinition): OpenApiOperation {
     security: [{ [GATEWAY_SECURITY_SCHEME]: [] }],
     requestBody: {
       required: true,
-      content: { 'application/json': { schema: toRequestSchema(tool) } },
+      content: { 'application/json': { schema: toOpenApiInputSchema(tool) } },
     },
     responses,
   };

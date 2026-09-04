@@ -798,10 +798,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Package.json pins `@modelcontextprotocol/server`, `express`, and `node` at 2.0.0
-- [ ] Factory registers the same names as `listExposed`
-- [ ] Gate check passes: quick vitest on `mcp-server.test.ts`
-- [ ] Test count: at least 2 tests pass
+- [x] Package.json pins `@modelcontextprotocol/server`, `express`, and `node` at 2.0.0
+- [x] Factory registers the same names as `listExposed`
+- [x] Gate check passes: quick vitest on `mcp-server.test.ts`
+- [x] Test count: at least 2 tests pass (5 pass)
 
 **Tests**: unit
 **Gate**: quick
