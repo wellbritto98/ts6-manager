@@ -591,11 +591,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Unknown fields rejected
-- [ ] list_servers success action is `servers_listed`
-- [ ] Empty enabled list returns `servers: []`
-- [ ] Gate check passes: quick vitest on `server-tools.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] Unknown fields rejected
+- [x] list_servers success action is `servers_listed`
+- [x] Empty enabled list returns `servers: []`
+- [x] Gate check passes: quick vitest on `server-tools.test.ts`
+- [x] Test count: at least 3 tests pass (9 pass)
 
 **Tests**: unit
 **Gate**: quick

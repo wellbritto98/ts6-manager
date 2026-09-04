@@ -304,7 +304,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-10 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-11 | P1: Single tool registry | Tasks | Implementing |
 | AIGW-12 | P1: Single tool registry | Tasks | Implementing |
-| AIGW-13 | P1: Single tool registry | Tasks | Pending |
+| AIGW-13 | P1: Single tool registry | Tasks | Implementing |
 | AIGW-14 | P1: Single tool registry | Tasks | Pending |
 | AIGW-15 | P1: Explicit server targeting | Tasks | Implementing |
 | AIGW-16 | P1: Explicit server targeting | Tasks | Implementing |
