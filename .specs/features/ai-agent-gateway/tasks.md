@@ -669,10 +669,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] set_channel_permission returns `action: "channel_permission_set"`
-- [ ] remove_* tools are destructive
-- [ ] Gate check passes: quick vitest on `permission-tools.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] set_channel_permission returns `action: "channel_permission_set"`
+- [x] remove_* tools are destructive
+- [x] Gate check passes: quick vitest on `permission-tools.test.ts`
+- [x] Test count: at least 3 tests pass (12 pass)
 
 **Tests**: unit
 **Gate**: quick
