@@ -1109,9 +1109,9 @@ T38 -> T39 -> T40 -> T41
 
 **Done when**:
 
-- [ ] Distinctive `AI_GATEWAY_TOKEN` / `AI_IDENTITY_JWT_SECRET` values do not appear in captured `console.*` output
-- [ ] Gate check passes: quick vitest on `config-ai.test.ts`
-- [ ] Test count: at least 7 tests pass
+- [x] Distinctive `AI_GATEWAY_TOKEN` / `AI_IDENTITY_JWT_SECRET` values do not appear in captured `console.*` output
+- [x] Gate check passes: quick vitest on `config-ai.test.ts`
+- [x] Test count: at least 7 tests pass
 
 **Tests**: unit
 **Gate**: quick

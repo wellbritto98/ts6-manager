@@ -103,7 +103,7 @@ export function loadAiConfig(env: AiEnvironment): AiConfig {
   };
 }
 
-function loadRequiredAiConfig(env: AiEnvironment): AiConfig {
+export function loadRequiredAiConfig(env: AiEnvironment): AiConfig {
   try {
     return loadAiConfig(env);
   } catch (error) {

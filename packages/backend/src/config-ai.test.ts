@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { loadAiConfig } from './config.js';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { loadAiConfig, loadRequiredAiConfig } from './config.js';
 
 const BASE_ENV = {
   JWT_SECRET: 'j'.repeat(32),
@@ -7,6 +7,10 @@ const BASE_ENV = {
 };
 
 describe('loadAiConfig', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('leaves AI disabled and secrets optional when the flag is unset', () => {
     const config = loadAiConfig(BASE_ENV);
 
@@ -70,5 +74,46 @@ describe('loadAiConfig', () => {
 
     expect(config.destructiveToolsEnabled).toBe(true);
     expect(config.assistantPublicUrl).toBe('https://ai.example.com');
+  });
+
+  it('does not log AI_GATEWAY_TOKEN or AI_IDENTITY_JWT_SECRET values on the fail-closed path', () => {
+    const reusedSecret = 'ai-secret-UNIQUE-xyz123-must-not-appear';
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const info = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const exit = vi.spyOn(process, 'exit').mockImplementation((() => undefined) as typeof process.exit);
+
+    loadRequiredAiConfig({
+      ...BASE_ENV,
+      AI_AGENT_ENABLED: 'true',
+      AI_GATEWAY_TOKEN: reusedSecret,
+      AI_IDENTITY_JWT_SECRET: reusedSecret,
+    });
+
+    const captured = [...error.mock.calls, ...log.mock.calls, ...info.mock.calls, ...warn.mock.calls]
+      .flat()
+      .map(String)
+      .join('\n');
+
+    expect(exit).toHaveBeenCalledWith(1);
+    expect(captured).toContain('[FATAL]');
+    expect(captured).not.toContain(reusedSecret);
+
+    let thrown: unknown;
+    try {
+      loadAiConfig({
+        ...BASE_ENV,
+        AI_AGENT_ENABLED: 'true',
+        AI_GATEWAY_TOKEN: reusedSecret,
+        AI_IDENTITY_JWT_SECRET: reusedSecret,
+      });
+    } catch (caught) {
+      thrown = caught;
+    }
+
+    expect(thrown).toBeInstanceOf(Error);
+    expect((thrown as Error).message).toContain('must differ');
+    expect((thrown as Error).message).not.toContain(reusedSecret);
   });
 });
