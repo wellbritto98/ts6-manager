@@ -1,0 +1,20 @@
+{
+  "namespace": "nav",
+  "keys": {
+    "en": {
+      "aiAssistant": "AI Assistant"
+    },
+    "fr": {
+      "aiAssistant": "Assistant IA"
+    },
+    "de": {
+      "aiAssistant": "KI-Assistent"
+    },
+    "es": {
+      "aiAssistant": "Asistente IA"
+    },
+    "it": {
+      "aiAssistant": "Assistente IA"
+    }
+  }
+}

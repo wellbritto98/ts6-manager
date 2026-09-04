@@ -35,7 +35,8 @@
     "musicBots": "Music Bots",
     "settings": "Settings",
     "collapse": "Collapse",
-    "logout": "Log out"
+    "logout": "Log out",
+    "aiAssistant": "AI Assistant"
   },
   "login": {
     "appSubtitle": "Server Administration Panel",

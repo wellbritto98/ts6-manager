@@ -949,11 +949,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Item is `adminOnly` and uses `target="_blank"` `rel="noopener noreferrer"`
-- [ ] No iframe
-- [ ] `node packages/frontend/scripts/merge-i18n.mjs` exits 0
-- [ ] Gate check passes: build (frontend typecheck via `tsc --noEmit` in backend still; also frontend typecheck if cheap)
-- [ ] Test count: i18n merge 0
+- [x] Item is `adminOnly` and uses `target="_blank"` `rel="noopener noreferrer"`
+- [x] No iframe
+- [x] `node packages/frontend/scripts/merge-i18n.mjs` exits 0
+- [x] Gate check passes: build (frontend `tsc --noEmit`, backend `tsc --noEmit`, `pnpm lint`)
+- [x] Test count: i18n merge 0
 
 **Tests**: none
 **Gate**: build

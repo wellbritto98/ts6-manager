@@ -35,7 +35,8 @@
     "musicBots": "Bots musique",
     "settings": "Paramètres",
     "collapse": "Réduire",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "aiAssistant": "Assistant IA"
   },
   "login": {
     "appSubtitle": "Panneau d'administration du serveur",

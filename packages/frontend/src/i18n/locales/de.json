@@ -35,7 +35,8 @@
     "musicBots": "Musik-Bots",
     "settings": "Einstellungen",
     "collapse": "Einklappen",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "aiAssistant": "KI-Assistent"
   },
   "login": {
     "appSubtitle": "Server-Administrationsbereich",

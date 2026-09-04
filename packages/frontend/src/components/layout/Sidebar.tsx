@@ -1,18 +1,29 @@
+import { useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
   LayoutDashboard, Server, Hash, Users, Shield, ShieldCheck,
   Lock, Ban, KeyRound, FolderOpen, MessageSquareWarning, Mail,
   ScrollText, Settings, Bot, Cpu, ChevronLeft, ChevronRight, Music, ListMusic, History,
+  Sparkles, type LucideIcon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { useUiStore } from '@/stores/ui.store';
 import { useAuthStore } from '@/stores/auth.store';
+import { authApi } from '@/api/auth.api';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const navSections = [
+type NavItemBase = { icon: LucideIcon; label: string; adminOnly?: boolean };
+// An item is either an internal route or an external link, never both.
+type NavItem =
+  | (NavItemBase & { to: string; external?: false; href?: undefined })
+  | (NavItemBase & { href: string; external: true; to?: undefined });
+type NavSection = { label: string; adminOnly?: boolean; items: NavItem[] };
+
+const navSections: NavSection[] = [
   {
     label: 'nav.overview',
     items: [
@@ -73,6 +84,25 @@ export function Sidebar() {
   const location = useLocation();
   const { t } = useTranslation();
 
+  // Shares the ['me'] key with AppLayout, so this reads the cache. The runtime
+  // URL matters because the production image bakes VITE_* at build time.
+  const { data: me } = useQuery<{ aiAssistantUrl?: string | null }>({
+    queryKey: ['me'],
+    queryFn: authApi.me,
+    staleTime: 60_000,
+  });
+  const assistantUrl = import.meta.env.VITE_AI_ASSISTANT_URL || me?.aiAssistantUrl || '';
+
+  // No configured URL means no nav item at all — never a dead link.
+  const sections = useMemo<NavSection[]>(() => {
+    if (!isAdmin || !assistantUrl) return navSections;
+    return navSections.map((section) =>
+      section.label === 'nav.automation'
+        ? { ...section, items: [...section.items, { href: assistantUrl, external: true, icon: Sparkles, label: 'nav.aiAssistant', adminOnly: true }] }
+        : section,
+    );
+  }, [isAdmin, assistantUrl]);
+
   return (
     <TooltipProvider delayDuration={0}>
       <aside
@@ -103,10 +133,10 @@ export function Sidebar() {
         {/* Navigation */}
         <ScrollArea className="flex-1 py-2">
           <nav className="space-y-1 px-2">
-            {navSections
-              .filter((section) => !(section as any).adminOnly || isAdmin)
+            {sections
+              .filter((section) => !section.adminOnly || isAdmin)
               .map((section, si) => {
-                const visibleItems = section.items.filter((item) => !(item as any).adminOnly || isAdmin);
+                const visibleItems = section.items.filter((item) => !item.adminOnly || isAdmin);
                 if (visibleItems.length === 0) return null;
                 return (
                   <div key={section.label}>
@@ -117,27 +147,37 @@ export function Sidebar() {
                       </p>
                     )}
                     {visibleItems.map((item) => {
-                      const isActive = location.pathname === item.to || location.pathname.startsWith(item.to + '/');
-                      const link = (
-                        <NavLink
-                          key={item.to}
-                          to={item.to}
-                          className={cn(
-                            'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-all duration-150',
-                            sidebarCollapsed && 'justify-center px-0 py-2',
-                            isActive
-                              ? 'bg-sidebar-accent text-sidebar-accent-foreground'
-                              : 'text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground',
-                          )}
-                        >
+                      const key = item.to ?? item.href;
+                      const isActive = !!item.to
+                        && (location.pathname === item.to || location.pathname.startsWith(item.to + '/'));
+                      const linkClass = cn(
+                        'flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-sm transition-all duration-150',
+                        sidebarCollapsed && 'justify-center px-0 py-2',
+                        isActive
+                          ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                          : 'text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground',
+                      );
+                      const body = (
+                        <>
                           <item.icon className={cn('h-4 w-4 shrink-0', isActive && 'text-primary')} />
                           {!sidebarCollapsed && <span>{t(item.label)}</span>}
+                        </>
+                      );
+                      const link = item.external ? (
+                        // New browsing context, never an iframe: the assistant is a
+                        // separate origin and must not read this document.
+                        <a key={key} href={item.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                          {body}
+                        </a>
+                      ) : (
+                        <NavLink key={key} to={item.to} className={linkClass}>
+                          {body}
                         </NavLink>
                       );
 
                       if (sidebarCollapsed) {
                         return (
-                          <Tooltip key={item.to}>
+                          <Tooltip key={key}>
                             <TooltipTrigger asChild>{link}</TooltipTrigger>
                             <TooltipContent side="right" className="font-medium">
                               {t(item.label)}
