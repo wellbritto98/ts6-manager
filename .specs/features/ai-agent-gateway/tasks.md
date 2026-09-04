@@ -643,11 +643,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] list_clients output has no ip fields
-- [ ] move_client returns `action: "client_moved"`
-- [ ] kick/ban risk is `destructive`
-- [ ] Gate check passes: quick vitest on `client-tools.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] list_clients output has no ip fields
+- [x] move_client returns `action: "client_moved"`
+- [x] kick/ban risk is `destructive`
+- [x] Gate check passes: quick vitest on `client-tools.test.ts`
+- [x] Test count: at least 3 tests pass (9 pass)
 
 **Tests**: unit
 **Gate**: quick
