@@ -1,0 +1,60 @@
+# Optional AI Assistant overlay. It merges with docker-compose.yml, it does not
+# replace it: `ts6-network`, the volumes and the backend service all come from
+# the base file. People who do not want AI never pull the Open WebUI image.
+#
+# usage: docker compose -f docker-compose.yml -f docker-compose.ai.yml up -d
+#
+# Every secret below is a ${VAR} interpolation read from .env — never commit
+# real values here. See docs/ai/openwebui-setup.md for the setup walkthrough.
+
+services:
+  backend:
+    environment:
+      # The gateway stays off until this is true, so the overlay deliberately
+      # avoids `:?` — an unset AI var must not break `docker compose config`.
+      - AI_AGENT_ENABLED=${AI_AGENT_ENABLED:-false}
+      - AI_GATEWAY_TOKEN=${AI_GATEWAY_TOKEN:-}
+      - AI_IDENTITY_JWT_SECRET=${AI_IDENTITY_JWT_SECRET:-}
+      - AI_DESTRUCTIVE_TOOLS_ENABLED=${AI_DESTRUCTIVE_TOOLS_ENABLED:-false}
+      - AI_ALLOWED_OPENWEBUI_USER_IDS=${AI_ALLOWED_OPENWEBUI_USER_IDS:-}
+      - AI_ALLOWED_OPENWEBUI_EMAILS=${AI_ALLOWED_OPENWEBUI_EMAILS:-}
+      - AI_ASSISTANT_PUBLIC_URL=${AI_ASSISTANT_PUBLIC_URL:-}
+
+  open-webui:
+    # Pinned release. Do not move this to main/dev/latest: those tags ship
+    # unreviewed changes to a container that holds an OpenRouter key.
+    image: ghcr.io/open-webui/open-webui:v0.11.3
+    container_name: ts6-open-webui
+    restart: unless-stopped
+    ports:
+      # Host port is configurable so it never clashes with FRONTEND_PORT (3000).
+      - "${AI_WEBUI_PORT:-3002}:8080"
+    environment:
+      - WEBUI_SECRET_KEY=${OPENWEBUI_SECRET_KEY}
+      # Open WebUI signs the caller identity into this header; the backend
+      # verifies it with the same secret. Both containers must share the value.
+      - ENABLE_FORWARD_USER_INFO_HEADERS=true
+      - FORWARD_USER_INFO_HEADER_JWT=X-OpenWebUI-User-Jwt
+      - FORWARD_USER_INFO_HEADER_JWT_SECRET=${AI_IDENTITY_JWT_SECRET}
+      - FORWARD_USER_INFO_HEADER_JWT_EXPIRES_SECONDS=300
+      - OPENAI_API_BASE_URL=https://openrouter.ai/api/v1
+      - OPENAI_API_KEY=${OPENROUTER_API_KEY}
+      # Needed once to create the first admin account. Turn it off right after:
+      # docs/ai/openwebui-setup.md step 3.
+      - ENABLE_SIGNUP=true
+    volumes:
+      - open-webui:/app/backend/data
+    depends_on:
+      - backend
+    networks:
+      - ts6-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  open-webui:
+    driver: local

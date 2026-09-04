@@ -898,11 +898,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Image is `ghcr.io/open-webui/open-webui:v0.11.3`
-- [ ] No `latest`/`main`/`dev` tags
-- [ ] Secrets are `${VAR}` interpolations
-- [ ] Gate check passes: build
-- [ ] Test count: unchanged
+- [x] Image is `ghcr.io/open-webui/open-webui:v0.11.3`
+- [x] No `latest`/`main`/`dev` tags
+- [x] Secrets are `${VAR}` interpolations
+- [x] Gate check passes: build (`tsc --noEmit`, `docker compose config -q` on the merged overlay)
+- [x] Test count: unchanged
 
 **Tests**: none
 **Gate**: build
