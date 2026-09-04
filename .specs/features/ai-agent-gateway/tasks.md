@@ -222,11 +222,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Matching bearer returns the next identity step
-- [ ] Wrong or missing bearer throws/returns `UNAUTHENTICATED`
-- [ ] Comparison uses `crypto.timingSafeEqual` on equal-length buffers
-- [ ] Gate check passes: quick vitest on `agent-auth.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] Matching bearer returns the next identity step
+- [x] Wrong or missing bearer throws/returns `UNAUTHENTICATED`
+- [x] Comparison uses `crypto.timingSafeEqual` on equal-length buffers
+- [x] Gate check passes: quick vitest on `agent-auth.test.ts`
+- [x] Test count: at least 3 tests pass
 
 **Tests**: unit
 **Gate**: quick
