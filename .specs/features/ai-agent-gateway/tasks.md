@@ -512,11 +512,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] list/get omit raw secrets; get may return metadata not identity blobs
-- [ ] enable/disable call engine methods
-- [ ] no public execute method is added
-- [ ] Gate check passes: quick vitest on `bot-flow-management.service.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] list/get omit raw secrets; get may return metadata not identity blobs
+- [x] enable/disable call engine methods
+- [x] no public execute method is added
+- [x] Gate check passes: quick vitest on `bot-flow-management.service.test.ts`
+- [x] Test count: at least 3 tests pass (8 pass)
 
 **Tests**: unit
 **Gate**: quick

@@ -315,8 +315,8 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-21 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-22 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-23 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-24 | P1: Catalog operations | Tasks | Pending |
-| AIGW-25 | P1: Catalog operations | Tasks | Pending |
+| AIGW-24 | P1: Catalog operations | Tasks | Implementing |
+| AIGW-25 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-26 | P1: Destructive tools stay dark | Tasks | Pending |
 | AIGW-27 | P1: Destructive tools stay dark | Tasks | Pending |
 | AIGW-28 | P1: Destructive tools stay dark | Tasks | Pending |
