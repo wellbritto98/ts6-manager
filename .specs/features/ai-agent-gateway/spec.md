@@ -325,8 +325,8 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-31 | P1: Audit without secrets | Tasks | Implementing |
 | AIGW-32 | P1: Audit without secrets | Tasks | Implementing |
 | AIGW-33 | P1: Audit without secrets | Tasks | Implementing |
-| AIGW-34 | P1: Idempotent retries | Tasks | Pending |
-| AIGW-35 | P1: Idempotent retries | Tasks | Pending |
+| AIGW-34 | P1: Idempotent retries | Tasks | Implementing |
+| AIGW-35 | P1: Idempotent retries | Tasks | Implementing |
 | AIGW-36 | P1: OpenAPI adapter | Tasks | Pending |
 | AIGW-37 | P1: OpenAPI adapter | Tasks | Pending |
 | AIGW-38 | P1: OpenAPI adapter | Tasks | Pending |

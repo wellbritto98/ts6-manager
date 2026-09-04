@@ -355,12 +355,12 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Same actor+tool+idempotencyKey runs execute once
-- [ ] Second call returns the first outcome
-- [ ] `idempotencyKey` longer than 128 characters is `INVALID_INPUT`
-- [ ] Audit failure after execute does not call execute again
-- [ ] Gate check passes: quick vitest on `tool-executor.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] Same actor+tool+idempotencyKey runs execute once
+- [x] Second call returns the first outcome
+- [x] `idempotencyKey` longer than 128 characters is `INVALID_INPUT`
+- [x] Audit failure after execute does not call execute again
+- [x] Gate check passes: quick vitest on `tool-executor.test.ts`
+- [x] Test count: at least 4 tests pass
 
 **Tests**: unit
 **Gate**: quick
