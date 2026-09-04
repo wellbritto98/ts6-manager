@@ -297,10 +297,10 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-03 | P1: AI stays off until enabled | Tasks | Implementing |
 | AIGW-04 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-05 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-06 | P1: Dual authentication | Tasks | Pending |
-| AIGW-07 | P1: Dual authentication | Tasks | Pending |
+| AIGW-06 | P1: Dual authentication | Tasks | Implementing |
+| AIGW-07 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-08 | P1: Dual authentication | Tasks | Pending |
-| AIGW-09 | P1: Dual authentication | Tasks | Pending |
+| AIGW-09 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-10 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-11 | P1: Single tool registry | Tasks | Pending |
 | AIGW-12 | P1: Single tool registry | Tasks | Pending |

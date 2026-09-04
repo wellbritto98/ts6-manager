@@ -248,13 +248,13 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Valid admin JWT yields actor
-- [ ] Expired token is `UNAUTHENTICATED`
-- [ ] Wrong issuer is `UNAUTHENTICATED`
-- [ ] `role !== "admin"` is `FORBIDDEN`
-- [ ] Unsigned user headers do not grant admin
-- [ ] Gate check passes: quick vitest on `agent-auth.test.ts`
-- [ ] Test count: at least 8 tests pass (including T6)
+- [x] Valid admin JWT yields actor
+- [x] Expired token is `UNAUTHENTICATED`
+- [x] Wrong issuer is `UNAUTHENTICATED`
+- [x] `role !== "admin"` is `FORBIDDEN`
+- [x] Unsigned user headers do not grant admin
+- [x] Gate check passes: quick vitest on `agent-auth.test.ts`
+- [x] Test count: at least 8 tests pass (including T6)
 
 **Tests**: unit
 **Gate**: quick
