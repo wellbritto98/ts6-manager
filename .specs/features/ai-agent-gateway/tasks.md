@@ -173,9 +173,9 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Type exports `actor.role` literal `"admin"` plus pool/prisma/voice/engine
-- [ ] Gate check passes: build (`tsc --noEmit`)
-- [ ] Test count: compile only
+- [x] Type exports `actor.role` literal `"admin"` plus pool/prisma/voice/engine
+- [x] Gate check passes: build (`tsc --noEmit`)
+- [x] Test count: compile only
 
 **Tests**: none
 **Gate**: build
