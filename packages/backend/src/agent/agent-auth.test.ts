@@ -1,7 +1,16 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import jwt from 'jsonwebtoken';
+import * as crypto from 'node:crypto';
 import { AgentError } from './agent-error.js';
 import { assertAgentAuth, assertGatewayBearer, verifyOpenWebUiJwt } from './agent-auth.js';
+
+vi.mock('node:crypto', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:crypto')>();
+  return {
+    ...actual,
+    timingSafeEqual: vi.fn(actual.timingSafeEqual),
+  };
+});
 
 const GATEWAY_TOKEN = 'gateway-token-with-at-least-thirty-two-chars';
 const IDENTITY_SECRET = 'identity-secret-with-at-least-thirty-two-chars';
@@ -21,6 +30,18 @@ describe('assertGatewayBearer', () => {
     expect(() => assertGatewayBearer('Bearer incorrect-token', GATEWAY_TOKEN)).toThrow(
       expect.objectContaining<Partial<AgentError>>({ code: 'UNAUTHENTICATED' }),
     );
+  });
+
+  it('compares a matching bearer with a constant-time equality check', () => {
+    vi.mocked(crypto.timingSafeEqual).mockClear();
+
+    expect(() => assertGatewayBearer(`Bearer ${GATEWAY_TOKEN}`, GATEWAY_TOKEN)).not.toThrow();
+    expect(crypto.timingSafeEqual).toHaveBeenCalled();
+    const [presented, expected] = vi.mocked(crypto.timingSafeEqual).mock.calls[0];
+    expect(presented).toBeInstanceOf(Uint8Array);
+    expect(expected).toBeInstanceOf(Uint8Array);
+    expect(presented).toHaveLength(32);
+    expect(expected).toHaveLength(32);
   });
 });
 

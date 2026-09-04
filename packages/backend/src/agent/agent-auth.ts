@@ -1,4 +1,4 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
+import * as crypto from 'node:crypto';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import type { AgentActor } from './agent-context.js';
 import { AgentError } from './agent-error.js';
@@ -40,10 +40,10 @@ export function assertGatewayBearer(
   }
 
   const presentedToken = authorization.slice('Bearer '.length);
-  const presentedHash = createHash('sha256').update(presentedToken).digest();
-  const expectedHash = createHash('sha256').update(gatewayToken).digest();
+  const presentedHash = crypto.createHash('sha256').update(presentedToken).digest();
+  const expectedHash = crypto.createHash('sha256').update(gatewayToken).digest();
 
-  if (!timingSafeEqual(presentedHash, expectedHash)) {
+  if (!crypto.timingSafeEqual(presentedHash, expectedHash)) {
     unauthenticated();
   }
 }

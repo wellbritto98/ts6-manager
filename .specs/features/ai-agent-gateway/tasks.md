@@ -1133,9 +1133,9 @@ T38 -> T39 -> T40 -> T41
 
 **Done when**:
 
-- [ ] Matching bearer test spies `timingSafeEqual` and asserts it was called with 32-byte digests
-- [ ] Gate check passes: quick vitest on `agent-auth.test.ts`
-- [ ] Test count: at least 13 tests pass
+- [x] Matching bearer test spies `timingSafeEqual` and asserts it was called with 32-byte digests
+- [x] Gate check passes: quick vitest on `agent-auth.test.ts`
+- [x] Test count: at least 13 tests pass
 
 **Tests**: unit
 **Gate**: quick
