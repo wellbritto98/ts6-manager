@@ -336,8 +336,8 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-42 | P1: Open WebUI overlay | Tasks | Implementing |
 | AIGW-43 | P1: Open WebUI overlay | Tasks | Implementing |
 | AIGW-44 | P1: Open WebUI overlay | Tasks | Implementing |
-| AIGW-45 | P1: Admin link in the existing SPA | Tasks | Pending |
-| AIGW-46 | P1: Admin link in the existing SPA | Tasks | Pending |
+| AIGW-45 | P1: Admin link in the existing SPA | Tasks | Implementing |
+| AIGW-46 | P1: Admin link in the existing SPA | Tasks | Implementing |
 | AIGW-47 | P1: Admin link in the existing SPA | Tasks | Pending |
 | AIGW-48 | P1: Structured tool errors | Tasks | Implementing |
 | AIGW-49 | P1: Structured tool errors | Tasks | Implementing |

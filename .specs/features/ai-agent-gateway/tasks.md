@@ -924,10 +924,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Admin response includes `aiAssistantUrl` string or null
-- [ ] Viewer response does not expose the URL (null or omitted)
-- [ ] Gate check passes: quick vitest on `auth-me-ai.test.ts` or extended auth route test
-- [ ] Test count: at least 2 tests pass
+- [x] Admin response includes `aiAssistantUrl` string or null
+- [x] Viewer response does not expose the URL (null or omitted)
+- [x] Gate check passes: quick vitest on `auth-me-ai.test.ts` (5 tests pass)
+- [x] Test count: at least 2 tests pass
 
 **Tests**: unit
 **Gate**: quick

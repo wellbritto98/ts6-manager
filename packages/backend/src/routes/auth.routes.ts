@@ -29,6 +29,12 @@ export function requirePasswordHash(passwordHash: string | null): string {
   return passwordHash;
 }
 
+// The AI assistant link is an admin-only affordance. Resolving it by role here
+// keeps the URL out of every viewer response, flag on or off.
+export function assistantUrlForRole(role: string, url: string | undefined): string | null {
+  return role === 'admin' && url ? url : null;
+}
+
 // Short-lived token proving the password step passed, scoped to the MFA step.
 function verifyMfaChallenge(token: string): number {
   const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as any;
@@ -299,6 +305,7 @@ authRoutes.get('/me', authMiddleware, async (req: Request, res: Response, next) 
         mfaRequired: user.mfaRequired,
         language: user.language,
       },
+      aiAssistantUrl: assistantUrlForRole(user.role, config.ai.assistantPublicUrl),
     });
   } catch (err) { next(err); }
 });
