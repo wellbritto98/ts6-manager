@@ -97,3 +97,54 @@ describe('verifyOpenWebUiJwt', () => {
     })).toThrow(expect.objectContaining<Partial<AgentError>>({ code: 'UNAUTHENTICATED' }));
   });
 });
+
+describe('Open WebUI identity allowlists', () => {
+  const adminToken = jwt.sign({
+    sub: 'openwebui-admin',
+    email: 'admin@example.com',
+    name: 'Admin User',
+    role: 'admin',
+    iss: 'open-webui',
+  }, IDENTITY_SECRET, { algorithm: 'HS256', expiresIn: '5m' });
+
+  const headers = {
+    authorization: `Bearer ${GATEWAY_TOKEN}`,
+    'x-openwebui-user-jwt': adminToken,
+  };
+
+  it('accepts an admin when both allowlists are empty', () => {
+    expect(assertAgentAuth(headers, {
+      gatewayToken: GATEWAY_TOKEN,
+      identityJwtSecret: IDENTITY_SECRET,
+      allowedUserIds: [],
+      allowedEmails: [],
+    }).actor.externalUserId).toBe('openwebui-admin');
+  });
+
+  it('rejects an admin missing from the configured user id allowlist', () => {
+    expect(() => assertAgentAuth(headers, {
+      gatewayToken: GATEWAY_TOKEN,
+      identityJwtSecret: IDENTITY_SECRET,
+      allowedUserIds: ['another-user'],
+      allowedEmails: [],
+    })).toThrow(expect.objectContaining<Partial<AgentError>>({ code: 'FORBIDDEN' }));
+  });
+
+  it('rejects an admin whose email misses when both allowlists are configured', () => {
+    expect(() => assertAgentAuth(headers, {
+      gatewayToken: GATEWAY_TOKEN,
+      identityJwtSecret: IDENTITY_SECRET,
+      allowedUserIds: ['openwebui-admin'],
+      allowedEmails: ['other@example.com'],
+    })).toThrow(expect.objectContaining<Partial<AgentError>>({ code: 'FORBIDDEN' }));
+  });
+
+  it('accepts an admin matching both configured allowlists case-insensitively by email', () => {
+    expect(assertAgentAuth(headers, {
+      gatewayToken: GATEWAY_TOKEN,
+      identityJwtSecret: IDENTITY_SECRET,
+      allowedUserIds: ['openwebui-admin'],
+      allowedEmails: ['ADMIN@EXAMPLE.COM'],
+    }).actor.email).toBe('admin@example.com');
+  });
+});

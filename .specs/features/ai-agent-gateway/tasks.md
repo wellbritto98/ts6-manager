@@ -276,12 +276,12 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Empty allowlists accept any admin
-- [ ] Id allowlist miss is `FORBIDDEN`
-- [ ] Both lists set: id match and email miss is `FORBIDDEN`
-- [ ] Both lists set: both match is allowed
-- [ ] Gate check passes: quick vitest on `agent-auth.test.ts`
-- [ ] Test count: at least 12 tests pass
+- [x] Empty allowlists accept any admin
+- [x] Id allowlist miss is `FORBIDDEN`
+- [x] Both lists set: id match and email miss is `FORBIDDEN`
+- [x] Both lists set: both match is allowed
+- [x] Gate check passes: quick vitest on `agent-auth.test.ts`
+- [x] Test count: at least 12 tests pass
 
 **Tests**: unit
 **Gate**: quick

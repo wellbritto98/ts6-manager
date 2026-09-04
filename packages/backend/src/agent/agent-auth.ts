@@ -85,6 +85,24 @@ export function verifyOpenWebUiJwt(
   };
 }
 
+export function assertAllowlists(actor: AgentActor, authConfig: Pick<AgentAuthConfig, 'allowedUserIds' | 'allowedEmails'>): void {
+  const hasUserIdAllowlist = authConfig.allowedUserIds.length > 0;
+  const hasEmailAllowlist = authConfig.allowedEmails.length > 0;
+  if (!hasUserIdAllowlist && !hasEmailAllowlist) {
+    return;
+  }
+
+  const userIdMatches = !hasUserIdAllowlist || authConfig.allowedUserIds.includes(actor.externalUserId);
+  const emailMatches = !hasEmailAllowlist
+    || (
+      actor.email !== undefined
+      && authConfig.allowedEmails.some((email) => email.toLowerCase() === actor.email?.toLowerCase())
+    );
+  if (!userIdMatches || !emailMatches) {
+    forbidden();
+  }
+}
+
 export function assertAgentAuth(
   headers: AgentAuthHeaders,
   authConfig: AgentAuthConfig,
@@ -94,6 +112,7 @@ export function assertAgentAuth(
     headers['x-openwebui-user-jwt'],
     authConfig.identityJwtSecret,
   );
+  assertAllowlists(actor, authConfig);
 
   return {
     actor,
