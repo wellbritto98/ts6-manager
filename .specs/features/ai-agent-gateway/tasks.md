@@ -147,11 +147,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Failure JSON has `success: false`, `error.code`, `error.message`, `error.retryable`, `requestId`
-- [ ] Timeout and TeamSpeak flood map to `retryable: true`; not-found/forbidden/invalid map to false
-- [ ] Serialized error has no `stack` key
-- [ ] Gate check passes: quick vitest on `agent-error.test.ts`
-- [ ] Test count: at least 6 tests pass
+- [x] Failure JSON has `success: false`, `error.code`, `error.message`, `error.retryable`, `requestId`
+- [x] Timeout and TeamSpeak flood map to `retryable: true`; not-found/forbidden/invalid map to false
+- [x] Serialized error has no `stack` key
+- [x] Gate check passes: quick vitest on `agent-error.test.ts`
+- [x] Test count: at least 6 tests pass
 
 **Tests**: unit
 **Gate**: quick
