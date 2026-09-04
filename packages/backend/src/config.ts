@@ -35,7 +35,7 @@ export interface AiConfig {
   assistantPublicUrl: string | undefined;
 }
 
-type AiEnvironment = Pick<
+type AiEnvironment = Partial<Pick<
   NodeJS.ProcessEnv,
   | 'AI_AGENT_ENABLED'
   | 'AI_GATEWAY_TOKEN'
@@ -46,7 +46,7 @@ type AiEnvironment = Pick<
   | 'AI_ASSISTANT_PUBLIC_URL'
   | 'JWT_SECRET'
   | 'ENCRYPTION_KEY'
->;
+>>;
 
 function parseAllowlist(value: string | undefined, lowercase = false): string[] {
   if (!value) return [];
