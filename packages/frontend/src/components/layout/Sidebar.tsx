@@ -15,12 +15,19 @@ import { authApi } from '@/api/auth.api';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { resolveAiAssistantNavItem } from '@/components/layout/ai-assistant-nav';
 
 type NavItemBase = { icon: LucideIcon; label: string; adminOnly?: boolean };
 // An item is either an internal route or an external link, never both.
 type NavItem =
   | (NavItemBase & { to: string; external?: false; href?: undefined })
-  | (NavItemBase & { href: string; external: true; to?: undefined });
+  | (NavItemBase & {
+    href: string;
+    external: true;
+    to?: undefined;
+    target: '_blank';
+    rel: 'noopener noreferrer';
+  });
 type NavSection = { label: string; adminOnly?: boolean; items: NavItem[] };
 
 const navSections: NavSection[] = [
@@ -91,17 +98,32 @@ export function Sidebar() {
     queryFn: authApi.me,
     staleTime: 60_000,
   });
-  const assistantUrl = import.meta.env.VITE_AI_ASSISTANT_URL || me?.aiAssistantUrl || '';
+  const assistantNav = resolveAiAssistantNavItem({
+    isAdmin,
+    viteAssistantUrl: import.meta.env.VITE_AI_ASSISTANT_URL,
+    meAssistantUrl: me?.aiAssistantUrl,
+  });
 
   // No configured URL means no nav item at all — never a dead link.
   const sections = useMemo<NavSection[]>(() => {
-    if (!isAdmin || !assistantUrl) return navSections;
+    if (!assistantNav) return navSections;
     return navSections.map((section) =>
       section.label === 'nav.automation'
-        ? { ...section, items: [...section.items, { href: assistantUrl, external: true, icon: Sparkles, label: 'nav.aiAssistant', adminOnly: true }] }
+        ? {
+          ...section,
+          items: [...section.items, {
+            href: assistantNav.href,
+            target: assistantNav.target,
+            rel: assistantNav.rel,
+            external: true,
+            icon: Sparkles,
+            label: 'nav.aiAssistant',
+            adminOnly: true,
+          }],
+        }
         : section,
     );
-  }, [isAdmin, assistantUrl]);
+  }, [assistantNav]);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -166,7 +188,7 @@ export function Sidebar() {
                       const link = item.external ? (
                         // New browsing context, never an iframe: the assistant is a
                         // separate origin and must not read this document.
-                        <a key={key} href={item.href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                        <a key={key} href={item.href} target={item.target} rel={item.rel} className={linkClass}>
                           {body}
                         </a>
                       ) : (

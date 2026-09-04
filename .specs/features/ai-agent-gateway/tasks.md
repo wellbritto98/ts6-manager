@@ -1083,11 +1083,11 @@ T38 -> T39 -> T40 -> T41
 
 **Done when**:
 
-- [ ] Viewer with a URL returns null
-- [ ] Admin with empty URL returns null
-- [ ] Admin with URL returns `target="_blank"` `rel="noopener noreferrer"` and `embed: "none"`
-- [ ] Gate check passes: quick vitest on `ai-assistant-nav.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] Viewer with a URL returns null
+- [x] Admin with empty URL returns null
+- [x] Admin with URL returns `target="_blank"` `rel="noopener noreferrer"` and `embed: "none"`
+- [x] Gate check passes: quick vitest on `ai-assistant-nav.test.ts`
+- [x] Test count: at least 4 tests pass
 
 **Tests**: unit
 **Gate**: quick
