@@ -21,10 +21,10 @@
 ## Handoff
 
 - **Feature**: ai-agent-gateway / `.specs/features/ai-agent-gateway`
-- **Phase / Task**: Specify/Design/Tasks written; Execute not started
-- **Completed**: none
+- **Phase / Task**: Execute complete (T1–T41); Verifier PASS (iteration 2)
+- **Completed**: T1–T41; `validation.md` PASS; `validate_state.py` exit 0
 - **In-progress** (file:line): none
-- **Next step**: Create branch feat/ai-agent-gateway, commit specs, dispatch Phase 1 worker
+- **Next step**: none locally. Do not push unless asked. Optional follow-up: audit TTL, `run_bot_flow` safe entry, drop unused `@modelcontextprotocol/express`, align HTTP `requestId` with audit rows
 - **Blockers**: none
-- **Uncommitted files**: `.specs/features/ai-agent-gateway/*`, STATE.md
-- **Branch**: main (will move to feat/ai-agent-gateway)
+- **Uncommitted files**: none after closeout commit (never commit `AGENTS.md` or `.env`)
+- **Branch**: feat/ai-agent-gateway

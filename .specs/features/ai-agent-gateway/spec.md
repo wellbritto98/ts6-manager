@@ -292,56 +292,56 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 
 | Requirement ID | Story | Phase | Status |
 | -------------- | ----- | ----- | ------ |
-| AIGW-01 | P1: AI stays off until enabled | Tasks | Implementing |
-| AIGW-02 | P1: AI stays off until enabled | Tasks | Implementing |
-| AIGW-03 | P1: AI stays off until enabled | Tasks | Implementing |
-| AIGW-04 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-05 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-06 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-07 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-08 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-09 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-10 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-11 | P1: Single tool registry | Tasks | Implementing |
-| AIGW-12 | P1: Single tool registry | Tasks | Implementing |
-| AIGW-13 | P1: Single tool registry | Tasks | Implementing |
-| AIGW-14 | P1: Single tool registry | Tasks | Implementing |
-| AIGW-15 | P1: Explicit server targeting | Tasks | Implementing |
-| AIGW-16 | P1: Explicit server targeting | Tasks | Implementing |
-| AIGW-17 | P1: Explicit server targeting | Tasks | Implementing |
-| AIGW-18 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-19 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-20 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-21 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-22 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-23 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-24 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-25 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-26 | P1: Destructive tools stay dark | Tasks | Implementing |
-| AIGW-27 | P1: Destructive tools stay dark | Tasks | Implementing |
-| AIGW-28 | P1: Destructive tools stay dark | Tasks | Implementing |
-| AIGW-29 | P1: Audit without secrets | Tasks | Implementing |
-| AIGW-30 | P1: Audit without secrets | Tasks | Implementing |
-| AIGW-31 | P1: Audit without secrets | Tasks | Implementing |
-| AIGW-32 | P1: Audit without secrets | Tasks | Implementing |
-| AIGW-33 | P1: Audit without secrets | Tasks | Implementing |
-| AIGW-34 | P1: Idempotent retries | Tasks | Implementing |
-| AIGW-35 | P1: Idempotent retries | Tasks | Implementing |
-| AIGW-36 | P1: OpenAPI adapter | Tasks | Implementing |
-| AIGW-37 | P1: OpenAPI adapter | Tasks | Implementing |
-| AIGW-38 | P1: OpenAPI adapter | Tasks | Implementing |
-| AIGW-39 | P1: MCP adapter | Tasks | Implementing |
-| AIGW-40 | P1: MCP adapter | Tasks | Implementing |
-| AIGW-41 | P1: MCP adapter | Tasks | Implementing |
-| AIGW-42 | P1: Open WebUI overlay | Tasks | Implementing |
-| AIGW-43 | P1: Open WebUI overlay | Tasks | Implementing |
-| AIGW-44 | P1: Open WebUI overlay | Tasks | Implementing |
-| AIGW-45 | P1: Admin link in the existing SPA | Tasks | Implementing |
-| AIGW-46 | P1: Admin link in the existing SPA | Tasks | Implementing |
-| AIGW-47 | P1: Admin link in the existing SPA | Tasks | Implementing |
-| AIGW-48 | P1: Structured tool errors | Tasks | Implementing |
-| AIGW-49 | P1: Structured tool errors | Tasks | Implementing |
-| AIGW-50 | P1: Structured tool errors | Tasks | Implementing |
+| AIGW-01 | P1: AI stays off until enabled | Tasks | Verified |
+| AIGW-02 | P1: AI stays off until enabled | Tasks | Verified |
+| AIGW-03 | P1: AI stays off until enabled | Tasks | Verified |
+| AIGW-04 | P1: Dual authentication | Tasks | Verified |
+| AIGW-05 | P1: Dual authentication | Tasks | Verified |
+| AIGW-06 | P1: Dual authentication | Tasks | Verified |
+| AIGW-07 | P1: Dual authentication | Tasks | Verified |
+| AIGW-08 | P1: Dual authentication | Tasks | Verified |
+| AIGW-09 | P1: Dual authentication | Tasks | Verified |
+| AIGW-10 | P1: Dual authentication | Tasks | Verified |
+| AIGW-11 | P1: Single tool registry | Tasks | Verified |
+| AIGW-12 | P1: Single tool registry | Tasks | Verified |
+| AIGW-13 | P1: Single tool registry | Tasks | Verified |
+| AIGW-14 | P1: Single tool registry | Tasks | Verified |
+| AIGW-15 | P1: Explicit server targeting | Tasks | Verified |
+| AIGW-16 | P1: Explicit server targeting | Tasks | Verified |
+| AIGW-17 | P1: Explicit server targeting | Tasks | Verified |
+| AIGW-18 | P1: Catalog operations | Tasks | Verified |
+| AIGW-19 | P1: Catalog operations | Tasks | Verified |
+| AIGW-20 | P1: Catalog operations | Tasks | Verified |
+| AIGW-21 | P1: Catalog operations | Tasks | Verified |
+| AIGW-22 | P1: Catalog operations | Tasks | Verified |
+| AIGW-23 | P1: Catalog operations | Tasks | Verified |
+| AIGW-24 | P1: Catalog operations | Tasks | Verified |
+| AIGW-25 | P1: Catalog operations | Tasks | Verified |
+| AIGW-26 | P1: Destructive tools stay dark | Tasks | Verified |
+| AIGW-27 | P1: Destructive tools stay dark | Tasks | Verified |
+| AIGW-28 | P1: Destructive tools stay dark | Tasks | Verified |
+| AIGW-29 | P1: Audit without secrets | Tasks | Verified |
+| AIGW-30 | P1: Audit without secrets | Tasks | Verified |
+| AIGW-31 | P1: Audit without secrets | Tasks | Verified |
+| AIGW-32 | P1: Audit without secrets | Tasks | Verified |
+| AIGW-33 | P1: Audit without secrets | Tasks | Verified |
+| AIGW-34 | P1: Idempotent retries | Tasks | Verified |
+| AIGW-35 | P1: Idempotent retries | Tasks | Verified |
+| AIGW-36 | P1: OpenAPI adapter | Tasks | Verified |
+| AIGW-37 | P1: OpenAPI adapter | Tasks | Verified |
+| AIGW-38 | P1: OpenAPI adapter | Tasks | Verified |
+| AIGW-39 | P1: MCP adapter | Tasks | Verified |
+| AIGW-40 | P1: MCP adapter | Tasks | Verified |
+| AIGW-41 | P1: MCP adapter | Tasks | Verified |
+| AIGW-42 | P1: Open WebUI overlay | Tasks | Verified |
+| AIGW-43 | P1: Open WebUI overlay | Tasks | Verified |
+| AIGW-44 | P1: Open WebUI overlay | Tasks | Verified |
+| AIGW-45 | P1: Admin link in the existing SPA | Tasks | Verified |
+| AIGW-46 | P1: Admin link in the existing SPA | Tasks | Verified |
+| AIGW-47 | P1: Admin link in the existing SPA | Tasks | Verified |
+| AIGW-48 | P1: Structured tool errors | Tasks | Verified |
+| AIGW-49 | P1: Structured tool errors | Tasks | Verified |
+| AIGW-50 | P1: Structured tool errors | Tasks | Verified |
 
 **ID format:** `AIGW-NN`
 

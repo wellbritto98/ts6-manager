@@ -8,7 +8,11 @@
 
 Corroborated across multiple features. Safe to apply as guidance.
 
-_none_
+### L-004 - A user-visible UI requirement is not covered until a test asserts the rendered copy or element; JSX is not test evidence.
+- signal: `ac_gap` · recurrence: 2 feature(s) · scope: `frontend` · harmful: 0
+- features: youtube-cookie-refresh, ai-agent-gateway
+- evidence: YTCR-01 (frontend) (+1 more)
+- last seen: 2026-09-04T20:04:02Z
 
 ## Candidates (under observation - do NOT load as guidance yet)
 
@@ -32,11 +36,23 @@ Seen once or not yet corroborated. Tracked, not trusted.
 - evidence: YTCR-02 (app-settings)
 - last seen: 2026-09-03T18:56:20Z
 
-### L-004 - A user-visible UI requirement is not covered until a test asserts the rendered copy or element; JSX is not test evidence.
-- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `frontend` · harmful: 0
-- features: youtube-cookie-refresh
-- evidence: YTCR-01 (frontend)
-- last seen: 2026-09-03T18:56:20Z
+### L-005 - Assert a spec-named denylist as a literal expected array in the test, not by iterating the production constant.
+- signal: `surviving_mutant` · recurrence: 1 feature(s) · scope: `tool-registry` · harmful: 0
+- features: ai-agent-gateway
+- evidence: mutant-4 tool-registry.ts:13 (tool-registry)
+- last seen: 2026-09-04T20:04:02Z
+
+### L-006 - Assert that secret env values never appear in log output, not only that boot throws on a bad secret.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `config` · harmful: 0
+- features: ai-agent-gateway
+- evidence: AIGW-03 (config)
+- last seen: 2026-09-04T20:04:02Z
+
+### L-007 - Assert constant-time credential comparison by spying on timingSafeEqual, not only match versus mismatch outcomes.
+- signal: `ac_gap` · recurrence: 1 feature(s) · scope: `agent-auth` · harmful: 0
+- features: ai-agent-gateway
+- evidence: AIGW-05 (agent-auth)
+- last seen: 2026-09-04T20:04:03Z
 
 ## Quarantined (failed when applied - ignore)
 

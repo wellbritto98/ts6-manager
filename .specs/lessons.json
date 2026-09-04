@@ -3,7 +3,7 @@
   "promote_threshold": 2,
   "window_days": 45,
   "quarantine_threshold": 2,
-  "next_id": 5,
+  "next_id": 8,
   "lessons": [
     {
       "id": "L-001",
@@ -65,17 +65,73 @@
       "text": "A user-visible UI requirement is not covered until a test asserts the rendered copy or element; JSX is not test evidence.",
       "signal": "ac_gap",
       "scope": "frontend",
+      "status": "confirmed",
+      "features": [
+        "youtube-cookie-refresh",
+        "ai-agent-gateway"
+      ],
+      "recurrence": 2,
+      "harmful": 0,
+      "evidence": [
+        "YTCR-01 (frontend)",
+        "AIGW-45 (frontend)"
+      ],
+      "created": "2026-09-03T18:56:20Z",
+      "last_seen": "2026-09-04T20:04:02Z"
+    },
+    {
+      "id": "L-005",
+      "key": "surviving_mutant::assert a spec named denylist as a literal expected array in the test not by iterating the production constant",
+      "text": "Assert a spec-named denylist as a literal expected array in the test, not by iterating the production constant.",
+      "signal": "surviving_mutant",
+      "scope": "tool-registry",
       "status": "candidate",
       "features": [
-        "youtube-cookie-refresh"
+        "ai-agent-gateway"
       ],
       "recurrence": 1,
       "harmful": 0,
       "evidence": [
-        "YTCR-01 (frontend)"
+        "mutant-4 tool-registry.ts:13 (tool-registry)"
       ],
-      "created": "2026-09-03T18:56:20Z",
-      "last_seen": "2026-09-03T18:56:20Z"
+      "created": "2026-09-04T20:04:02Z",
+      "last_seen": "2026-09-04T20:04:02Z"
+    },
+    {
+      "id": "L-006",
+      "key": "ac_gap::assert that secret env values never appear in log output not only that boot throws on a bad secret",
+      "text": "Assert that secret env values never appear in log output, not only that boot throws on a bad secret.",
+      "signal": "ac_gap",
+      "scope": "config",
+      "status": "candidate",
+      "features": [
+        "ai-agent-gateway"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "AIGW-03 (config)"
+      ],
+      "created": "2026-09-04T20:04:02Z",
+      "last_seen": "2026-09-04T20:04:02Z"
+    },
+    {
+      "id": "L-007",
+      "key": "ac_gap::assert constant time credential comparison by spying on timingsafeequal not only match versus mismatch outcomes",
+      "text": "Assert constant-time credential comparison by spying on timingSafeEqual, not only match versus mismatch outcomes.",
+      "signal": "ac_gap",
+      "scope": "agent-auth",
+      "status": "candidate",
+      "features": [
+        "ai-agent-gateway"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "AIGW-05 (agent-auth)"
+      ],
+      "created": "2026-09-04T20:04:03Z",
+      "last_seen": "2026-09-04T20:04:03Z"
     }
   ]
 }
