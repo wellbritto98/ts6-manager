@@ -566,10 +566,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] `getTool('execute_sql')` is undefined
-- [ ] Destructive tools omitted from `listExposed` when flag false
-- [ ] Gate check passes: quick vitest on `tool-registry.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] `getTool('execute_sql')` is undefined
+- [x] Destructive tools omitted from `listExposed` when flag false
+- [x] Gate check passes: quick vitest on `tool-registry.test.ts`
+- [x] Test count: at least 3 tests pass (6 registry + 8 error-mapping tests pass)
 
 **Tests**: unit
 **Gate**: quick

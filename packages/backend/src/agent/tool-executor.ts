@@ -2,23 +2,10 @@ import { randomUUID } from 'node:crypto';
 import type { AgentContext } from './agent-context.js';
 import { recordAudit } from './agent-audit.service.js';
 import { AgentError } from './agent-error.js';
-
-export type AgentToolRisk = 'read' | 'mutating' | 'destructive';
-
-export interface ToolExecutionResult {
-  success: true;
-  action: string;
-  [key: string]: unknown;
-}
+import type { AgentToolDefinition, ToolExecutionResult } from './tool-definition.js';
 
 export interface ToolSuccess extends ToolExecutionResult {
   requestId: string;
-}
-
-export interface AgentToolDefinition {
-  name: string;
-  risk: AgentToolRisk;
-  execute: (context: AgentContext, input: unknown) => Promise<ToolExecutionResult>;
 }
 
 export interface AgentToolRegistry {
@@ -53,7 +40,7 @@ function getServerIds(input: unknown): Pick<Parameters<typeof recordAudit>[1], '
 }
 
 function isMutating(tool: AgentToolDefinition): boolean {
-  return tool.risk === 'mutating' || tool.risk === 'destructive';
+  return tool.risk === 'write' || tool.risk === 'destructive';
 }
 
 export async function executeTool({

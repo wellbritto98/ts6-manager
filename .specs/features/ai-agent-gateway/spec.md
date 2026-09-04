@@ -302,8 +302,8 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-08 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-09 | P1: Dual authentication | Tasks | Implementing |
 | AIGW-10 | P1: Dual authentication | Tasks | Implementing |
-| AIGW-11 | P1: Single tool registry | Tasks | Pending |
-| AIGW-12 | P1: Single tool registry | Tasks | Pending |
+| AIGW-11 | P1: Single tool registry | Tasks | Implementing |
+| AIGW-12 | P1: Single tool registry | Tasks | Implementing |
 | AIGW-13 | P1: Single tool registry | Tasks | Pending |
 | AIGW-14 | P1: Single tool registry | Tasks | Pending |
 | AIGW-15 | P1: Explicit server targeting | Tasks | Implementing |
@@ -317,7 +317,7 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-23 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-24 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-25 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-26 | P1: Destructive tools stay dark | Tasks | Pending |
+| AIGW-26 | P1: Destructive tools stay dark | Tasks | Implementing |
 | AIGW-27 | P1: Destructive tools stay dark | Tasks | Pending |
 | AIGW-28 | P1: Destructive tools stay dark | Tasks | Pending |
 | AIGW-29 | P1: Audit without secrets | Tasks | Implementing |

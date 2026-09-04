@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
+import { z } from 'zod';
 import type { PrismaClient } from '../../generated/prisma/index.js';
 import type { AgentContext } from './agent-context.js';
 import { AgentError } from './agent-error.js';
-import { executeTool, type AgentToolDefinition, type AgentToolRegistry } from './tool-executor.js';
+import type { AgentToolDefinition } from './tool-definition.js';
+import { executeTool, type AgentToolRegistry } from './tool-executor.js';
 
 function createContext(prisma: PrismaClient): AgentContext {
   return {
@@ -12,8 +14,9 @@ function createContext(prisma: PrismaClient): AgentContext {
   } as unknown as AgentContext;
 }
 
-function createRegistry(tool: AgentToolDefinition): AgentToolRegistry {
-  return { getTool: (name) => name === tool.name ? tool : undefined };
+function createRegistry(tool: Omit<AgentToolDefinition, 'description' | 'inputSchema'>): AgentToolRegistry {
+  const full: AgentToolDefinition = { description: tool.name, inputSchema: z.unknown(), ...tool };
+  return { getTool: (name) => name === tool.name ? full : undefined };
 }
 
 describe('executeTool', () => {
@@ -27,7 +30,7 @@ describe('executeTool', () => {
     ));
     const prisma = { aiActionLog: { create, findUnique } } as unknown as PrismaClient;
     const execute = vi.fn().mockResolvedValue({ success: true, action: 'channel_created', channelId: 12 });
-    const registry = createRegistry({ name: 'create_channel', risk: 'mutating', execute });
+    const registry = createRegistry({ name: 'create_channel', risk: 'write', execute });
     const context = createContext(prisma);
     const input = { idempotencyKey: 'create-12' };
 
@@ -42,7 +45,7 @@ describe('executeTool', () => {
   it('rejects an idempotency key longer than 128 characters', async () => {
     const prisma = { aiActionLog: { create: vi.fn(), findUnique: vi.fn() } } as unknown as PrismaClient;
     const execute = vi.fn().mockResolvedValue({ success: true, action: 'channel_created' });
-    const registry = createRegistry({ name: 'create_channel', risk: 'mutating', execute });
+    const registry = createRegistry({ name: 'create_channel', risk: 'write', execute });
 
     await expect(executeTool({
       registry,
@@ -58,7 +61,7 @@ describe('executeTool', () => {
       aiActionLog: { create, findUnique: vi.fn().mockResolvedValue(null) },
     } as unknown as PrismaClient;
     const execute = vi.fn().mockResolvedValue({ success: true, action: 'already_in_desired_state' });
-    const registry = createRegistry({ name: 'add_client_to_group', risk: 'mutating', execute });
+    const registry = createRegistry({ name: 'add_client_to_group', risk: 'write', execute });
 
     await executeTool({
       registry,
@@ -83,7 +86,7 @@ describe('executeTool', () => {
       },
     } as unknown as PrismaClient;
     const execute = vi.fn().mockResolvedValue({ success: true, action: 'channel_created' });
-    const registry = createRegistry({ name: 'create_channel', risk: 'mutating', execute });
+    const registry = createRegistry({ name: 'create_channel', risk: 'write', execute });
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     await executeTool({
