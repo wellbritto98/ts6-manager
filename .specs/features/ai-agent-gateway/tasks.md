@@ -694,11 +694,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] play_media_url returns `media_queued` or `media_playing`
-- [ ] invalid URL is `INVALID_INPUT` without download
-- [ ] stop/clear are destructive
-- [ ] Gate check passes: quick vitest on `music-tools.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] play_media_url returns `media_queued` or `media_playing`
+- [x] invalid URL is `INVALID_INPUT` without download
+- [x] stop/clear are destructive
+- [x] Gate check passes: quick vitest on `music-tools.test.ts`
+- [x] Test count: at least 4 tests pass (13 pass)
 
 **Tests**: unit
 **Gate**: quick
