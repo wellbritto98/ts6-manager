@@ -873,10 +873,10 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] `location ^~ /api/agent/mcp` returns 403
-- [ ] It appears before `location /api`
-- [ ] Gate check passes: build
-- [ ] Test count: unchanged
+- [x] `location ^~ /api/agent/mcp` returns 403
+- [x] It appears before `location /api`
+- [x] Gate check passes: build (`tsc --noEmit`, lint, 64 files / 527 tests pass)
+- [x] Test count: unchanged
 
 **Tests**: none
 **Gate**: build
