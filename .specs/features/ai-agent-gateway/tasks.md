@@ -617,11 +617,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] create_channel returns `action: "channel_created"`
-- [ ] extra fields on create are `INVALID_INPUT`
-- [ ] delete_channel risk is `destructive`
-- [ ] Gate check passes: quick vitest on `channel-tools.test.ts`
-- [ ] Test count: at least 3 tests pass
+- [x] create_channel returns `action: "channel_created"`
+- [x] extra fields on create are `INVALID_INPUT`
+- [x] delete_channel risk is `destructive`
+- [x] Gate check passes: quick vitest on `channel-tools.test.ts`
+- [x] Test count: at least 3 tests pass (10 pass)
 
 **Tests**: unit
 **Gate**: quick
