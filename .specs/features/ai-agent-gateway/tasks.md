@@ -434,11 +434,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] list does not request `-ip` and strips ip fields if present
-- [ ] move calls `clientmove` with cid
-- [ ] kick/ban call the matching WebQuery commands
-- [ ] Gate check passes: quick vitest on `client-management.service.test.ts`
-- [ ] Test count: at least 4 tests pass
+- [x] list does not request `-ip` and strips ip fields if present
+- [x] move calls `clientmove` with cid
+- [x] kick/ban call the matching WebQuery commands
+- [x] Gate check passes: quick vitest on `client-management.service.test.ts`
+- [x] Test count: at least 4 tests pass (13 pass)
 
 **Tests**: unit
 **Gate**: quick

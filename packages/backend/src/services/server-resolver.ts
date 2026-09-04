@@ -72,6 +72,17 @@ export async function requireEnabledServer(
   return { server, client: getWebQuery(pool, id) };
 }
 
+/** Resolve both halves of a virtual-server target in one step. */
+export async function resolveServerTarget(
+  prisma: PrismaClient,
+  pool: WebQueryPool,
+  serverConfigId: unknown,
+  virtualServerId: unknown,
+): Promise<{ server: PublicServerConfig; client: WebQueryExecutor; sid: number }> {
+  const { server, client } = await requireEnabledServer(prisma, pool, serverConfigId);
+  return { server, client, sid: requireVirtualServerId(virtualServerId) };
+}
+
 /** WebQuery bodies are untyped JSON; narrow them without spreading `any`. */
 export function asRecordArray(value: unknown): Array<Record<string, unknown>> {
   if (Array.isArray(value)) {

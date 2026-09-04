@@ -310,9 +310,9 @@ Each requirement gets a unique ID for tracking across design, tasks, and validat
 | AIGW-16 | P1: Explicit server targeting | Tasks | Implementing |
 | AIGW-17 | P1: Explicit server targeting | Tasks | Implementing |
 | AIGW-18 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-19 | P1: Catalog operations | Tasks | Pending |
+| AIGW-19 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-20 | P1: Catalog operations | Tasks | Implementing |
-| AIGW-21 | P1: Catalog operations | Tasks | Pending |
+| AIGW-21 | P1: Catalog operations | Tasks | Implementing |
 | AIGW-22 | P1: Catalog operations | Tasks | Pending |
 | AIGW-23 | P1: Catalog operations | Tasks | Pending |
 | AIGW-24 | P1: Catalog operations | Tasks | Pending |

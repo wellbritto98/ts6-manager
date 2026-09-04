@@ -1,9 +1,7 @@
 import type { PrismaClient } from '../../generated/prisma/index.js';
 import {
-  requireEnabledServer,
   requirePositiveInt,
-  requireVirtualServerId,
-  type WebQueryExecutor,
+  resolveServerTarget,
   type WebQueryPool,
 } from './server-resolver.js';
 
@@ -36,18 +34,13 @@ const CHANNEL_LIST_FLAGS: Record<string, string> = {
 
 export type ChannelFields = Record<string, unknown>;
 
-interface ChannelTarget {
-  client: WebQueryExecutor;
-  sid: number;
-}
-
 export async function listChannels(
   prisma: PrismaClient,
   pool: WebQueryPool,
   serverConfigId: unknown,
   virtualServerId: unknown,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channellist', { ...CHANNEL_LIST_FLAGS });
 }
 
@@ -58,7 +51,7 @@ export async function getChannel(
   virtualServerId: unknown,
   cid: unknown,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channelinfo', { cid: String(requirePositiveInt(cid, 'cid')) });
 }
 
@@ -69,7 +62,7 @@ export async function createChannel(
   virtualServerId: unknown,
   fields: ChannelFields,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channelcreate', pickFields(fields, CHANNEL_WRITE_FIELDS));
 }
 
@@ -81,7 +74,7 @@ export async function editChannel(
   cid: unknown,
   fields: ChannelFields,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channeledit', {
     cid: String(requirePositiveInt(cid, 'cid')),
     ...pickFields(fields, CHANNEL_WRITE_FIELDS),
@@ -96,7 +89,7 @@ export async function moveChannel(
   cid: unknown,
   fields: ChannelFields,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channelmove', {
     cid: String(requirePositiveInt(cid, 'cid')),
     ...pickFields(fields, CHANNEL_MOVE_FIELDS),
@@ -111,7 +104,7 @@ export async function deleteChannel(
   cid: unknown,
   force: unknown = 1,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channeldelete', {
     cid: String(requirePositiveInt(cid, 'cid')),
     force: force ?? 1,
@@ -126,7 +119,7 @@ export async function setChannelPermission(
   cid: unknown,
   fields: ChannelFields,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channeladdperm', {
     cid: String(requirePositiveInt(cid, 'cid')),
     ...pickFields(fields, CHANNEL_PERM_SET_FIELDS),
@@ -141,7 +134,7 @@ export async function removeChannelPermission(
   cid: unknown,
   fields: ChannelFields,
 ): Promise<unknown> {
-  const { client, sid } = await resolveTarget(prisma, pool, serverConfigId, virtualServerId);
+  const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channeldelperm', {
     cid: String(requirePositiveInt(cid, 'cid')),
     ...pickFields(fields, CHANNEL_PERM_REMOVE_FIELDS),
@@ -158,14 +151,4 @@ export function pickFields(
     if (source[key] !== undefined) picked[key] = source[key];
   }
   return picked;
-}
-
-async function resolveTarget(
-  prisma: PrismaClient,
-  pool: WebQueryPool,
-  serverConfigId: unknown,
-  virtualServerId: unknown,
-): Promise<ChannelTarget> {
-  const { client } = await requireEnabledServer(prisma, pool, serverConfigId);
-  return { client, sid: requireVirtualServerId(virtualServerId) };
 }
