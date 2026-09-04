@@ -975,12 +975,12 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Architecture diagram and env vars documented
-- [ ] Setup lists the 10 Open WebUI steps including preset `TS6 Server Manager`
-- [ ] Security documents dual auth, destructive flag, nginx MCP deny, no generic tools
-- [ ] Catalog lists all tools with risk and notes `run_bot_flow` disabled
-- [ ] Gate check passes: build
-- [ ] Test count: unchanged
+- [x] Architecture diagram and env vars documented
+- [x] Setup lists the 10 Open WebUI steps including preset `TS6 Server Manager`
+- [x] Security documents dual auth, destructive flag, nginx MCP deny, no generic tools
+- [x] Catalog lists all tools with risk and notes `run_bot_flow` disabled
+- [x] Gate check passes: build (`tsc --noEmit`)
+- [x] Test count: unchanged
 
 **Tests**: none
 **Gate**: build
