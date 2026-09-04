@@ -166,6 +166,32 @@ model AppSetting {
   updatedAt DateTime @updatedAt
 }
 
+model AiActionLog {
+  id                 Int      @id @default(autoincrement())
+  requestId          String   @unique
+  idempotencyKey     String?
+  externalUserId     String
+  actorEmail         String?
+  actorName          String?
+  chatId             String?
+  messageId          String?
+  serverConfigId     Int?
+  virtualServerId    Int?
+  toolName           String
+  risk               String
+  sanitizedArguments String
+  sanitizedResult    String?
+  status             String
+  errorCode          String?
+  durationMs         Int?
+  createdAt          DateTime @default(now())
+
+  @@unique([externalUserId, toolName, idempotencyKey])
+  @@index([externalUserId, createdAt])
+  @@index([toolName, createdAt])
+  @@index([serverConfigId, createdAt])
+}
+
 // === Music / Voice Bot Models ===
 
 model MusicBot {

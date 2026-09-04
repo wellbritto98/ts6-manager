@@ -121,11 +121,11 @@ T32 -> T33 -> T34 -> T35 -> T36 -> T37
 
 **Done when**:
 
-- [ ] Model matches design.md fields including `idempotencyKey` unique with actor+tool
-- [ ] `packages/backend/prisma/sql/ai-action-log.sql` exists
-- [ ] `pnpm db:generate` succeeds
-- [ ] Gate check passes: build (`tsc --noEmit`)
-- [ ] Test count: unchanged except new files compile
+- [x] Model matches design.md fields including `idempotencyKey` unique with actor+tool
+- [x] `packages/backend/prisma/sql/ai-action-log.sql` exists
+- [x] `pnpm db:generate` succeeds
+- [x] Gate check passes: build (`tsc --noEmit`)
+- [x] Test count: unchanged except new files compile
 
 **Tests**: none
 **Gate**: build
