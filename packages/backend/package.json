@@ -43,7 +43,8 @@
     "qrcode": "^1.5.4",
     "ssh2": "^1.17.0",
     "ws": "^8.21.0",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "3.25.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
