@@ -42,6 +42,29 @@ describe('set_server_group_permission', () => {
       sgid: '7',
       permsid: 'i_channel_needed_join_power',
       permvalue: 50,
+      permnegated: 0,
+      permskip: 0,
+    });
+  });
+
+  it('forwards explicit permnegated/permskip instead of the default', async () => {
+    const execute = vi.fn().mockResolvedValue({});
+
+    await setServerGroupPermission.execute(createToolContext({ execute }), {
+      ...TARGET,
+      sgid: 7,
+      permsid: 'i_channel_needed_join_power',
+      permvalue: 50,
+      permnegated: 1,
+      permskip: 1,
+    });
+
+    expect(execute).toHaveBeenCalledWith(1, 'servergroupaddperm', {
+      sgid: '7',
+      permsid: 'i_channel_needed_join_power',
+      permvalue: 50,
+      permnegated: 1,
+      permskip: 1,
     });
   });
 
@@ -54,7 +77,7 @@ describe('set_server_group_permission', () => {
         sgid: 7,
         permsid: 'i_channel_needed_join_power',
         permvalue: 50,
-        permnegated: 1,
+        bogus: 1,
       }),
     ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
     expect(execute).not.toHaveBeenCalled();

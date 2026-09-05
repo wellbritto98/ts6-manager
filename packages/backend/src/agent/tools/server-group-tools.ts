@@ -17,6 +17,9 @@ const permissionRef = {
   permid: z.number().int().nonnegative().optional(),
 };
 
+/** TeamSpeak defaults both to 0; expose them so a caller can opt into negated/skip semantics. */
+const permFlag = z.union([z.literal(0), z.literal(1)]);
+
 const serverGroupType = z.union([z.literal(0), z.literal(1), z.literal(2)]);
 
 export const serverGroupTools: AgentToolDefinition[] = [
@@ -42,7 +45,14 @@ export const serverGroupTools: AgentToolDefinition[] = [
     name: 'set_server_group_permission',
     description: 'Set one permission on one server group, named by permission name (permsid) or numeric id (permid).',
     inputSchema: z
-      .object({ ...mutationScope, sgid: positiveId, ...permissionRef, permvalue: z.number().int() })
+      .object({
+        ...mutationScope,
+        sgid: positiveId,
+        ...permissionRef,
+        permvalue: z.number().int(),
+        permnegated: permFlag.optional(),
+        permskip: permFlag.optional(),
+      })
       .strict(),
     risk: 'write',
     run: async (context, input) => {

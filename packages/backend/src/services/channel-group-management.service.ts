@@ -9,7 +9,7 @@ import {
   type WebQueryPool,
 } from './server-resolver.js';
 
-const CHANNEL_GROUP_PERM_SET_FIELDS = ['permsid', 'permid', 'permvalue'] as const;
+const CHANNEL_GROUP_PERM_SET_FIELDS = ['permsid', 'permid', 'permvalue', 'permnegated', 'permskip'] as const;
 const CHANNEL_GROUP_PERM_REMOVE_FIELDS = ['permsid', 'permid'] as const;
 
 export type ChannelGroupPermissionFields = Record<string, unknown>;
@@ -28,6 +28,11 @@ export async function listChannelGroupPermissions(
   })));
 }
 
+/**
+ * `channelgroupaddperm`, like `servergroupaddperm`, rejects the command with
+ * "parameter not found" unless `permnegated` and `permskip` are BOTH
+ * present. Default both to 0 unless a caller overrides them.
+ */
 export async function setChannelGroupPermission(
   prisma: PrismaClient,
   pool: WebQueryPool,
@@ -39,6 +44,8 @@ export async function setChannelGroupPermission(
   const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'channelgroupaddperm', {
     cgid: String(requirePositiveInt(cgid, 'cgid')),
+    permnegated: 0,
+    permskip: 0,
     ...pickFields(fields, CHANNEL_GROUP_PERM_SET_FIELDS),
   });
 }

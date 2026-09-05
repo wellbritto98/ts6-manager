@@ -48,14 +48,14 @@ Risk levels: **read** never changes state, **write** changes state reversibly, *
 | `set_channel_permission` | write | One permission on one channel |
 | `remove_channel_permission` | destructive | Restores the inherited value |
 | `list_server_group_permissions` | read | Every permission assigned directly to one server group |
-| `set_server_group_permission` | write | One permission on one server group |
+| `set_server_group_permission` | write | One permission on one server group. `permnegated`/`permskip` default to 0 (TeamSpeak requires both present on the wire) |
 | `remove_server_group_permission` | destructive | Restores the inherited value |
 | `copy_server_group_permissions` | write | Copies every permission from one group onto another (or a new group) |
 | `create_server_group` | write | `type` defaults to 1 (regular, assignable) |
 | `rename_server_group` | write | |
 | `delete_server_group` | destructive | Clients holding it lose every permission it granted |
 | `list_channel_group_permissions` | read | Every permission assigned directly to one channel group |
-| `set_channel_group_permission` | write | One permission on one channel group |
+| `set_channel_group_permission` | write | One permission on one channel group. `permnegated`/`permskip` default to 0 (TeamSpeak requires both present on the wire) |
 | `remove_channel_group_permission` | destructive | Restores the inherited value |
 | `create_channel_group` | write | `type` defaults to 1 (regular, assignable) |
 | `rename_channel_group` | write | |

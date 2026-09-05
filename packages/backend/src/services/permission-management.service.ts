@@ -13,7 +13,7 @@ import { pickFields } from './channel-management.service.js';
 
 export { removeChannelPermission, setChannelPermission } from './channel-management.service.js';
 
-const SERVER_GROUP_PERM_SET_FIELDS = ['permsid', 'permid', 'permvalue'] as const;
+const SERVER_GROUP_PERM_SET_FIELDS = ['permsid', 'permid', 'permvalue', 'permnegated', 'permskip'] as const;
 const SERVER_GROUP_PERM_REMOVE_FIELDS = ['permsid', 'permid'] as const;
 
 export type ServerGroupPermissionFields = Record<string, unknown>;
@@ -152,6 +152,15 @@ export async function listServerGroupPermissions(
   })));
 }
 
+/**
+ * TeamSpeak's WebQuery rejects `servergroupaddperm` with "parameter not
+ * found" unless `permnegated` and `permskip` are BOTH present, even when the
+ * caller only wants to set a value (verified live: this failed for a plain
+ * read-only permission with no special negated/skip semantics, not just the
+ * power permissions the caller was actually trying to set). Default both to
+ * 0 so they behave like the TeamSpeak client's own defaults unless a caller
+ * overrides them.
+ */
 export async function setServerGroupPermission(
   prisma: PrismaClient,
   pool: WebQueryPool,
@@ -163,6 +172,8 @@ export async function setServerGroupPermission(
   const { client, sid } = await resolveServerTarget(prisma, pool, serverConfigId, virtualServerId);
   return client.execute(sid, 'servergroupaddperm', {
     sgid: String(requirePositiveInt(sgid, 'sgid')),
+    permnegated: 0,
+    permskip: 0,
     ...pickFields(fields, SERVER_GROUP_PERM_SET_FIELDS),
   });
 }
